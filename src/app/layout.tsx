@@ -16,11 +16,17 @@ export default function RootLayout({
 }): React.ReactElement {
   return (
     <>
-    <nav>
-      <Link href="/hub">Hub</Link>
-      <Link href="/edt">Emploi du temps</Link>
-    </nav>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className='flex'>
+          <nav className="flex flex-col h-full w-1/5 m-0">
+            <Link href="/hub">Hub</Link>
+            <Link href="/edt">Emploi du temps</Link>
+          </nav>
+          <div>
+            {children}
+          </div>
+        </div>
+      </body>
     </>
   )
 }
