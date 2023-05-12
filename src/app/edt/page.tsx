@@ -1,5 +1,11 @@
+import ESIEECalendar from '@/components/edt/ESIEECalendar';
+import EDTForm from '@/components/edt/EDTForm';
+
 export default function Edt(): React.ReactElement {
     return (
-        <p>This is the edt.</p>
+        <>
+            <EDTForm></EDTForm>
+            <ESIEECalendar class=''></ESIEECalendar>
+        </>
     )
 }
