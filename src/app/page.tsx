@@ -1,6 +1,6 @@
 import React from "react";
 import Hub from "./(layoutNavBar)/hub/page";
-import Button from "./components/Button";
+import Button from "../components/Button";
 import Image from "next/image";
 
 export default function Page(): React.ReactElement {
