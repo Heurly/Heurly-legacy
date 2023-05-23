@@ -1,3 +1,4 @@
+import SearchBar from "@/components/search-bar";
 import Image from "next/image";
 
 export default function FirstTime() {
@@ -8,18 +9,7 @@ export default function FirstTime() {
           <h1 className="text-3xl md:text-4xl font-black text-center text-black">
             C&apos;est la première fois ?
           </h1>
-          <div className="border-black border-4 rounded-xl flex bg-white pr-3 md:w-96">
-            <input
-              type="text"
-              className="p-3 outline-none w-full rounded-l-xl"
-            />
-            <Image
-              src="/images/search.svg"
-              alt="search"
-              width={30}
-              height={30}
-            />
-          </div>
+          <SearchBar />
         </div>
       </div>
     </div>
