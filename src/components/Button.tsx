@@ -6,7 +6,7 @@ export default function Button(props: {
   children: React.ReactNode;
 }) {
   return (
-    <button className={cn("text-white p-3 rounded-lg", props.className)}>
+    <button className={cn("p-3 rounded-lg border-gray-600 border-2 bg-black", props.className)}>
       {props.children}
     </button>
   );

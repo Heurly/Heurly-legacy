@@ -1,5 +1,7 @@
-export default function Edt(): React.ReactElement {
-    return (
-        <p>This is the edt.</p>
+export default function Edt(){
+    return(
+        <div>
+            test
+        </div>
     )
 }
