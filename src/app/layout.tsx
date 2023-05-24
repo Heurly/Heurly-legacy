@@ -1,4 +1,4 @@
-import '@/app/globals.css'
+import "@/globals.css";
 import { Lato } from "next/font/google";
 import Link from "next/link";
 
