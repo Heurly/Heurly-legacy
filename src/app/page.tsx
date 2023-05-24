@@ -2,6 +2,7 @@ import React from "react";
 import Hub from "@/app/(layoutNavBar)/hub/page";
 import Button from "./components/Button";
 import Image from "next/image";
+
 export default function Home(): React.ReactElement {
   return (
     <div className=" md:flex w-full h-screen">
