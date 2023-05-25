@@ -23,7 +23,7 @@ export default function RootLayout({
           <Link href="/hub">Hub</Link>
           <Link href="/edt">Emploi du temps</Link>
         </nav>
-        <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:pt-[unset]">
+        <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:p-3">
           {children}
         </div>
       </body>

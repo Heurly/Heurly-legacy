@@ -1,23 +1,38 @@
 import React from 'react';
+import { API_URL } from '@/config';
+import CalendarElement from '@/components/edt/CalendarElement';
+import TimeColumn from '@/components/edt/TimeColumn';
 
-async function getEDTData() {
-    const data = await fetch('/api/edt');
-    const resp = data.json();
-
+async function getEDTData(): Promise<Record<string, any>> {
+    const data = await fetch(API_URL + '/api/edt');
+    const resp = await data.json();
     return resp;
 }
 
-export default function ESIEECalendar(
+export default async function ESIEECalendar(
     props: {
         class: string,
         engGroup?: string,
         managementGroup?: string,
     } 
-): React.ReactElement {
+): Promise<React.ReactElement> {
+    var edt = await getEDTData();
+
     return (
-        <>
-            <h1>Emploi du temps</h1>
-            <div>{getEDTData()}</div>
-        </>
+        <div>
+            <div className="relative grid grid-cols-7 grid-rows-1 w-full h-full">
+                <div className='grid grid-rows-15'>
+                    <p>Heure</p>
+                    <TimeColumn />
+                </div>
+                <div>Lundi</div>
+                <div>Mardi</div>
+                <div>Mercredi</div>
+                <div>Jeudi</div>
+                <div>Vendredi</div>
+                <div>Samedi</div>
+                <CalendarElement edtData={edt.VCALENDAR[0].VEVENT}/>
+            </div>    
+        </div>
     );
 }

@@ -15,4 +15,3 @@ model User {
   mail   String  @unique
   groups String
 }
-

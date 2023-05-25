@@ -16,7 +16,7 @@ export default function RootLayout({
 }): React.ReactElement {
   return (
     <>
-      <body className="bg-[#E3E3E3]">{children}</body>
+      <body className="bg-white">{children}</body>
     </>
   );
 }

@@ -1,5 +1,5 @@
 export const PLANIF_ENDPOINT =
-  "https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp";
+  "https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=3471,3172,1798&projectId=10&calType=ical&nbWeeks=1";
 
 export interface EDTData {}
 
