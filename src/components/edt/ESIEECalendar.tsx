@@ -3,24 +3,26 @@ import { API_URL } from '@/config';
 import CalendarElement from '@/components/edt/CalendarElement';
 import TimeColumn from '@/components/edt/TimeColumn';
 
+interface Props {
+    class: string,
+    engGroup?: string,
+    managementGroup?: string,
+}
+
 async function getEDTData(): Promise<Record<string, any>> {
     const data = await fetch(API_URL + '/api/edt');
     const resp = await data.json();
     return resp;
 }
 
-export default async function ESIEECalendar(
-    props: {
-        class: string,
-        engGroup?: string,
-        managementGroup?: string,
-    } 
+async function ESIEECalendar(
+    props: Props
 ): Promise<React.ReactElement> {
     var edt = await getEDTData();
 
     return (
         <div>
-            <div className="relative grid grid-cols-7 grid-rows-1 w-full h-full">
+            <div className="relative grid grid-cols-7 grid-rows-1 w-full h-full text-center">
                 <div className='grid grid-rows-15'>
                     <p>Heure</p>
                     <TimeColumn />
@@ -36,3 +38,6 @@ export default async function ESIEECalendar(
         </div>
     );
 }
+
+// https://github.com/vercel/next.js/issues/42292
+export default ESIEECalendar as unknown as (props: Props) => JSX.Element;
