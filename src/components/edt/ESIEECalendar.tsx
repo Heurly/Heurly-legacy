@@ -2,6 +2,7 @@ import React from 'react';
 import { API_URL } from '@/config';
 import CalendarElement from '@/components/edt/CalendarElement';
 import TimeColumn from '@/components/edt/TimeColumn';
+import DaysLine from '@/components/edt/DaysLine';
 
 interface Props {
     class: string,
@@ -24,15 +25,9 @@ async function ESIEECalendar(
         <div>
             <div className="relative grid grid-cols-7 grid-rows-1 w-full h-full text-center">
                 <div className='grid grid-rows-15'>
-                    <p>Heure</p>
                     <TimeColumn />
                 </div>
-                <div>Lundi</div>
-                <div>Mardi</div>
-                <div>Mercredi</div>
-                <div>Jeudi</div>
-                <div>Vendredi</div>
-                <div>Samedi</div>
+                <DaysLine />
                 <CalendarElement edtData={edt.VCALENDAR[0].VEVENT}/>
             </div>    
         </div>

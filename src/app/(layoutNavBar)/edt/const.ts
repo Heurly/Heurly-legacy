@@ -4,3 +4,5 @@ export const CLASS_VALUES = {
         value: "3172"
     }
 }
+
+export const DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];

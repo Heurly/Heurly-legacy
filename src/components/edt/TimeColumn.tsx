@@ -9,10 +9,13 @@ export default function TimeColumn(): React.ReactElement {
 
     return (
         <>
+            <div>
+                Heure
+            </div>
             {timestamps.map((timestamp: string, key: any) => {
                 return (
                 <>
-                <div key={key} className="border-2">
+                <div key={key}>
                     {timestamp}
                 </div>
                 </>
