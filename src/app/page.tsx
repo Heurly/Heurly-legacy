@@ -8,7 +8,7 @@ export default function Page(): React.ReactElement {
     <div className="md:flex w-full h-screen">
       <div className="md:w-1/2 h-1/2 md:h-full flex justify-center items-center">
         <div className="flex flex-col gap-y-4">
-          <h1 className="text-4xl font-black text-center md:text-left">
+          <h1 className="text-4xl text-neutral-400 font-black text-center md:text-left">
             Bienvenue sur <span className="text-white">ESIEE&nbsp;HUB</span>
           </h1>
           <Button className="text-white flex items-center justify-center font-bold">
