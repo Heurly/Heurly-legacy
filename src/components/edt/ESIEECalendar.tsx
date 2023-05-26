@@ -3,6 +3,7 @@ import { API_URL } from '@/config';
 import CalendarElement from '@/components/edt/CalendarElement';
 import TimeColumn from '@/components/edt/TimeColumn';
 import DaysLine from '@/components/edt/DaysLine';
+import { CourseEvent } from '@/app/(layoutNavBar)/edt/types';
 
 interface Props {
     class: string,
@@ -10,16 +11,11 @@ interface Props {
     managementGroup?: string,
 }
 
-async function getEDTData(): Promise<Record<string, any>> {
+async function getEDTData(): Promise<CourseEvent[]> {
     const data = await fetch(API_URL + '/api/edt');
     const resp = await data.json();
 
-    const translatedData = await fetch(
-        API_URL + '/api/course/E3FI', {method: 'POST', body: JSON.stringify(resp), headers: {'Content-Type': 'application/json', Accept: 'application/json',}}
-    );
-    const translatedResp = await translatedData.json();
-    
-    return translatedResp;
+    return resp.VCALENDAR[0].VEVENT as CourseEvent[];
 }
 
 async function ESIEECalendar(
@@ -34,7 +30,7 @@ async function ESIEECalendar(
                     <TimeColumn />
                 </div>
                 <DaysLine />
-                <CalendarElement edtData={edt.VCALENDAR[0].VEVENT}/>
+                <CalendarElement edtData={edt}/>
             </div>    
         </div>
     );
