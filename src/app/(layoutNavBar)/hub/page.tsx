@@ -10,34 +10,42 @@ export default function Hub(): React.ReactElement {
     {
       title: "test",
       description: "test",
+      date: "2021-10-10",
     },
     {
       title: "lol",
       description: "caca",
+      date: "2021-10-10",
     },
     {
       title: "bla",
       description: "ohhhh",
+      date: "2021-10-10",
     },
     {
       title: "test",
       description: "test",
+      date: "2021-10-10",
     },
     {
       title: "apagnan",
       description: "feur",
+      date: "2021-10-10",
     },
     {
       title: "quoi",
       description: "test",
+      date: "2021-10-10",
     },
     {
       title: "test",
       description: "chocolat",
+      date: "2021-10-10",
     },
     {
       title: "test",
       description: "test",
+      date: "2021-10-10",
     },
   ];
   console.log(search);
