@@ -8,6 +8,7 @@ export default function Grid(): React.ReactElement{
         for (var j = 0; j < COLUMNS; j++) {
             grid.push(
                 (<div
+                    key={`${i}-${j}`}
                     className="absolute flex flex-col p-0 m-0 border-2"
                     style={{
                         width:`${100 / COLUMNS}%`,
