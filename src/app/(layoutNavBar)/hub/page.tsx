@@ -3,9 +3,25 @@ import Resource from "@/components/resource";
 import { SearchContext } from "@/context/search";
 import "@/globals.css";
 import { useContext } from "react";
+import { Storage } from "megajs";
+
+async function getAllFiles(){
+  const storage = new Storage({
+    email: "esiee.hub@gmail.com",
+    password: process.env.MEGA_PASSWORD ?? "",
+  });
+  
+  // await storage.ready;
+  // storage.once("ready",(
+  //   storage.root.children[0].link()
+  // ))
+}
+
+
 
 export default function Hub(): React.ReactElement {
   const { search } = useContext(SearchContext);
+
   const resources = [
     {
       title: "test",
