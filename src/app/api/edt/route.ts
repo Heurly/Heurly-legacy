@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { PLANIF_ENDPOINT, EDTData, URLBuilder } from "@/app/api/ApiHelper";
 import { SUMMARY_MAP } from "@/course-config.json"
-import ical2json from "ical2json";
 import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
+import ical2json from "ical2json";
 
 interface CalendarData {
   VCALENDAR: [

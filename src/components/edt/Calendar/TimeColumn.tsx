@@ -8,19 +8,19 @@ export default function TimeColumn(): React.ReactElement {
     }
 
     return (
-        <>
-            <div>
+        <div className='grid grid-rows-15'>
+            <div className="border-2 m-0 p-0">
                 Heure
             </div>
             {timestamps.map((timestamp: string, key: any) => {
                 return (
                 <>
-                <div key={key}>
+                <div key={key} className="border-2 m-0 p-0">
                     {timestamp}
                 </div>
                 </>
                 )}
             )}
-        </>
+        </div>
     );
 }

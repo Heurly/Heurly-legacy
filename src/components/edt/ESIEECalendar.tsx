@@ -1,8 +1,7 @@
 import React from 'react';
 import { API_URL } from '@/config';
-import CalendarElement from '@/components/edt/CalendarElement';
-import TimeColumn from '@/components/edt/TimeColumn';
-import DaysLine from '@/components/edt/DaysLine';
+import CalendarElements from '@/components/edt/CalendarElements';
+import Calendar from '@/components/edt/Calendar';
 import { CourseEvent } from '@/app/(layoutNavBar)/edt/types';
 
 interface Props {
@@ -26,11 +25,8 @@ async function ESIEECalendar(
     return (
         <div>
             <div className="relative grid grid-cols-7 grid-rows-1 w-full h-full text-center">
-                <div className='grid grid-rows-15'>
-                    <TimeColumn />
-                </div>
-                <DaysLine />
-                <CalendarElement edtData={edt}/>
+                <Calendar />
+                <CalendarElements edtData={edt}/>
             </div>    
         </div>
     );
