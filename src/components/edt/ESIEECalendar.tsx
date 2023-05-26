@@ -13,7 +13,13 @@ interface Props {
 async function getEDTData(): Promise<Record<string, any>> {
     const data = await fetch(API_URL + '/api/edt');
     const resp = await data.json();
-    return resp;
+
+    const translatedData = await fetch(
+        API_URL + '/api/course/E3FI', {method: 'POST', body: JSON.stringify(resp), headers: {'Content-Type': 'application/json', Accept: 'application/json',}}
+    );
+    const translatedResp = await translatedData.json();
+    
+    return translatedResp;
 }
 
 async function ESIEECalendar(

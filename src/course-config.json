@@ -1,0 +1,18 @@
+{
+    "SUMMARY_MAP": {
+        "3A-SH1": "Découverte de l'entreprise",
+        "3A-SH2": "Management de projet",
+        "3A-SH3C": "Team building",
+        "3I-IN10": "Base de données",
+        "3I-IN1": "Architecture",
+        "3I-IN3": "Unix",
+        "3I-PR1": "Introduction au C",
+        "3I-PR2": "Python",
+        "3I-SI1": "Outils mathématiques pour l'ingénieur",
+        "3I-SI2": "Algèbre linéaire",
+        "3I-SI3": "Traitement du signal",
+        "3I-SI4": "Introduction à l'IA",
+        "3A-AN3": "Skills Consolidation",
+        "3I-IN12": "Théorie des graphes"
+    }
+}
