@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { SUMMARY_MAP } from "@/course-config.json"
 import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
+import { NextRequest } from "next/server";
 // @ts-ignore
 import ical2json from "ical2json";
 
@@ -26,7 +27,7 @@ async function setUserGroups(formData: FormData) {
   });
 }
 
-export async function GET(payload: { [params: string]: string }) {
+export async function GET(request: NextRequest) {
   // const endpoint = URLBuilder(PLANIF_ENDPOINT, payload);
   const endpoint = PLANIF_ENDPOINT;
 
