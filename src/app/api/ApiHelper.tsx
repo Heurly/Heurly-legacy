@@ -3,6 +3,7 @@ export const PLANIF_ENDPOINT =
 
 export interface EDTData {}
 
+/* 
 export function URLBuilder(url: string, params: { [key: string]: string }) {
     let newUrl = url;
     for (const [key, value] of Object.entries(params)) {
@@ -10,3 +11,4 @@ export function URLBuilder(url: string, params: { [key: string]: string }) {
     }
     return newUrl;
 }
+*/

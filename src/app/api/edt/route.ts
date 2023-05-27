@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { PLANIF_ENDPOINT, EDTData, URLBuilder } from "@/app/api/ApiHelper";
+import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { SUMMARY_MAP } from "@/course-config.json"
 import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
 // @ts-ignore
@@ -27,7 +27,8 @@ async function setUserGroups(formData: FormData) {
 }
 
 export async function GET(payload: { [params: string]: string }) {
-  const endpoint = URLBuilder(PLANIF_ENDPOINT, payload);
+  // const endpoint = URLBuilder(PLANIF_ENDPOINT, payload);
+  const endpoint = PLANIF_ENDPOINT;
 
   const response = await fetch(endpoint, {
     method: "GET",
