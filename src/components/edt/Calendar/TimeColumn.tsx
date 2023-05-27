@@ -9,7 +9,7 @@ export default function TimeColumn(): React.ReactElement {
 
     return (
         <div className='grid grid-rows-15'>
-            <div className="border-2 m-0 p-0">
+            <div key={"Heure"} className="border-2 m-0 p-0">
                 Heure
             </div>
             {timestamps.map((timestamp: string, key: any) => {
