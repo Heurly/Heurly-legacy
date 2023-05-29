@@ -19,7 +19,7 @@ export default function CalendarElements({edtData}: {edtData: CourseEvent[]}): R
             return (
             <div
                 key={key}
-                className="absolute flex flex-col p-1 m-0 bg-black text-white border text-sm text-ellipsis rounded-md"
+                className="absolute flex flex-col  items-center justify-center p-1 m-0 bg-neutral-950 text-white border text-sm text-ellipsis rounded-xl border-neutral-600 cursor-pointer"
                 style={{
                     width:`${100 / COLUMNS}%`,
                     height: `${(((getTimeValue(courseEnd) - getTimeValue(courseStart)) * 100) / HOURS_COUNT)}%`,
