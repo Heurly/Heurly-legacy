@@ -1,29 +1,70 @@
-import { LINES, COLUMNS } from "@/app/(layoutNavBar)/edt/const";
+import {
+  LINES,
+  COLUMNS,
+  DAYS,
+  HOURS_COUNT,
+} from "@/app/(layoutNavBar)/edt/const";
+import id from "@/utils/id";
 import React from "react";
 
-export default function Grid(): React.ReactElement{
-    const grid = [];
+export default function Grid(): React.ReactElement {
+  const grid = [];
 
-    for (var i = 0; i < LINES; i++) {
-        for (var j = 0; j < COLUMNS; j++) {
-            grid.push(
-                (<div
-                    key={`${i}-${j}`}
-                    className="absolute flex flex-col border border-neutral-800"
-                    style={{
-                        width:`${100 / COLUMNS}%`,
-                        height: `${100 / LINES}%`,
-                        top: `${(i*100) / LINES}%`,
-                        left: `${(j*100) / COLUMNS}%`
-                        }}
-                />)
-            );
-        }
+  for (let i = 0; i < LINES - 1; i++) {
+    // we put the days in the grid
+    if (i == 0) {
+      // we push the empty case
+      grid.push(
+        <div
+          key={`${id()}`}
+          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950"
+          style={{
+            gridColumn: `${1} / span 1`,
+            gridRow: `${1} / span 1`,
+          }}
+        />
+      );
+    }
+    if (i <= DAYS.length) {
+      grid.push(
+        <div
+          key={`${id()}`}
+          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950 font-bold"
+          style={{
+            gridColumn: `${i + 1} / span 1`,
+            gridRow: `${1} / span 1`,
+          }}
+        >
+          {DAYS[i - 1]}
+        </div>
+      );
+    }
+    // we put the hours in the grid
+    if (i <= 13 && i != 0) {
+      grid.push(
+        <div
+          key={`${id()}`}
+          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950 font-bold"
+          style={{
+            gridColumn: `${1} / span 1`,
+            gridRow: `${i + 1} / span 1`,
+          }}
+        >
+          {i + 7}h
+        </div>
+      );
     }
 
-    return (
-        <>
-            {grid}
-        </>
-    );
+    for (let j = 0; j < COLUMNS - 1; j++) {
+      grid.push(
+        <div key={`${id()}`} className="w-full h-full" />
+      );
+    }
+  }
+
+  return (
+    <div className="grid grid-cols-7 grid-rows-14 w-full h-full rounded-xl overflow-hidden border border-neutral-800 divide-neutral-800 divide-x divide-y">
+      {grid}
+    </div>
+  );
 }
