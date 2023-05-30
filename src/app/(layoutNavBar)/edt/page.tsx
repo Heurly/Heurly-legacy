@@ -4,11 +4,19 @@ import Grid from "@/components/edt/Calendar/Grid";
 import { CourseEvent } from "./types";
 import { API_URL } from "@/config";
 
+export const dynamic = "force-dynamic";
+
 async function getEDTData(): Promise<CourseEvent[]> {
   const data = await fetch(API_URL + "/api/edt");
-  const resp = await data.json();
+  try {
+    const resp = await data.json();
 
-  return resp.VCALENDAR[0].VEVENT as CourseEvent[];
+    return resp.VCALENDAR[0].VEVENT as CourseEvent[];
+  } catch(e) {
+    console.log('[ERROR] Failed to retrieve EDT data fetching from: ' + API_URL + "api/edt");
+  }
+
+  return [];
 }
 
 export default async function Edt(): Promise<React.ReactElement> {
