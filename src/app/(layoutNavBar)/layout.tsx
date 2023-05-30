@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import cn from "classnames";
 import Button from "@/components/Button";
+import Logo from "@/components/logo";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({
     <>
       <body className={cn(inter.className)}>
         <nav className="flex md:flex-col p-5 md:h-full md:w-1/5 w-full m-0 bg-neutral-950 border-r border-neutral-600 text-white fixed top-0 gap-y-5">
+          <Logo className="text-3xl flex items-center justify-center"/>
           <SearchBar placeholder="Rechercher une ressource" />
           <Link href="/hub">
             <Button className="w-full">Hub</Button>
