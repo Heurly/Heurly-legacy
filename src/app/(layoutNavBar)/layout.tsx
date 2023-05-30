@@ -5,8 +5,9 @@ import "@/globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import cn from "classnames";
-import { SearchContext } from "@/context/search";
 import { useState } from "react";
+import Button from "@/components/Button";
+import Logo from "@/components/Logo";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,18 +26,21 @@ export default function RootLayout({
 
   return (
     <>
-      <SearchContext.Provider value={{ search, setSearch }}>
-        <body className={cn(inter.className)}>
-          <nav className="flex md:flex-col items-start p-5 justify-start md:h-full md:w-1/5 w-full m-0 bg-neutral-800 border-r-2 border-neutral-600 text-white fixed top-0 ">
-            <SearchBar placeholder="Rechercher une ressource" />
-            <Link href="/hub">Hub</Link>
-            <Link href="/edt">Emploi du temps</Link>
-          </nav>
-          <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:pt-[unset]">
-            {children}
-          </div>
-        </body>
-      </SearchContext.Provider>
+      <body className={cn(inter.className)}>
+        <nav className="flex md:flex-col p-5 md:h-full md:w-1/5 w-full m-0 bg-neutral-950 border-r border-neutral-600 text-white fixed top-0 gap-y-5">
+          <Logo className="text-3xl flex items-center justify-center"/>
+          <SearchBar placeholder="Rechercher une ressource" />
+          <Link href="/hub">
+            <Button className="w-full">Hub</Button>
+          </Link>
+          <Link href="/edt">
+            <Button className="w-full">Emploi du temps</Button>
+          </Link>
+        </nav>
+        <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:p-5 bg-neutral-900">
+          {children}
+        </div>
+      </body>
     </>
   );
 }

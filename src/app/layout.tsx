@@ -17,6 +17,7 @@ export default function RootLayout({
   return (
     <>
       <body className="bg-neutral-900">{children}</body>
+
     </>
   );
 }

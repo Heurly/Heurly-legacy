@@ -1,5 +1,5 @@
 import React from "react";
-import Hub from "./(layoutNavBar)/hub/page";
+import Hub from "@/app/(layoutNavBar)/hub/page";
 import Button from "../components/Button";
 import Image from "next/image";
 
