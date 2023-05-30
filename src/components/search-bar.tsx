@@ -5,7 +5,7 @@ export default function SearchBar({
   placeholder?: string;
 }) {
   return (
-    <div className="border-black border-4 rounded-xl flex bg-white pr-3 w-full max-w-2xl">
+    <div className="border-neutral-600 border rounded-xl flex bg-white pr-3 w-full max-w-2xl">
       <input
         type="text"
         className="p-3 outline-none w-full rounded-l-xl"

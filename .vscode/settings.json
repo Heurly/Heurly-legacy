@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "landing page",
         "first time",
-        "edt"
+        "edt",
+        "nav bar"
     ]
 }
