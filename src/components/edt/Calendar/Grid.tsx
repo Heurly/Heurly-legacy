@@ -44,13 +44,13 @@ export default function Grid(): React.ReactElement {
       grid.push(
         <div
           key={`${id()}`}
-          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950 font-bold"
+          className="w-full flex flex-col items-center justify-end text-white bg-neutral-950 font-bold"
           style={{
             gridColumn: `${1} / span 1`,
             gridRow: `${i + 1} / span 1`,
           }}
         >
-          {i + 7}h
+          <div className="relative -bottom-5 bg-neutral-950 p-2">{i + 7}h</div>
         </div>
       );
     }
