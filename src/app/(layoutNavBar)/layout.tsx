@@ -5,8 +5,9 @@ import "@/globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import cn from "classnames";
-import { SearchContext } from "@/context/search";
 import { useState } from "react";
+import Button from "@/components/Button";
+import Logo from "@/components/Logo";
 
 const inter = Inter({ subsets: ["latin"] });
 

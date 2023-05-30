@@ -74,8 +74,9 @@ export default function Hub(): React.ReactElement {
               resource.title.includes(search) ||
               resource.description.includes(search)
           )
-          .map((resource) => (
+          .map((resource, key) => (
             <Resource
+              key={key}
               title={resource.title}
               description={resource.description}
             />
