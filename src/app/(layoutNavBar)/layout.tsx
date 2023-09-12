@@ -7,7 +7,7 @@ import Link from "next/link";
 import cn from "classnames";
 import { useState } from "react";
 import Button from "@/components/Button";
-import Logo from "@/components/Logo";
+import Logo from "@/components/logo";
 
 const inter = Inter({ subsets: ["latin"] });
 
