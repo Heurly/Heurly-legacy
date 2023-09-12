@@ -1,5 +1,3 @@
-"use client";
-
 import SearchBar from "@/components/search-bar";
 import "@/globals.css";
 import { Inter } from "next/font/google";
