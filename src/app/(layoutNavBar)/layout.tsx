@@ -20,8 +20,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }): React.ReactElement {
   
-  const [search, setSearch] = useState("");
-
   return (
     <>
       <body className={cn(inter.className)}>
