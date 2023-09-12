@@ -1,5 +1,3 @@
-"use client";
-
 import SearchBar from "@/components/search-bar";
 import "@/globals.css";
 import { Inter } from "next/font/google";
@@ -22,8 +20,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }): React.ReactElement {
   
-  const [search, setSearch] = useState("");
-
   return (
     <>
       <body className={cn(inter.className)}>
