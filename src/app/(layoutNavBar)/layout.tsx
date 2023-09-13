@@ -3,7 +3,6 @@ import "@/globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import cn from "classnames";
-import { useState } from "react";
 import Button from "@/components/Button";
 import Logo from "@/components/logo";
 
