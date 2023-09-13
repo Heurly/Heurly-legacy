@@ -1,7 +1,7 @@
 import React from "react";
 import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
 import { parseISO } from "date-fns";
-import { HOURS_COUNT, COLUMNS } from "@/app/(layoutNavBar)/edt/const";
+import { HOURS_COUNT, COLUMNS, DAY_IN_MS } from "@/app/(layoutNavBar)/edt/const";
 
 function getTimeValue(date: Date): number {
   const offset: number = 6 + date.getTimezoneOffset() / 60;
@@ -20,8 +20,18 @@ export default function CalendarElements({
     <>
       {edtData &&
         edtData.map((event: CourseEvent, key: any) => {
+          if (event == undefined) {
+            console.log(`Course ${key} undefined.`);
+            return;
+          }
           const courseStart: Date = parseISO(event.DTSTART);
           const courseEnd: Date = parseISO(event.DTEND);
+          const today = new Date();
+
+          if (courseStart.getDay() <= today.getDay() && courseStart.valueOf() - today.valueOf() >= DAY_IN_MS) {
+            console.log(`Skipped course ${event.SUMMARY}: date is in more than a week from today.`);
+            return;
+          }
 
           const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
           return (
