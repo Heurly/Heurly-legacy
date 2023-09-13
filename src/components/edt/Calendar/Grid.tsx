@@ -2,7 +2,6 @@ import {
   LINES,
   COLUMNS,
   DAYS,
-  HOURS_COUNT,
 } from "@/app/(layoutNavBar)/edt/const";
 import id from "@/utils/id";
 import React from "react";
