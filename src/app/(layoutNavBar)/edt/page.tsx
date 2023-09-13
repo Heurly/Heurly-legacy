@@ -2,7 +2,7 @@ import EDTForm from "@/components/edt/EDTForm";
 import CalendarElements from "@/components/edt/CalendarElements";
 import Grid from "@/components/edt/Calendar/Grid";
 import { CourseEvent } from "./types";
-import { API_URL } from "@/config";
+import { API_URL } from "@/config/const";
 
 export const dynamic = "force-dynamic";
 

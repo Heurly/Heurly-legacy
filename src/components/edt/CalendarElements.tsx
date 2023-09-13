@@ -34,7 +34,6 @@ export default function CalendarElements({
           }
 
           const row = courseStart.getHours() - 8;
-          console.log(row);
 
           const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
           return (
