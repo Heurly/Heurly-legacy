@@ -20,8 +20,18 @@ export default function CalendarElements({
     <>
       {edtData &&
         edtData.map((event: CourseEvent, key: any) => {
+          if (event == undefined) {
+            console.log(`Course ${key} undefined.`);
+            return;
+          }
           const courseStart: Date = parseISO(event.DTSTART);
           const courseEnd: Date = parseISO(event.DTEND);
+          const today = new Date();
+
+          if (courseStart.getDay() <= today.getDay() && courseStart.valueOf() - today.valueOf() >= 24 * 60 * 60 * 1000) {
+            console.log(`Skipped course ${event.SUMMARY}: date is in more than a week from today.`);
+            return;
+          }
 
           const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
           return (
