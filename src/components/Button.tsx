@@ -4,12 +4,12 @@ import React from "react";
 
 export default function Button(props: {
   className?: string;
-  children: React.ReactNode;
-  onClick: () => {}
+  children: React.ReactNode | undefined;
+  onClick: () => {} | undefined | void;
 }) {
   return (
     <button onClick={props.onClick} className={cn("p-3 rounded-lg border-neutral-600 border bg-neutral-900 hover:bg-neutral-950 transition", props.className)}>
-      {props.children}
+      {props.children != undefined && props.children}
     </button>
   );
 }
