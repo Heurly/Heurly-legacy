@@ -1,17 +1,19 @@
-import React from "react";
-import {GoogleProfile} from "@/utils/Google";
+import React, { ReactElement } from "react";
+import { GoogleProfile } from "@/utils/Google";
+import Image from "next/image";
 
-interface Props {
-    profile: GoogleProfile | undefined;
+export default function SettingsPage(): ReactElement {
+// { profile }: { profile: any }
+  return (
+    <>
+      {/* <Image
+        src={profile?.picture ?? ""}
+        alt="profile picture"
+        width={100}
+        height={100}
+      ></Image>
+      <div>{profile?.name}</div> */}{" "}
+      bonjour
+    </>
+  );
 }
-
-const SettingsPage: React.FunctionComponent<Props> = (props: Props) => {
-    return (
-        <>
-            <img src={props.profile?.picture} alt="profile picture"></img>
-            <div>{props.profile?.name}</div>
-        </>
-    );
-}
-
-export default SettingsPage;

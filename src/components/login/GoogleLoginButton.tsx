@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {useGoogleLogin} from "@react-oauth/google";
 import {API_URL, ROOT_URL} from "@/config/const";
 import { useRouter } from 'next/navigation'
-
+import Image from "next/image";
 const GOOGLE_LOGIN_ENDPOINT = `${API_URL}/login`;
 
 const GoogleLoginButton: React.FunctionComponent = () => {
@@ -36,7 +36,7 @@ const GoogleLoginButton: React.FunctionComponent = () => {
         <div className="relative">
             {loading ?
                 <button className="text-white flex items-center justify-center font-bold">
-                    <img
+                    <Image
                         src="/images/loader.gif"
                         alt="google loader"
                         width={30}
@@ -53,7 +53,7 @@ const GoogleLoginButton: React.FunctionComponent = () => {
                         login();
                     }}
                     className="text-white flex items-center justify-center font-bold">
-                    <img
+                    <Image
                         src="/images/mdi_google.svg"
                         alt="connect with Google"
                         width={30}
