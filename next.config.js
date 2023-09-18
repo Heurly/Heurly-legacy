@@ -11,7 +11,7 @@ const nextConfig = {
                     },
                 ],
                 permanent: false,
-                destination: '/hub',
+                destination: '/edt',
             },
             {
                 source: '/',
