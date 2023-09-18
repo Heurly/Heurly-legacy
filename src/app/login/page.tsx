@@ -10,7 +10,7 @@ export default function Page(): React.ReactElement {
                     <h1 className="text-4xl text-neutral-400 font-black text-center md:text-left">
                         Bienvenue sur <span className="text-white">ESIEE&nbsp;HUB</span>
                     </h1>
-                    <GoogleLogin></GoogleLogin>
+                    {/* <GoogleLogin></GoogleLogin> */}
                 </div>
             </div>
             <div className="md:w-1/2 h-1/2 md:h-full bg-black border-l-2 border-gray-600 flex justify-center items-center">
