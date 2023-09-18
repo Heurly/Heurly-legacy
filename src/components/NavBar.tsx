@@ -19,7 +19,7 @@ export default function NavBar() {
           Dashboard
         </Link>
         <Link
-          href="#"
+          href="/edt"
           className={header_url.includes("/edt") ? "font-bold" : ""}
         >
           Emplois du temps
@@ -31,7 +31,7 @@ export default function NavBar() {
           Actualités
         </Link>
         <Link
-          href="#"
+          href="/ressources"
           className={header_url.includes("/ressources") ? "font-bold" : ""}
         >
           Ressources

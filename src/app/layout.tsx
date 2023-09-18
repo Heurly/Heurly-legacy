@@ -15,9 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }): React.ReactElement {
   return (
-    <>
+    <html>
       <body className="bg-neutral-900">{children}</body>
-
-    </>
+    </html>
   );
 }

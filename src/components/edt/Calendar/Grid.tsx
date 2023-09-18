@@ -2,7 +2,7 @@ import {
   LINES,
   COLUMNS,
   DAYS,
-} from "@/app/(layoutNavBar)/edt/const";
+} from "@/app/(layoutNavbar)/edt/const";
 import id from "@/utils/id";
 import React from "react";
 
@@ -49,7 +49,7 @@ export default function Grid(): React.ReactElement {
             gridRow: `${i + 1} / span 1`,
           }}
         >
-          <div className="relative -bottom-5 bg-neutral-950 p-2">{i + 7}h</div>
+          <div className="relative -bottom-5 bg-neutral-950 p-2">{i + 7 == 13+7 ? '' : `${i + 7}h`}</div>
         </div>
       );
     }

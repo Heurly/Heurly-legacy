@@ -1,13 +1,19 @@
+"use client"
 import cn from "classnames";
 import React from "react";
 
-export default function Button(props: {
+interface Props {
   className?: string;
-  children: React.ReactNode;
-}) {
+  children: React.ReactNode | undefined;
+  onClick?: () => {} | void;
+}
+
+
+
+export default function Button(props: Props) {
   return (
-    <button className={cn("p-3 rounded-lg border-neutral-600 border bg-neutral-900 hover:bg-neutral-950 transition", props.className)}>
-      {props.children}
+    <button onClick={props.onClick} className={cn("p-3 rounded-lg border-neutral-600 border bg-neutral-900 hover:bg-neutral-950 transition", props.className)}>
+      {props.children != undefined && props.children}
     </button>
   );
 }
