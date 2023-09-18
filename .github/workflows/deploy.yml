@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "main"
+      - "feat/create_pipeline_prod"
 
 jobs:
   build:
