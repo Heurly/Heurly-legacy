@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgres"
+  url      = env("SUPABASE_URL")
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
-  mail   String  @unique
-  groups String
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { PLANIF_ENDPOINT, PLANIF_ENDPOINT_2024 } from "@/app/api/ApiHelper";
 import { SUMMARY_MAP } from "@/course-config.json"
-import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
+import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { NextRequest } from "next/server";
 import { lines2tree } from 'icalts'
 

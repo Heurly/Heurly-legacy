@@ -7,7 +7,7 @@ import { Storage } from "megajs";
 
 async function getAllFiles(){
   const storage = new Storage({
-    email: "esiee.hub@gmail.com",
+    email: "esiee.ressources@gmail.com",
     password: process.env.MEGA_PASSWORD ?? "",
   });
   

@@ -1,7 +1,7 @@
 import React from "react";
-import { CourseEvent } from "@/app/(layoutNavBar)/edt/types";
+import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { parseISO } from "date-fns";
-import {COLUMNS, DAY_IN_MS, HOURS_OFFSET, LINES} from "@/app/(layoutNavBar)/edt/const";
+import {COLUMNS, DAY_IN_MS, HOURS_OFFSET, LINES} from "@/app/(layoutNavbar)/edt/const";
 
 function getTimeValue(date: Date): number {
   const offset: number = 6 + date.getTimezoneOffset() / 60;
@@ -34,7 +34,6 @@ export default function CalendarElements({
           }
 
           const row = courseStart.getHours() - 8;
-          console.log(row);
 
           const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
           return (

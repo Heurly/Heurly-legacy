@@ -1,4 +1,4 @@
-import { DAYS } from "@/app/(layoutNavBar)/edt/const";
+import { DAYS } from "@/app/(layoutNavbar)/edt/const";
 
 export default function DaysLine(): React.ReactElement {
     return (
