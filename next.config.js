@@ -26,7 +26,7 @@ const nextConfig = {
             }
         ]
     },
-    output: "standalone"
+    output: 'standalone',
 }
 
 module.exports = nextConfig
