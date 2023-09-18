@@ -25,7 +25,8 @@ const nextConfig = {
                 destination: '/login',
             }
         ]
-    }
+    },
+    output: "standalone"
 }
 
 module.exports = nextConfig
