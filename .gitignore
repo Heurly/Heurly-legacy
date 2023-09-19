@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Webstorm
 .idea
+
+# deploy.yml
+.github/*

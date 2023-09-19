@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "feat/create_pipeline_prod"
+      - "alpha"
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:rpi
+          tags: ${{ secrets.DOCKER_USERNAME }}/alpha_esiee-hub:rpi
           platforms: linux/arm64/v8
 
   deploy:
@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            cd /home/domesday/code/esiee-hub
+            cd /home/domesday/code/alpha.esiee-hub
             docker-compose pull
             docker-compose down && docker-compose up -d
             
