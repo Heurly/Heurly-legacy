@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logo from "./logo";
 import UserBar from "./UserBar";
 import { headers } from "next/headers";
+import ToolsLink from "./toolsLink";
 
 export default function NavBar() {
   const headersList = headers();
@@ -43,7 +44,9 @@ export default function NavBar() {
           Forum
         </Link>
       </div>
+      <ToolsLink />
       <UserBar />
+      
     </nav>
   );
 }
