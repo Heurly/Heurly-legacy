@@ -2,9 +2,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Tools({ imageLink, text, urllink }: { imageLink: string; text: string; urllink:string }) {
+export default function Tools({ imageLink, text, urlLink }: { imageLink: string; text: string; urlLink:string }) {
   return (
-    <Link href={urllink}> 
+    <Link href={urlLink}> 
         <div className="flex justify-between items-center cursor-pointer"> 
             <div className="">
                 <p>{text}</p>
