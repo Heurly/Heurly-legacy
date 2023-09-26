@@ -15,3 +15,10 @@ model User {
   name  String
   email String @unique
 }
+
+model Course {
+  code_cours    String  @id
+  nom_cours     String
+  professeur    String
+  description   String
+}
