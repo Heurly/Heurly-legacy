@@ -1,5 +1,5 @@
 "use client";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, {Dispatch, SetStateAction, useRef, useState} from "react";
 import { CLASS_VALUES } from "@/app/(layoutNavbar)/edt/const";
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
 import Button from "@/components/Button";
@@ -10,15 +10,16 @@ interface Props {
 }
 
 const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}) => {
-  const [classValue, setClassValue] = useState(CLASS_VALUES.E3FI.value);
+  const moduleList: ModuleChoice[] = [{label: "E4FI - 1Ia", code: 3345}, {label: "E4FI - Anglais - A", code: 3333}]
+  const currentEntry = useRef<string>();
 
-  const addModule = (module: ModuleChoice) => {
+  const addModule = (module: ModuleChoice | undefined) => {
     if (module == undefined) return;
 
     const newModules = modules.concat([module]);
     setModules(newModules);
   }
-  const removeModule = (module: string) => {
+  const removeModule = (module: string | undefined) => {
     if (module == undefined) return;
 
     const newModules = modules.filter(m => m.label != module);
@@ -31,14 +32,15 @@ const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}) => {
           <input type="text" name="product" list="productName" />
           <datalist
               id="productName"
-              onInput={(event) =>
-                  addModule({label: event.currentTarget.innerText, code: parseInt(event.currentTarget.id)})
-              }>
-            <option value="Pen">Pen</option>
-            <option value="Pencil">Pencil</option>
-            <option value="Paper">Paper</option>
+              onChange={(event) => {currentEntry.current = event.currentTarget.innerText}}
+          >
+              {moduleList.map(m => (<option key={m.code} value={m.label} />))}
           </datalist>
-          <Button className="text-white">Ajouter</Button>
+          <Button
+              className="text-white"
+              onClick={() => addModule(moduleList.find(m => m.label == currentEntry.current))}>
+              Ajouter
+          </Button>
         </div>
         <div className="flex flex-row p-2 text-white">
           {modules.length >= 0 && modules.map(m => (
