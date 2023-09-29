@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if branch was deleted
-        run: echo "Branch deleted: ${{ github.event.ref }}"
+        # run: echo "Branch deleted: ${{ github.event.ref }}"
         if: startsWith(github.event_name, 'delete')
         with:
           host: ${{ secrets.PI_HOST }}
