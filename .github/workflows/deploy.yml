@@ -31,6 +31,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      ESIEE_HUB_SERVICE : ${{ env.GITHUB_REF_SLUG }}
     steps:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
@@ -39,7 +41,6 @@ jobs:
           username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
             cd /home/share/autodeploy
             docker-compose pull
             docker-compose down
