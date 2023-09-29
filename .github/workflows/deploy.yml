@@ -32,8 +32,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4.x
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
         with:
