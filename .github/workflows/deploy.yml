@@ -23,7 +23,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ github.ref_slug }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
           platforms: linux/arm64/v8
 
   deploy:
@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            ESIEE_HUB_SERVICE=${{ github.ref_slug }}
+            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
             cd /home/share/autodeploy
             docker-compose pull
             docker-compose down
