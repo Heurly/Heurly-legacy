@@ -35,18 +35,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Check if branch was deleted
-        # run: echo "Branch deleted: ${{ github.event.ref }}"
-        if: startsWith(github.event_name, 'delete')
-        with:
-          host: ${{ secrets.PI_HOST }}
-          username: ${{ secrets.PI_USERNAME }}
-          password: ${{ secrets.PI_PASSWORD }}
-          script: |
-            ESIEE_HUB_SERVICE=${{ github.ref_slug }}
-            cd /home/share/autodeploy
-            docker-compose down
-            docker rmi -f ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ github.ref_slug }}
+      # - name: Check if branch was deleted
+      #   run: echo "Branch deleted: ${{ github.event.ref }}"
+      #   if: startsWith(github.event_name, 'delete')
+      #   with:
+      #     host: ${{ secrets.PI_HOST }}
+      #     username: ${{ secrets.PI_USERNAME }}
+      #     password: ${{ secrets.PI_PASSWORD }}
+      #     script: |
+      #       ESIEE_HUB_SERVICE=${{ github.ref_slug }}
+      #       cd /home/share/autodeploy
+      #       docker-compose down
+      #       docker rmi -f ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ github.ref_slug }}
 
 
       - name: SSH and Docker Pull
