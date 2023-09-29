@@ -27,7 +27,7 @@ jobs:
       #     push: true
       #     tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
       #     platforms: linux/arm64/v8
-
+ 
   deploy:
     needs: build
     runs-on: ubuntu-latest
