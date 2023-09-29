@@ -37,6 +37,7 @@ jobs:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
         with:
+          envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
           username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
