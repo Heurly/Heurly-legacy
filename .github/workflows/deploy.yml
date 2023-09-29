@@ -31,11 +31,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    env:
-      ESIEE_HUB_SERVICE : ${{ env.GITHUB_REF_SLUG }}
     steps:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          ESIEE_HUB_SERVICE : ${{ env.GITHUB_REF_SLUG }}
         with:
           envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
