@@ -58,18 +58,28 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         </Card>
       </div>
       <div className="col-span-2">
-      <Card>
-        <div className=" row-span-2 col-span-2 font-extrabold">
-          Dernières ressources uploadées :<br />
-        </div>
-        voilà
-      </Card>
+        <Card>
+          <div className=" row-span-2 col-span-2 font-extrabold">
+            Dernières ressources uploadées :<br />
+          </div>
+          voilà
+        </Card>
       </div>
 
-      <div className=" flex items-stretch row-span-2 col-span-1 font-extrabold self-stretch">
+      <div className="  grid justify-items-stretch flex items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech">
         <Card>
           Prochain cours :<br />
-          test
+          8h
+          <Card>Mathématiques 2h</Card>
+          10h
+          <Card>Réseaux 2h</Card>
+          12h <br />
+          <br />
+          13h
+          <Card>Geometry 2h</Card>
+          15h
+          <Card>Machine Learning 2h</Card>
+          17h
         </Card>
       </div>
     </div>
