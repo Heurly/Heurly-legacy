@@ -9,8 +9,8 @@ export default function Resource({
   description: string;
 }): React.ReactElement {
   return (
-    <div className="flex flex-col text-white items-center">
-      <div className="p-5 bg-neutral-800 rounded-xl flex items-center justify-center aspect-square w-2/3">
+    <div className="flex flex-col text-white items-center cursor-pointer">
+      <div className="p-5 bg-neutral-800 rounded-xl flex items-center justify-center aspect-square md:w-32 md:h-32">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -26,7 +26,7 @@ export default function Resource({
           />
         </svg>
       </div>
-      test
+      <p className="text-sm">test</p>
     </div>
   );
 }
