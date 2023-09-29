@@ -1,10 +1,16 @@
+import Actu from "@/components/Actu";
 import Card from "@/components/Card";
 
 
 export default async function Dashboard(): Promise<React.ReactElement> {
   const styles = {
     marginTop: '0px',
-    marginBottom: '20px',
+    //marginBottom: '20px',
+    //lineHeight: 4,
+  };
+
+    const styles_font= {
+    color: 'rgb(75 85 99)',
     //lineHeight: 4,
   };
 
@@ -19,18 +25,24 @@ export default async function Dashboard(): Promise<React.ReactElement> {
     <Card><p style={styles}>
       Actualité du moment :<br />
     </p>
-    <p style={styles}>
-      Afterwork<br />
-      trop bien sous titre<br />
-      </p>
+    <Actu><div class="flex justify-between">
       <p style={styles}>
-      Afterwork<br />
+      Afterwork </p> 
+      <p style={styles_font}>date</p></div>
       trop bien sous titre<br />
-      </p>
+      </Actu>
+      <Actu><div class="flex justify-between">
       <p style={styles}>
-      Afterwork<br />
+      Afterwork </p> 
+      <p style={styles_font}>date</p></div>
       trop bien sous titre<br />
-      </p>
+      </Actu>
+      <Actu><div class="flex justify-between">
+      <p style={styles}>
+      Afterwork </p> 
+      <p style={styles_font}>date</p></div>
+      trop bien sous titre<br />
+      </Actu>
 
     </Card>
     
