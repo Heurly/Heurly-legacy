@@ -72,7 +72,8 @@ jobs:
           script: |
             sed -i 's/^ESIEE_HUB_SERVICE=.*/ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}/' .env
             cd /home/share/autodeploy
-            python conf_file.py ${{ env.GITHUB_REF_SLUG }} 
+            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }} 
+            python conf_file.py $ESIEE_HUB_SERVICE
             docker-compose pull
             docker-compose down
             docker-compose up -d
