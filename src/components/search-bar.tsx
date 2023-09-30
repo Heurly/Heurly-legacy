@@ -14,7 +14,7 @@ export default function SearchBar() {
     <div className="relative">
       <div
         className={cn(
-          "border border-white rounded-lg text-white flex items-center justify-center pr-3"
+          "border border-white rounded-lg text-white flex items-center justify-center pr-3", "rounded-b-none"
         )}
       >
         <input
@@ -40,12 +40,18 @@ export default function SearchBar() {
           />
         </svg>
       </div>
-      <div className="absolute">
-        <div className="absolute top-full bg-neutral-600 h-10 w-full p-3">
-          test
+      <div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
+        <div className="bg-neutral-600 h-10 p-3 flex justify-start items-center hover:bg-neutral-700 cursor-pointer">
+          #test
         </div>
-        <div></div>
-        <div></div>
+        <div className="bg-neutral-600 h-10 p-3 flex justify-start items-center hover:bg-neutral-700 cursor-pointer">
+          #test
+        </div>
+        <div className="bg-neutral-600 h-10 p-3 flex justify-start items-center hover:bg-neutral-700 cursor-pointer">
+          #test
+        </div>
+        
+        
       </div>
     </div>
   );
