@@ -1,7 +1,16 @@
 import ovh
 import os
 
-client = ovh.Client('ovh-eu')
+application_key = os.environ['OVH_APP_KEY']
+application_secret = os.environ['OVH_APP_SECRET']
+
+
+client = ovh.Client(
+    endpoint='ovh-eu',
+    application_key=application_key,
+    application_secret=application_secret,
+    consumer_key=os.environ['OVH_CONSUMER_KEY']
+)
 
 domain = os.environ['OVH_DOMAIN']
 subdomain = os.environ['OVH_SUBDOMAIN']
