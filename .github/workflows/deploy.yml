@@ -25,7 +25,7 @@ jobs:
  
       - name: Create subdomain
         run: |
-          python create_subdomain.py
+          python pipeline/create_subdomain.py
         env:
           OVH_ENDPOINT: ${{ secrets.DNS_OVH_ENDPOINT }}
           OVH_APP_KEY: ${{ secrets.DNS_OVH_APPLICATION_KEY }}
