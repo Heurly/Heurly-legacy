@@ -73,9 +73,9 @@ jobs:
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/autodeploy
-            sed -i 's/^ESIEE_HUB_SERVICE=.*/ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}/' .env
-            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }} 
+            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
+            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > branch.$ESIEE_HUB_SERVICE.yml
             python conf_file.py $ESIEE_HUB_SERVICE
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml pull
+            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml down
+            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml up -d

@@ -17,13 +17,11 @@ client = ovh.Client(
     consumer_key=consumer_key
 )
 
+# Find the record ID of the existing DNS record
 records = client.get('/domain/zone/{0}/record'.format(domain), fieldType='A', subDomain=subdomain)
-
 if records:
-    print('DNS record found for the specified subdomain.')
+    for record in records:
+        client.delete('/domain/zone/{0}/record/{1}'.format(domain, record))
+        print('DNS record deleted successfully.')
 else:
-    client.post('/domain/zone/{0}/record'.format(domain),
-                fieldType='A',
-                subDomain=subdomain,
-                target='82.64.216.184',
-                ttl=0) 
+    print('No DNS record found for the specified subdomain.')
