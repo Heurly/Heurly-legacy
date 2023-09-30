@@ -28,8 +28,8 @@ jobs:
           python create_subdomain.py
         env:
           OVH_ENDPOINT: ${{ secrets.DNS_OVH_ENDPOINT }}
-          OVH_APP_KEY: ${{ secrets.DNS_OVH_APP_KEY }}
-          OVH_APP_SECRET: ${{ secrets.DNS_OVH_APP_SECRET }}
+          OVH_APP_KEY: ${{ secrets.DNS_OVH_APPLICATION_KEY }}
+          OVH_APP_SECRET: ${{ secrets.DNS_OVH_APPLICATION_SECRET }}
           OVH_CONSUMER_KEY: ${{ secrets.DNS_OVH_CONSUMER_KEY }}
           OVH_DOMAIN: domesday.fr
           OVH_SUBDOMAIN: ${{ env.GITHUB_REF_SLUG }}.esiee-hub

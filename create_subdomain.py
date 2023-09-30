@@ -9,13 +9,6 @@ domain = os.environ['OVH_DOMAIN']
 subdomain = os.environ['OVH_SUBDOMAIN']
 endpoint = os.environ['OVH_ENDPOINT']
 
-
-print("Application Secret:", application_secret[:3])
-print("Domain:", domain[:3])
-print("Subdomain:", subdomain[:3])
-print("Endpoint:", endpoint[:3])
-
-
 # Initialize the OVH client
 client = ovh.Client(
     endpoint=endpoint,
