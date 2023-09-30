@@ -67,7 +67,7 @@ jobs:
         with:
           envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
-          username: ${{ secrets.PI_USERNAME }}
+          username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             sed -i 's/^ESIEE_HUB_SERVICE=.*/ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}/' .env
