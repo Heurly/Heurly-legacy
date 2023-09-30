@@ -27,10 +27,11 @@ jobs:
         run: |
           python create_subdomain.py
         env:
-          OVH_APP_KEY: ${{ secrets.OVH_APP_KEY }}
-          OVH_APP_SECRET: ${{ secrets.OVH_APP_SECRET }}
-          OVH_CONSUMER_KEY: ${{ secrets.OVH_CONSUMER_KEY }}
-          OVH_DOMAIN: ${{ secrets.OVH_DOMAIN }}
+          OVH_ENDPOINT: ${{ secrets.DNS_OVH_ENDPOINT }}
+          OVH_APP_KEY: ${{ secrets.DNS_OVH_APP_KEY }}
+          OVH_APP_SECRET: ${{ secrets.DNS_OVH_APP_SECRET }}
+          OVH_CONSUMER_KEY: ${{ secrets.DNS_OVH_CONSUMER_KEY }}
+          OVH_DOMAIN: domesday.fr
           OVH_SUBDOMAIN: ${{ env.GITHUB_REF_SLUG }}.esiee-hub
   build:
     needs: subdomain
