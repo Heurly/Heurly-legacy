@@ -1,7 +1,7 @@
 import ovh
 import os
 
-client = ovh.Client()
+client = ovh.Client('ovh-eu')
 
 domain = os.environ['OVH_DOMAIN']
 subdomain = os.environ['OVH_SUBDOMAIN']
