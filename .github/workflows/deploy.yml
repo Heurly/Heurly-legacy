@@ -72,8 +72,8 @@ jobs:
           username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            sed -i 's/^ESIEE_HUB_SERVICE=.*/ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}/' .env
             cd /home/share/autodeploy
+            sed -i 's/^ESIEE_HUB_SERVICE=.*/ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}/' .env
             ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }} 
             python conf_file.py $ESIEE_HUB_SERVICE
             docker-compose pull
