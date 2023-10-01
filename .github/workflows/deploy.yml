@@ -82,3 +82,5 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
+            cd /home/share/nginx_reverse_proxy/
+            docker-compose restart

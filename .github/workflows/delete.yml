@@ -57,3 +57,5 @@ jobs:
             cd ..
             rm -rf $FOLDER
             rm /home/share/nginx_reverse_proxy/conf/conf_site/$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr.conf
+            cd /home/share/nginx_reverse_proxy/
+            docker-compose restart
