@@ -75,6 +75,7 @@ jobs:
             cd /home/share/autodeploy
             ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
             FOLDER=branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
+            mkdir $FOLDER
             sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > $FOLDER/docker-compose.yml
             python conf_file.py $ESIEE_HUB_SERVICE
             cd $FOLDER
