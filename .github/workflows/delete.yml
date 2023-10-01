@@ -1,4 +1,4 @@
-name: ci
+name: ci-delete
 
 on:
   delete: {}
@@ -56,3 +56,4 @@ jobs:
             docker rmi domesday/esiee-hub:$ESIEE_HUB_SERVICE
             cd ..
             rm -rf $FOLDER
+            rm /home/share/nginx_reverse_proxy/conf/conf_site/$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr.conf
