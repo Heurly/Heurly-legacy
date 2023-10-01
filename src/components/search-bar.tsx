@@ -46,6 +46,7 @@ export default function SearchBar() {
       });
     }
   }, [isSuggestions]);
+
   const search = useRef(null);
   return (
     <div className="relative">
@@ -66,9 +67,12 @@ export default function SearchBar() {
             // e.currentTarget.textContent = e.currentTarget.textContent.replace(
             //   /#(\w+)/g,
             //   (match, p1) => {
-            //     return `<span class="text-primary-500">#${p1}</span>`;
+            //     return `<Tag>#${p1}</Tag>`;
             //   }
             // );
+          }}
+          onFocus={(e)=>{
+            e.currentTarget.textContent = ""
           }}
         >
           Recherche par nom / #tag / filière
