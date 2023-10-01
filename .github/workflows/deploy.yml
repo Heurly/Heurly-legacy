@@ -49,14 +49,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3 
        
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
-          platforms: linux/arm64/v8
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
+      #     platforms: linux/arm64/v8
    
   deploy:
     needs: build
@@ -74,9 +74,10 @@ jobs:
           script: |
             cd /home/share/autodeploy
             ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
-            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr/docker-compose.yml
+            FOLDER=branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
+            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > $FOLDER/docker-compose.yml
             python conf_file.py $ESIEE_HUB_SERVICE
-            cd $ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
+            cd $FOLDER
             docker-compose pull
             docker-compose down
             docker-compose up -d
