@@ -74,8 +74,9 @@ jobs:
           script: |
             cd /home/share/autodeploy
             ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
-            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > branch.$ESIEE_HUB_SERVICE.yml
+            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr/docker-compose.yml
             python conf_file.py $ESIEE_HUB_SERVICE
-            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml pull
-            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml down
-            docker-compose -f branch.$ESIEE_HUB_SERVICE.yml up -d
+            cd $ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
