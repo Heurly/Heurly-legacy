@@ -1,7 +1,6 @@
-"use client";
-import cn from "classnames";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Tag from "./Tag";
+import cn from "classnames";
 
 enum SuggestionType {
   TAG,
@@ -12,16 +11,21 @@ enum SuggestionType {
 export default function SearchBar() {
   const isTag = (text: string) => {
     const regex = /#(\w+)/g;
-    // if there is a word mathing the regex we put this word in the a tag component
     if (text.match(regex)) {
       const tag = text.match(regex);
     }
   };
+
   const [isSuggestions, setIsSuggestions] = useState(false);
+  const [tags, setTags] = useState([]);
+
+  const handleSuggestionClick = (text : string) => {
+    setTags([...tags, text]);
+  };
 
   const suggestions = [
     {
-      text: "#test",
+      text: "test",
       type: SuggestionType.TAG,
     },
     {
@@ -47,7 +51,7 @@ export default function SearchBar() {
     }
   }, [isSuggestions]);
 
-  const search = useRef(null);
+  const contentEditableRef = useRef(null);
   return (
     <div className="relative">
       <div
@@ -55,7 +59,7 @@ export default function SearchBar() {
           "bg-neutral-700 rounded-lg text-white flex items-center justify-center pr-3",
           { "rounded-b-none": isSuggestions }
         )}
-        ref={search}
+        ref={contentEditableRef}
       >
         <div
           className="bg-transparent w-full col-span-3 h-full p-3 outline-none"
@@ -64,15 +68,13 @@ export default function SearchBar() {
           role="textbox"
           onInput={(e) => {
             setIsSuggestions(true);
-            // e.currentTarget.textContent = e.currentTarget.textContent.replace(
-            //   /#(\w+)/g,
-            //   (match, p1) => {
-            //     return `<Tag>#${p1}</Tag>`;
-            //   }
-            // );
+            if (e.currentTarget.textContent === "") {
+              e.currentTarget.textContent =
+                "Recherche par nom / #tag / filière";
+            }
           }}
-          onFocus={(e)=>{
-            e.currentTarget.textContent = ""
+          onFocus={(e) => {
+            e.currentTarget.textContent = "";
           }}
         >
           Recherche par nom / #tag / filière
@@ -82,21 +84,21 @@ export default function SearchBar() {
       <div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
         {suggestions &&
           isSuggestions &&
-          suggestions.map((suggestion) => (
+          suggestions.map((suggestion, index) => (
             <Suggestion
+              key={index}
               text={suggestion.text}
               type={suggestion.type}
               onClickCallback={() => {
+                handleSuggestionClick(suggestion.text);
                 setIsSuggestions(false);
-                if (suggestion.type === SuggestionType.TAG) {
-                  console.log("tag");
-                  // insert a tag component with the text in the input
-                  search.current.value = suggestion.text;
-                }
               }}
             />
           ))}
       </div>
+      {tags.map((tag, index) => (
+        <Tag key={index} text={tag} />
+      ))}
     </div>
   );
 }
@@ -119,7 +121,6 @@ export function Suggestion({
     </div>
   );
 }
-
 export function SearchIcon() {
   return (
     <svg
