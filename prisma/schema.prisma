@@ -22,3 +22,10 @@ model Course {
   professeur    String
   description   String
 }
+
+model Unit {
+  id        Int     @id @default(autoincrement())
+  full_name String
+  name      String
+  code      Int
+}

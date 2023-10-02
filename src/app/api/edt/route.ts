@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { PLANIF_ENDPOINT, PLANIF_ENDPOINT_2024 } from "@/app/api/ApiHelper";
+import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { NextRequest } from "next/server";
 import { lines2tree } from 'icalts'
@@ -25,9 +25,12 @@ async function setUserGroups(formData: FormData) {
   });
 }
 
-export async function GET(request: NextRequest) {
-  // const endpoint = URLBuilder(PLANIF_ENDPOINT, payload);
-  const endpoint = PLANIF_ENDPOINT_2024;
+export async function POST(request: NextRequest) {
+  const modules: number[] = await request.json();
+  if (modules.length <= 0) return;
+
+  console.log(modules)
+  const endpoint = PLANIF_ENDPOINT(modules);
 
   const response = await fetch(endpoint, {
     method: "GET",

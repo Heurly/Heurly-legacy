@@ -3,49 +3,51 @@ import Tag from "./Tag";
 import cn from "classnames";
 import id from "../utils/id";
 import SearchIcon from "./SearchIcon";
-enum SuggestionType {
+import {distance} from 'fastest-levenshtein';
+
+export enum SuggestionType {
   TAG,
   NAME,
-  FILIERE,
+  MODULE,
 }
-type Suggestion = {
+export type Suggestion = {
   text: string;
   type: SuggestionType;
 };
-export default function SearchBar() {
+
+interface Props {
+  suggestions: Suggestion[];
+  resolveSearch: (s: Suggestion) => void;
+  nbSuggestions?: number;
+}
+
+const SearchBar: React.FunctionComponent<Props> = ({suggestions, resolveSearch, nbSuggestions = 10}) => {
   const [isSuggestions, setIsSuggestions] = useState(false);
   const [searchText, setSearchText] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [userSuggestionIndex, setUserSuggestionIndex] = useState<number>(0);
 
+  const filterSuggestion = (s: string) => {
+    const w = searchText.split(' ');
+
+    for (let i = 0; i < w.length; i++) {
+      if (!s.includes(w[i])) return false;
+    }
+
+    return true;
+  }
+
+  const sortSuggestion = (s: string) => {
+    const w = searchText.split(' ');
+    let res = 0;
+
+    w.forEach(e => s.split(' - ').forEach(el => res += distance(e, el)));
+    return res;
+  }
+
   const handleSuggestionClick = (suggestion: Suggestion) => {
-    if (suggestion.type === SuggestionType.TAG) {
-      setTags([...tags, suggestion.text]);
-    }
-    if (suggestion.type === SuggestionType.NAME) {
-      setSearchText((prev) => prev + `${suggestion.text}`);
-    }
+    resolveSearch(suggestion);
   };
-  // get suggestions from db here
-  // query to get all tags + names of files and filieres considered as tag too
-  const suggestions = [
-    {
-      text: "test",
-      type: SuggestionType.TAG,
-    },
-    {
-      text: "E4FI",
-      type: SuggestionType.TAG,
-    },
-    {
-      text: "Algèbre linéaire",
-      type: SuggestionType.TAG,
-    },
-    {
-      text: "TD 1 d'algèbre linéaire",
-      type: SuggestionType.NAME,
-    },
-  ];
 
   useEffect(() => {
     if (isSuggestions) {
@@ -65,7 +67,7 @@ export default function SearchBar() {
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative z-10">
         <div
           className={cn(
             "bg-neutral-700 rounded-lg text-white flex items-center justify-center pr-3 ",
@@ -88,7 +90,9 @@ export default function SearchBar() {
             suggestions &&
             suggestions.filter((sugg) => sugg.text.includes(searchText)) &&
             suggestions
-              .filter((sugg) => sugg.text.includes(searchText))
+              .filter((sugg) => filterSuggestion(sugg.text))
+              .sort((sugg) => sortSuggestion(sugg.text))
+              .slice(0, nbSuggestions)
               .map((suggestion, index) => (
                 <Suggestion
                   key={index}
@@ -132,3 +136,5 @@ export function Suggestion({
     </div>
   );
 }
+
+export default SearchBar;
