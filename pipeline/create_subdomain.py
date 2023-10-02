@@ -1,28 +1,32 @@
-import ovh
+import CloudFlare
 import os
 
-application_key = os.environ['OVH_APP_KEY']
-application_secret = os.environ['OVH_APP_SECRET']
-consumer_key = os.environ['OVH_CONSUMER_KEY']
+# Using API token
+cf = CloudFlare.CloudFlare(token=os.environ['DNS_TOKEN'])
 
-domain = os.environ['OVH_DOMAIN']
-subdomain = os.environ['OVH_SUBDOMAIN']
-endpoint = os.environ['OVH_ENDPOINT']
+subdomain = os.environ['DNS_SUBDOMAIN']
+domain = os.environ['DNS_DOMAIN']
 
-# Initialize the OVH client
-client = ovh.Client(
-    endpoint=endpoint,
-    application_key=application_key,
-    application_secret=application_secret,
-    consumer_key=consumer_key
-)
+# Getting the zone ID
+zone_info = cf.zones.get(params={'name': domain})
+zone_id = zone_info[0]['id']
 
-records = client.get('/domain/zone/{0}/record'.format(domain), fieldType='A', subDomain=subdomain)
+# Getting the DNS record ID
+dns_records = cf.zones.dns_records.get(zone_id, params={'name': subdomain+"."+domain})
+for record in dns_records:
+    if record['name'] == subdomain+"."+domain:
+        dns_record_id = record['id']
+        print("Found" ,record['name'] )
+        break
 
-if records:
-    print('DNS record found for the specified subdomain.')
+# # If the DNS record ID is found, delete the DNS record
+if 'dns_record_id' in locals():
+    print("DNS record found")
 else:
-    client.post('/domain/zone/{0}/record'.format(domain),
-                fieldType='A',
-                subDomain=subdomain,
-                target='82.64.216.184') 
+    dns_record = {
+        'name': subdomain,  # Replace with your subdomain name
+        'type': 'A',  # or 'CNAME'
+        'content': '82.64.216.184',  # Replace with your IP address or CNAME
+        'proxied': True 
+    }
+    response = cf.zones.dns_records.post(zone_id, data=dns_record)
