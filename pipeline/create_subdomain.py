@@ -25,5 +25,4 @@ else:
     client.post('/domain/zone/{0}/record'.format(domain),
                 fieldType='A',
                 subDomain=subdomain,
-                target='82.64.216.184',
-                ttl=0) 
+                target='82.64.216.184') 
