@@ -1,5 +1,5 @@
 "use client";
-import Resource from "@/components/resource";
+import Resource from "@/components/ressources/resource";
 import { SearchContext } from "@/context/search";
 import "@/globals.css";
 import { useContext } from "react";
