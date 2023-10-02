@@ -11,3 +11,8 @@ export interface Calendar {
       VEVENT: Event[];
     }[];
 }
+
+export type ModuleChoice = {
+    label: string;
+    code: number;
+}
