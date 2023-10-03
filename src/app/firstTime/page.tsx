@@ -1,4 +1,4 @@
-import SearchBar from "@/components/search-bar";
+import SearchBar from "@/components/common/search-bar";
 import Image from "next/image";
 
 export default function FirstTime() {
@@ -9,7 +9,7 @@ export default function FirstTime() {
           <h1 className="text-3xl md:text-4xl font-black text-center text-black">
             C&apos;est la première fois ?
           </h1>
-          <SearchBar />
+          <SearchBar suggestions={[]} tags={[]} resolveSearch={() => {}} />
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { SearchContext } from "@/context/search";
 import "@/globals.css";
 import { useContext } from "react";
 import { Storage } from "megajs";
-import SearchBar from "@/components/search-bar";
+import SearchBar from "@/components/common/search-bar";
 
 async function getAllFiles() {
   const storage = new Storage({
@@ -111,7 +111,7 @@ export default function Hub(): React.ReactElement {
   console.log(search);
   return (
     <div>
-      <SearchBar />
+      <SearchBar suggestions={[]} tags={[]} resolveSearch={() => {}} />
       <div className="grid md:grid-cols-7 grid-cols-2 gap-4">
         {resources &&
           resources

@@ -26,11 +26,10 @@ async function setUserGroups(formData: FormData) {
 }
 
 export async function POST(request: NextRequest) {
-  const modules: number[] = await request.json();
-  if (modules.length <= 0) return;
+  const payload: {offset: number, modules: number[]} = await request.json();
+  if (payload.modules.length <= 0) return;
 
-  console.log(modules)
-  const endpoint = PLANIF_ENDPOINT(modules);
+  const endpoint = PLANIF_ENDPOINT(payload.offset, payload.modules);
 
   const response = await fetch(endpoint, {
     method: "GET",

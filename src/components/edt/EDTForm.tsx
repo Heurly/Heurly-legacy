@@ -1,9 +1,9 @@
 "use client";
 import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
-import SearchBar from "@/components/common/search-bar";
 import {API_URL} from "@/config/const";
 import id from "@/utils/id";
+import SearchBar from "@/components/common/search-bar";
 
 async function getModules() {
     const data = await fetch(API_URL + "/modules");
