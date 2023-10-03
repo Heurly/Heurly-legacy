@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import {distance} from 'fastest-levenshtein';
@@ -127,7 +128,7 @@ const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSe
       <div className="flex py-2 text-white items-center">
         {selectedTags &&
             selectedTags.map((tag) => (
-            <div className="mr-1">
+            <div key={id()} className="mr-1">
               <Tag key={id()} text={tag} onClickCallback={(e) => removeTag(e.currentTarget.innerText.slice(2))} />
             </div>
           ))}
