@@ -9,7 +9,7 @@ import SearchBar from "@/components/common/search-bar";
 async function getAllFiles() {
   const storage = new Storage({
     email: "esiee.ressources@gmail.com",
-    password: process.env.MEGA_PASSWORD ?? "",
+    password: process.env.MEGA_PASSWORD ?? "", 
   });
 
   // await storage.ready;
