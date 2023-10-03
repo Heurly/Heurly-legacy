@@ -1,10 +1,37 @@
-name: ci
+name: ci-push
 
 on:
   push: {}
 
 jobs:
+  subdomain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4.x
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install cloudflare
+ 
+      - name: Create subdomain
+        run: |
+          python pipeline/create_subdomain.py
+        env:
+          DNS_TOKEN: ${{ secrets.DNS_TOKEN }}
+          DNS_DOMAIN: domesday.fr
+          DNS_SUBDOMAIN: ${{ env.GITHUB_REF_SLUG }}.esiee-hub
   build:
+    needs: subdomain
     runs-on: ubuntu-20.04
     steps:
       - name: Inject slug/short variables
@@ -27,22 +54,30 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
           platforms: linux/arm64/v8
-  
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4.x
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
-        env:
-          ESIEE_HUB_SERVICE : ${{ env.GITHUB_REF_SLUG }}
         with:
           envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
-          username: ${{ secrets.PI_USERNAME }}
+          username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/autodeploy
+            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
+            FOLDER=branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
+            mkdir $FOLDER
+            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > $FOLDER/docker-compose.yml
+            python conf_file.py $ESIEE_HUB_SERVICE
+            cd $FOLDER
             docker-compose pull
             docker-compose down
             docker-compose up -d
+            cd /home/share/nginx_reverse_proxy/
+            docker-compose restart
