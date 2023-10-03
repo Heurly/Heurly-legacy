@@ -1,14 +1,14 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - "alpha"
+  push: {}
 
 jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4.x
       - name: Checkout
         uses: actions/checkout@v4
       - name: Login to Docker Hub
@@ -17,29 +17,32 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      
+        uses: docker/setup-buildx-action@v3 
+       
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/alpha_esiee-hub:rpi
+          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
           platforms: linux/arm64/v8
-
+  
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          ESIEE_HUB_SERVICE : ${{ env.GITHUB_REF_SLUG }}
         with:
+          envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
           username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            cd /home/domesday/code/alpha.esiee-hub
+            cd /home/share/autodeploy
             docker-compose pull
-            docker-compose down && docker-compose up -d
-            
+            docker-compose down
+            docker-compose up -d
