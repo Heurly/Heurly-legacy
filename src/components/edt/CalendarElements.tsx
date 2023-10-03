@@ -47,7 +47,7 @@ export default function CalendarElements({
                     100) /
                     LINES + 1
                 }%`,
-                top: `${(((courseStart.getHours() - HOURS_OFFSET) * 100) / (LINES - 1))}%`,
+                top: `${((((courseStart.getHours()+courseStart.getMinutes()/60) - HOURS_OFFSET) * 100) / (LINES - 1))}%`,
                 left: `${(courseStart.getDay() * 100) / COLUMNS}%`,
               }}
             >
