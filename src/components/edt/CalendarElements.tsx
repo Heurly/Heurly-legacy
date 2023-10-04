@@ -21,7 +21,6 @@ export default function CalendarElements({
       {edtData &&
         edtData.map((event: CourseEvent, key: any) => {
           if (event == undefined) {
-            console.log(`Course ${key} undefined.`);
             return;
           }
           const courseStart: Date = parseISO(event.DTSTART);
@@ -29,7 +28,6 @@ export default function CalendarElements({
           const today = new Date();
 
           if (courseStart.getDay() <= today.getDay() && courseStart.valueOf() - today.valueOf() >= DAY_IN_MS) {
-            console.log(`Skipped course ${event.SUMMARY}: date is in more than a week from today.`);
             return;
           }
 
