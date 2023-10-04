@@ -7,6 +7,7 @@ FROM base AS deps
 ARG SUPABASE_URL
 ENV SUPABASE_URL=${SUPABASE_URL}
 
+
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
