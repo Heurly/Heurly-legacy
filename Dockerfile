@@ -32,9 +32,6 @@ COPY . .
 
 # RUN yarn build
 ARG SUPABASE_URL
-ENV SUPABASE_URL=${SUPABASE_URL}
-ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
 
 RUN echo SUPABASE_URL=${SUPABASE_URL} > prisma/.env
 RUN npm install
@@ -47,8 +44,11 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV SUPABASE_URL ${SUPABASE_URL}
+ENV GOOGLE_CLIENT_ID ${GOOGLE_CLIENT_ID}
+ENV GOOGLE_CLIENT_SECRET ${GOOGLE_CLIENT_SECRET}
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
