@@ -56,6 +56,8 @@ jobs:
           platforms: linux/arm64/v8
           build-args: |
             SUPABASE_URL=${{ secrets.DB_URL }}
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           
    
   deploy:
