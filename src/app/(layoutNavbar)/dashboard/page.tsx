@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-import Actu from "@/components/Actu";
-import Card from "@/components/Card";
-import { SearchContext } from "@/context/search";
-import { useContext } from "react";
-=======
 
 import Actu from "@/components/Actu";
 import Card from "@/components/Card";
 // import { SearchContext } from "@/context/search";
 // import { useContext } from "react";
->>>>>>> 6eeab1466beedeb277ecdecac4445ff4c3d61982
 
 export default async function Dashboard(): Promise<React.ReactElement> {
   const styles = {
