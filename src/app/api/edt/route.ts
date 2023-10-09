@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { PLANIF_ENDPOINT, PLANIF_ENDPOINT_2024 } from "@/app/api/ApiHelper";
-import { SUMMARY_MAP } from "@/course-config.json"
+import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { NextRequest } from "next/server";
 import { lines2tree } from 'icalts'
@@ -26,9 +25,12 @@ async function setUserGroups(formData: FormData) {
   });
 }
 
-export async function GET(request: NextRequest) {
-  // const endpoint = URLBuilder(PLANIF_ENDPOINT, payload);
-  const endpoint = PLANIF_ENDPOINT_2024;
+export async function POST(request: NextRequest) {
+  const modules: number[] = await request.json();
+  if (modules.length <= 0) return;
+
+  console.log(modules)
+  const endpoint = PLANIF_ENDPOINT(modules);
 
   const response = await fetch(endpoint, {
     method: "GET",
@@ -40,10 +42,23 @@ export async function GET(request: NextRequest) {
 
   const VCALENDAR = await response.text();
   var res: CalendarData = lines2tree(VCALENDAR.split("\r\n")) as unknown as CalendarData;
-  res.VCALENDAR[0].VEVENT.forEach((course) => {
-    const [subject, type]: string[] = course.SUMMARY.split(":")
-    course.SUMMARY = `${SUMMARY_MAP[subject as keyof typeof SUMMARY_MAP] ?? subject} : ${type}`;
-  });
+
+  for (const course of res.VCALENDAR[0].VEVENT) {
+    const [subject, type]: string[] = course.SUMMARY.split(":");
+
+    const keywords = subject.split("-");
+
+    const condition = {AND: keywords.map(w => ({
+        code_cours: {
+          contains: w
+        }
+      }))};
+    let label = await prisma.course.findFirst({
+      where: condition
+    });
+
+    course.SUMMARY = label?.nom_cours != undefined ? `${label.nom_cours} : ${type}` : `${subject} : ${type}`;
+  }
 
   return NextResponse.json(res);
 }
