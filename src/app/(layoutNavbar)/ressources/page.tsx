@@ -19,7 +19,7 @@ async function getAllFiles() {
 }
 
 export default function Hub(): React.ReactElement {
-  const { search } = useContext(SearchContext);
+
 
   const resources = [
     {

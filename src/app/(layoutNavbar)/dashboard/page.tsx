@@ -1,7 +1,5 @@
-"use client";
 import Actu from "@/components/Actu";
 import Card from "@/components/Card";
-import Resource from "@/components/resource";
 import { SearchContext } from "@/context/search";
 import { useContext } from "react";
 
@@ -42,7 +40,8 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       title: "bla",
       description: "ohhhh",
       date: "2021-10-10",
-    }];
+    },
+  ];
 
   return (
     <div className="grid grid-rows-2 grid-flow-col gap-4">
@@ -109,10 +108,7 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         <Card>
           Prochain cours :<br />
           <div className="divide-y divide-gray-500 md:divide-y-2">
-          <div className="z-10">
-          8h
-          10h
-          </div>
+            <div className="z-10">8h 10h</div>
           </div>
           <Card>Mathématiques 2h</Card>
           10h
@@ -124,7 +120,6 @@ export default async function Dashboard(): Promise<React.ReactElement> {
           15h
           <Card>Machine Learning 2h</Card>
           17h
-          
         </Card>
       </div>
     </div>
