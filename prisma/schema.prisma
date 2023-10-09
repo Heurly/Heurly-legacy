@@ -2,30 +2,40 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgres"
-  url      = env("SUPABASE_URL")
+    provider = "postgres"
+    url      = env("SUPABASE_URL")
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+    id    Int    @id @default(autoincrement())
+    name  String
+    email String @unique
 }
 
 model Course {
-  code_cours    String  @id
-  nom_cours     String
-  professeur    String
-  description   String
+    code_cours  String @id
+    nom_cours   String
+    professeur  String
+    description String
 }
 
 model Unit {
-  id        Int     @id @default(autoincrement())
-  full_name String
-  name      String
-  code      Int
+    id        Int         @id @default(autoincrement())
+    full_name String
+    name      String
+    code      Int
+    Ressource Ressource[]
+}
+
+model Ressource {
+    id     Int    @id @default(autoincrement())
+    name   String
+    url    String
+    type   String
+    unit   Unit   @relation(fields: [unitId], references: [id])
+    unitId Int
 }
