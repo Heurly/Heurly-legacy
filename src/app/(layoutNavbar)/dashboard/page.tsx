@@ -1,9 +1,8 @@
-"use client";
+
 import Actu from "@/components/Actu";
 import Card from "@/components/Card";
-import Resource from "@/components/resource";
-import { SearchContext } from "@/context/search";
-import { useContext } from "react";
+// import { SearchContext } from "@/context/search";
+// import { useContext } from "react";
 
 export default async function Dashboard(): Promise<React.ReactElement> {
   const styles = {
@@ -25,7 +24,6 @@ export default async function Dashboard(): Promise<React.ReactElement> {
     color: "rgb(163 163 163)",
   };
 
-  const { search } = useContext(SearchContext);
 
   const resources = [
     {
@@ -111,7 +109,8 @@ export default async function Dashboard(): Promise<React.ReactElement> {
           <div className="divide-y divide-gray-500 md:divide-y-2">
           <div className="z-10">
           8h
-          10h
+
+
           </div>
           </div>
           <Card>Mathématiques 2h</Card>
