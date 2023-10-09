@@ -6,6 +6,7 @@ import {CourseEvent, ModuleChoice} from "./types";
 import { API_URL } from "@/config/const";
 import React, {useEffect, useState} from "react";
 import Button from "@/components/Button";
+import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
 
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ const Edt: React.FunctionComponent = () => {
         if (modules == undefined || modules.length <= 0) return [];
         setLoading(true);
 
-        const payload = {offset: offset.getUTCDate(), modules: modules.map(m => m.code)}
+        const payload = {offset: offset, modules: modules.map(m => m.code)}
         const data = await fetch(API_URL + "/edt",
             {
                 method: "POST",
@@ -47,14 +48,12 @@ const Edt: React.FunctionComponent = () => {
     }
 
   const changeDate = (daysCount: number) => {
-      let newDate = new Date(date);
-      newDate.setDate(newDate.getDate() + daysCount);
-      setDate(newDate);
+      setDate(new Date(date.getTime() + daysCount * DAY_IN_MS));
   }
 
   useEffect(() => {
     fetchEDTData(date, modules).then((data) => setEdt(data));
-  }, [modules]);
+  }, [modules, date]);
 
   return (
     <>
@@ -67,7 +66,11 @@ const Edt: React.FunctionComponent = () => {
       <div className="flex text-white p-4">
           <Button onClick={() => changeDate(-7)}>Semaine Précédente</Button>
           <div className="ml-auto">
-              {date.toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}
+              {`${new Date(date.getTime() - (date.getDay() - 1) * DAY_IN_MS)
+                  .toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}`}
+              {` - `}
+              {`${new Date((date.getTime() + 6*DAY_IN_MS) - date.getDay() * DAY_IN_MS)
+                  .toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}`}
           </div>
           <Button onClick={() => changeDate(7)} className="ml-auto">Semaine Prochaine</Button>
       </div>

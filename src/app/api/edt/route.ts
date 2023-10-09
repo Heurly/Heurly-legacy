@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import {Course, PrismaClient} from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
 import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { NextRequest } from "next/server";
 import { lines2tree } from 'icalts'
 import {distance} from "fastest-levenshtein";
+import {parseISO} from "date-fns";
+import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
 
 interface CalendarData {
   VCALENDAR: [
@@ -24,6 +26,16 @@ async function setUserGroups(formData: FormData) {
       },
     },
   });
+}
+
+function filterCourses(courses: CourseEvent[], weekOffset: Date) {
+  weekOffset.setHours(0);
+  weekOffset.setMinutes(0);
+
+  return courses.filter(m =>
+      parseISO(m.DTSTART).getTime() >= new Date(weekOffset.getTime() - (weekOffset.getDay() + 1) * (DAY_IN_MS)).getTime() &&
+      parseISO(m.DTSTART).getTime() < new Date((weekOffset.getTime() + (6 * DAY_IN_MS)) - weekOffset.getDay() * (DAY_IN_MS)).getTime()
+  ) as CourseEvent[];
 }
 
 async function translateCoursesCodes(courses: CourseEvent[]) {
@@ -61,8 +73,7 @@ export async function POST(request: NextRequest) {
   const payload: {offset: number, modules: number[]} = await request.json();
   if (payload.modules.length <= 0) return;
 
-  const weekOffset: number = 1;
-  const endpoint = PLANIF_ENDPOINT(weekOffset, payload.modules);
+  const endpoint = PLANIF_ENDPOINT(payload.modules);
 
   const response = await fetch(endpoint, {
     method: "GET",
@@ -73,8 +84,9 @@ export async function POST(request: NextRequest) {
 
   const VCALENDAR = await response.text();
 
-  var res: CalendarData = lines2tree(VCALENDAR.split("\r\n")) as unknown as CalendarData;
+  let res: CalendarData = lines2tree(VCALENDAR.split("\r\n")) as unknown as CalendarData;
 
+  res.VCALENDAR[0].VEVENT = filterCourses(res.VCALENDAR[0].VEVENT, new Date(payload.offset));
   await translateCoursesCodes(res.VCALENDAR[0].VEVENT);
 
   return NextResponse.json(res);
