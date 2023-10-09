@@ -4,6 +4,9 @@ FROM node:20 AS base
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 # RUN apk add --no-cache libc6-compat
+
+
+
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
@@ -28,7 +31,22 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # RUN yarn build
+ARG SUPABASE_URL
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+ARG APP_URL
+
+ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+ENV APP_URL=${APP_URL}
+
+
+RUN echo GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET} >> .env
+RUN echo NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID} >> .env
+RUN echo APP_URL=${APP_URL} >> .env
+RUN echo SUPABASE_URL=${SUPABASE_URL} > prisma/.env
 RUN npm install
+
 # If using npm comment out above and use below instead
 RUN npm run build
 
@@ -37,8 +55,11 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV SUPABASE_URL ${SUPABASE_URL}
+# ENV GOOGLE_CLIENT_ID ${GOOGLE_CLIENT_ID}
+# ENV GOOGLE_CLIENT_SECRET ${GOOGLE_CLIENT_SECRET}
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
