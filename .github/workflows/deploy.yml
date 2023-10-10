@@ -49,5 +49,11 @@ jobs:
           script: |
             cd /home/share/hub/scripts
             sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
-            
+      - name: Discord notification
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.(https://${{ env.GITHUB_REF_SLUG }}'
+          
           # étape pour ajouter le reverse proxy
