@@ -1,10 +1,10 @@
 name: ci-delete
 
 on:
-  delete: {}
+  delete
 
 jobs:
-  undeploy:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
