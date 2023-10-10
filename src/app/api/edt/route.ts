@@ -33,7 +33,7 @@ function filterCourses(courses: CourseEvent[], weekOffset: Date) {
   weekOffset.setMinutes(0);
 
   return courses.filter(m =>
-      parseISO(m.DTSTART).getTime() >= new Date(weekOffset.getTime() - (weekOffset.getDay() + 1) * (DAY_IN_MS)).getTime() &&
+      parseISO(m.DTSTART).getTime() >= new Date(weekOffset.getTime() - (weekOffset.getDay() - 1) * (DAY_IN_MS)).getTime() &&
       parseISO(m.DTSTART).getTime() < new Date((weekOffset.getTime() + (6 * DAY_IN_MS)) - weekOffset.getDay() * (DAY_IN_MS)).getTime()
   ) as CourseEvent[];
 }
