@@ -49,4 +49,4 @@ jobs:
             cd /home/share/hub/scripts
             ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
             
-          # étape pour ajouter le reverse proxy
+        # étape pour ajouter le reverse proxy
