@@ -1,31 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
-  provider = "postgres"
-  url      = env("SUPABASE_URL")
+    provider = "postgres"
+    url      = env("SUPABASE_URL")
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+    id         BigInt      @id @default(autoincrement())
+    name       String?
+    email      String      @unique
+    ressources Ressource[]
 }
 
 model Course {
-  code_cours    String  @id
-  nom_cours     String
-  professeur    String
-  description   String
+    code_cours  String  @id(map: "Cours_pkey") @unique(map: "Cours_code_cours_key")
+    nom_cours   String  @default("")
+    professeur  String? @default("")
+    description String? @default("")
 }
 
 model Unit {
-  id        Int     @id @default(autoincrement())
-  full_name String
-  name      String
-  code      Int
+    id         Int         @id @default(autoincrement())
+    full_name  String
+    name       String
+    code       Int
+    ressources Ressource[]
+}
+
+model Ressource {
+    id           Int     @id @default(autoincrement())
+    name         String
+    unitId       Int
+    unit         Unit    @relation(fields: [unitId], references: [id])
+    userId       BigInt?
+    user         User?   @relation(fields: [userId], references: [id])
+    urlThumbnail String?
+    urlPdf       String?
 }
