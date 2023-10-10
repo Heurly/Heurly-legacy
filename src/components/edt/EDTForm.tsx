@@ -1,14 +1,23 @@
 "use client";
-import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
-import SearchBar from "@/components/common/search-bar";
 import {API_URL} from "@/config/const";
 import id from "@/utils/id";
+import SearchBar, {Suggestion, SuggestionFilter} from "@/components/common/search-bar";
+import {ModuleFilter} from "@/app/api/modules/route";
 
-async function getModules() {
-    const data = await fetch(API_URL + "/modules");
+async function getModules(filter: SuggestionFilter) {
+    const payload = {contains: filter.tags.concat(filter.value.split(' '))} as ModuleFilter;
+    const data = await fetch(API_URL + "/modules", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
     const res = await data.json();
-    return res as ModuleChoice[];
+    return res.map((m: ModuleChoice) => ({label: m.label, value: m})) as Suggestion[];
 }
 
 interface Props {
@@ -17,34 +26,10 @@ interface Props {
 }
 
 const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}: Props) => {
-    const [moduleList, setModuleList] = useState<ModuleChoice[]>([]);
-    const [tags, setTags] = useState<string[]>([]);
+  const addModule = (module: Suggestion | undefined) => {
+    if (module == undefined || modules.find(m => m.label == module.value)) return;
 
-    const getModuleList = async () => {
-        const data = await getModules();
-        setModuleList(data);
-    }
-
-    useEffect(() => {
-        getModuleList();
-    }, []);
-
-    useEffect(() => {
-        let newTags: string[] = [];
-
-        moduleList.map(m => m.label.split(' - ').forEach(e => {
-            if (!newTags.includes(e) && !e.includes(' ') && !e.includes('-')) newTags.push(e);
-        }));
-        setTags(newTags);
-    }, [moduleList]);
-
-  const addModule = (module: string | undefined) => {
-    if (module == undefined) return;
-
-    const newModule = moduleList.find(m => m.label == module);
-    if (newModule == undefined) return;
-
-    const newModules = modules.concat([newModule]);
+    const newModules = modules.concat([module.value]);
     setModules(newModules);
   }
   const removeModule = (module: string | undefined) => {
@@ -57,8 +42,8 @@ const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}: Props) =
   return (
       <>
           <SearchBar
-              suggestions={moduleList.map(m => m.label)}
-              tags={tags}
+              data={getModules}
+              tags={[]}
               resolveSearch={addModule}
           />
           <div className="flex-col mb-4">
