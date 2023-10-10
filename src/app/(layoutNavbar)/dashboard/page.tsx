@@ -1,4 +1,3 @@
-
 import Actu from "@/components/Actu";
 import Card from "@/components/Card";
 // import { SearchContext } from "@/context/search";
@@ -24,7 +23,6 @@ export default async function Dashboard(): Promise<React.ReactElement> {
     color: "rgb(163 163 163)",
   };
 
-
   const resources = [
     {
       title: "test",
@@ -44,8 +42,8 @@ export default async function Dashboard(): Promise<React.ReactElement> {
   ];
 
   return (
-    <div className="grid grid-rows-2 grid-flow-col gap-4">
-      <div className="col-span-2">
+    <div className=" grid grid-rows-2 grid-flow-col gap-4">
+      <div className="z-20 col-span-2">
         <Card>
           <div className="font-extrabold">
             <p style={styles}>
@@ -104,22 +102,49 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         </Card>
       </div>
 
-      <div className="  grid justify-items-stretch flex items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
+      <div className="z-20 grid justify-items-stretch flex items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
         <Card>
-          Prochain cours :<br />
-          <div className="divide-y divide-gray-500 md:divide-y-2">
-            <div className="z-10">8h 10h</div>
+          Prochain cours :        
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">8h</span>
           </div>
-          <Card>Mathématiques 2h</Card>
-          10h
-          <Card>Réseaux 2h</Card>
-          12h <br />
-          <br />
-          13h
-          <Card>Geometry 2h</Card>
-          15h
-          <Card>Machine Learning 2h</Card>
-          17h
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">9h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">10h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">11h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">12h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">13h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">14h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">15h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">16h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">17h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">18h</span>
+          </div>
+          <div className="border-t relative h-5 mt-10">
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">19h</span>
+          </div>
+          <div className="border-t relative mt-10">
+            <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-neutral-950">20h</span>
+          </div>
+
         </Card>
       </div>
     </div>
