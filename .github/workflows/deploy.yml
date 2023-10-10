@@ -47,6 +47,6 @@ jobs:
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/hub/scripts
-            ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
+            sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
             
         # étape pour ajouter le reverse proxy
