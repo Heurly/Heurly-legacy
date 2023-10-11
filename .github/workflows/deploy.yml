@@ -10,13 +10,13 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4.x
 
-      - name: Create Deployment
-        id: deployment
-        uses: avakar/create-deployment@v1
-        with:
-          auto_merge: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create Deployment
+      #   id: deployment
+      #   uses: avakar/create-deployment@v1
+      #   with:
+      #     auto_merge: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Update Status
         uses: avakar/set-deployment-status@v1
