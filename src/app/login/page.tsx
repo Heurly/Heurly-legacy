@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import {SessionProvider, signIn} from "next-auth/react";
 import Button from "@/components/Button";
+import {redirect, RedirectType} from "next/navigation";
 
 export default function Login(): React.ReactElement {
     return (
@@ -14,7 +15,11 @@ export default function Login(): React.ReactElement {
                             Bienvenue sur <span className="text-white">ESIEE&nbsp;HUB</span>
                         </h1>
                         <div className="text-white">
-                            <Button onClick={() => signIn('google')}>Se connecter avec Google</Button>
+                            <Button onClick={() => {
+                                signIn('google').then(r => {
+                                    if (r?.ok) redirect('/', RedirectType.push);
+                                });
+                            }}>Se connecter avec Google</Button>
                         </div>
                     </div>
                 </div>
