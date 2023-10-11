@@ -64,12 +64,12 @@ jobs:
           script: |
             cd /home/share/hub/scripts
             sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
-      - name: Update Status
-        uses: avakar/set-deployment-status@v1
-        with:
-          state: success
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      # - name: Update Status
+      #   uses: avakar/set-deployment-status@v1
+      #   with:
+      #     state: success
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.TOKEN }}
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
