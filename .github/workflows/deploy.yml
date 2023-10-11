@@ -16,7 +16,7 @@ jobs:
         with:
           auto_merge: false
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Update Status
         uses: avakar/set-deployment-status@v1
