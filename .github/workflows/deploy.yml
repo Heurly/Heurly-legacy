@@ -63,6 +63,12 @@ jobs:
           script: |
             cd /home/share/hub/scripts
             sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
+      - name: Update Status
+        uses: docker://reasonsoftware/action-github-deployment:v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT: ${{steps.deployment.outputs.id}}
+          STATUS: success
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -70,11 +76,4 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: ''
-      - name: Update Status
-        uses: docker://reasonsoftware/action-github-deployment:v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOYMENT: ${{steps.deployment.outputs.id}}
-          STATUS: success
-          FAIL: "${{ failure() }}"
           # étape pour ajouter le reverse proxy
