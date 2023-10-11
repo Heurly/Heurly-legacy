@@ -9,6 +9,20 @@ jobs:
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4.x
+
+      - name: Create Deployment
+        id: deployment
+        uses: docker://reasonsoftware/action-github-deployment:v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Update Status
+        uses: docker://reasonsoftware/action-github-deployment:v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT: ${{steps.deployment.outputs.id}}
+          STATUS: in_progress
+          
       - name: Checkout
         uses: actions/checkout@v4
       - name: Login to Docker Hub
@@ -18,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3 
-       
+      
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -56,4 +70,11 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: ''
+      - name: Update Status
+        uses: docker://reasonsoftware/action-github-deployment:v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT: ${{steps.deployment.outputs.id}}
+          STATUS: success
+          FAIL: "${{ failure() }}"
           # étape pour ajouter le reverse proxy
