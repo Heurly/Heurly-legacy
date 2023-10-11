@@ -45,7 +45,7 @@ RUN echo GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET} >> .env
 RUN echo NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID} >> .env
 RUN echo NEXT_PUBLIC_APP_URL=https://${APP_URL} >> .env
 RUN echo SUPABASE_URL=${SUPABASE_URL} >> .env
-RUN echo SUPABASE_URL=${SUPABASE_URL} > prisma/.env
+#RUN echo SUPABASE_URL=${SUPABASE_URL} > prisma/.env
 RUN npm install
 
 # If using npm comment out above and use below instead
