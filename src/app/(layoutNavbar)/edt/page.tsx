@@ -60,7 +60,7 @@ const Edt: React.FunctionComponent = () => {
       <EDTForm modules={modules} setModules={setModules}></EDTForm>
       <div className="relative w-full h-full text-center">
           {loading && <div className="absolute w-full h-full bg-cyan-800 z-10 place-content-center opacity-25" />}
-        <Grid />
+        <Grid date={date} />
         <CalendarElements edtData={edt} />
       </div>
       <div className="flex text-white p-4">
