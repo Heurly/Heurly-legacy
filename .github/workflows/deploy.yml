@@ -4,38 +4,26 @@ on:
   push: {}
 
 jobs:
-  subdomain:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4.x
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with: 
-          python-version: '3.x'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install cloudflare
- 
-      - name: Create subdomain
-        run: |
-          python pipeline/create_subdomain.py
-        env:
-          DNS_TOKEN: ${{ secrets.DNS_TOKEN }}
-          DNS_DOMAIN: domesday.fr
-          DNS_SUBDOMAIN: ${{ env.GITHUB_REF_SLUG }}.esiee-hub
   build:
-    needs: subdomain
     runs-on: ubuntu-20.04
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4.x
+
+      - name: Create Deployment
+        uses: avakar/create-deployment@v1
+        with:
+          auto_merge: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          
+      - name: Update Status
+        uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Checkout
         uses: actions/checkout@v4
       - name: Login to Docker Hub
@@ -45,7 +33,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3 
-       
+      
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -58,6 +46,7 @@ jobs:
             SUPABASE_URL=${{ secrets.DB_URL }}
             NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            APP_URL=${{ env.GITHUB_REF_SLUG }}.esiee-hub.domesday.fr
           
   deploy:
     needs: build
@@ -73,15 +62,19 @@ jobs:
           username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
           script: |
-            cd /home/share/autodeploy
-            ESIEE_HUB_SERVICE=${{ env.GITHUB_REF_SLUG }}
-            FOLDER=branch.$ESIEE_HUB_SERVICE.esiee-hub.domesday.fr
-            mkdir $FOLDER
-            sed "s/{{ESIEE_HUB_SERVICE}}/$ESIEE_HUB_SERVICE/g" docker-compose-model.yml > $FOLDER/docker-compose.yml
-            python conf_file.py $ESIEE_HUB_SERVICE
-            cd $FOLDER
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
-            cd /home/share/nginx_reverse_proxy/
-            docker-compose restart
+            cd /home/share/hub/scripts
+            sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
+      - name: Update Status
+        uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_EMBEDS: '[{"title": "Deployment - Link of ${{ env.GITHUB_REF_SLUG }}", "description": "[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.", "url": "https://${{ env.GITHUB_REF_SLUG }}.esiee-hub.domesday.fr", "color": 14847590}]'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: ''
+          # étape pour ajouter le reverse proxy

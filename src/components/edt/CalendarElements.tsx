@@ -21,19 +21,10 @@ export default function CalendarElements({
       {edtData &&
         edtData.map((event: CourseEvent, key: any) => {
           if (event == undefined) {
-            console.log(`Course ${key} undefined.`);
             return;
           }
           const courseStart: Date = parseISO(event.DTSTART);
           const courseEnd: Date = parseISO(event.DTEND);
-          const today = new Date();
-
-          if (courseStart.getDay() <= today.getDay() && courseStart.valueOf() - today.valueOf() >= DAY_IN_MS) {
-            console.log(`Skipped course ${event.SUMMARY}: date is in more than a week from today.`);
-            return;
-          }
-
-          const row = courseStart.getHours() - 8;
 
           const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
           return (
@@ -43,7 +34,7 @@ export default function CalendarElements({
               style={{
                 width: `${100 / COLUMNS}%`,
                 height: `${
-                    ((courseEnd.getHours() - courseStart.getHours()) *
+                    (((courseEnd.getHours()+courseEnd.getMinutes()/60) - (courseStart.getHours()+courseStart.getMinutes()/60)) *
                     100) /
                     LINES + 1
                 }%`,

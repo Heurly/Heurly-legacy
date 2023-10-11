@@ -1,46 +1,52 @@
 'use client'
-import React, { useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import cn from "classnames";
 import {distance} from 'fastest-levenshtein';
 import SearchIcon from "@/components/SearchIcon";
 import id from "@/utils/id";
 import Tag from "@/components/Tag";
+import debounce from "@/utils/debounce";
 
 interface Props {
-  suggestions: string[];
+  data: (filter: SuggestionFilter) => Promise<Suggestion[]>;
+  resolveSearch: (res: Suggestion) => any;
   tags: string[];
-  resolveSearch: (s: string) => void;
   nbSuggestions?: number;
 }
 
-const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSearch, nbSuggestions = 5}) => {
-  const [isSuggestions, setIsSuggestions] = useState(false);
+export type SuggestionFilter = {
+  tags: string[];
+  value: string;
+}
+
+export type Suggestion = {
+  label: string;
+  value: any;
+}
+
+const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, nbSuggestions = 5}) => {
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [userSuggestionIndex, setUserSuggestionIndex] = useState<number>(0);
 
-  const filterSuggestion = (suggestion: string) => {
+  const filterSuggestion = (suggestion: Suggestion) => {
     for (const tag of selectedTags) {
-      if (!suggestion.includes(tag)) return false;
+      if (!suggestion.label.includes(tag)) return false;
     }
-    for (const word of searchText.split(/[ ,]+/)) {
-      if (suggestion.includes(word)) {
-        return true;
-      }
-    }
-
     return false;
   }
 
-  const sortSuggestion = (s: string) => {
+  const sortSuggestion = (suggestion: Suggestion) => {
     const w = searchText.split(' ');
     let res = 0;
 
-    w.forEach(e => s.split(' - ').forEach(el => res += distance(e, el)));
+    w.forEach(e => suggestion.label.split(' - ').forEach(el => res += distance(e, el)));
     return res;
   }
 
-  const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = (suggestion: Suggestion) => {
     resolveSearch(suggestion);
   };
 
@@ -52,21 +58,26 @@ const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSe
     setSelectedTags(selectedTags.filter(e => e != tag));
   }
 
+  const filterModules = ((text: string) => debounce(
+      data({tags: selectedTags, value: text}).then(res => setSuggestions(res))
+    , 1500)
+  );
+
   useEffect(() => {
-    if (isSuggestions) {
+    if (showSuggestions) {
       document.addEventListener("click", () => {
-        setIsSuggestions(false);
+        setShowSuggestions(false);
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          setIsSuggestions(false);
+          setShowSuggestions(false);
         }
         if (e.key === "ArrowDown") {
           setUserSuggestionIndex((prev) => prev + 1);
         }
       });
     }
-  }, [isSuggestions]);
+  }, [showSuggestions]);
 
   return (
     <div>
@@ -74,7 +85,7 @@ const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSe
         <div
           className={cn(
             "bg-neutral-700 rounded-lg text-white flex items-center justify-center pr-3 ",
-            { "rounded-b-none": isSuggestions }
+            { "rounded-b-none": showSuggestions }
           )}
         >
           <input
@@ -82,20 +93,21 @@ const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSe
             placeholder="Rechercher par nom / #tag / filière"
             value={searchText}
             onChange={(e) => {
-              setIsSuggestions(true);
+              setShowSuggestions(true);
               setSearchText(e.currentTarget.value);
+              filterModules(e.currentTarget.value);
             }}
           />
           <SearchIcon />
         </div>
-        {isSuggestions && (<div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
+        {showSuggestions && (<div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
           <div className="flex p-2 pr-8 bg-neutral-600 text-white">
-            {isSuggestions &&
+            {showSuggestions &&
                 tags &&
                 tags
                     .filter((tag) => tag.includes(searchText) && !selectedTags.includes(tag))
-                    .sort((tag) => sortSuggestion(tag))
-                    .slice(0, nbSuggestions)
+                    .sort((tag) => sortSuggestion({label: tag, value: undefined}))
+                    .slice(0, 20)
                     .map((tag, index) => (
                         <Tag
                             key={id()}
@@ -106,19 +118,18 @@ const SearchBar: React.FunctionComponent<Props> = ({suggestions, tags, resolveSe
             }
           </div>
           <div className="flex-col">
-            {isSuggestions &&
+            {showSuggestions &&
                 suggestions &&
                 suggestions
-                    .filter((sugg) => filterSuggestion(sugg))
                     .sort((sugg) => sortSuggestion(sugg))
                     .slice(0, nbSuggestions)
                     .map((suggestion, index) => (
                         <Suggestion
                             key={id()}
-                            text={suggestion}
+                            text={suggestion.label}
                             onClickCallback={() => {
                               handleSuggestionClick(suggestion);
-                              setIsSuggestions(false);
+                              setShowSuggestions(false);
                             }}
                         />
                     ))}
