@@ -1,7 +1,7 @@
 "use client"
 import React, {useState} from "react";
 import {useGoogleLogin} from "@react-oauth/google";
-import {API_URL, ROOT_URL} from "@/config/const";
+import {API_URL} from "@/config/const";
 import { useRouter } from 'next/navigation'
 import Image from "next/image";
 const GOOGLE_LOGIN_ENDPOINT = `${API_URL}/login`;
