@@ -11,17 +11,18 @@ jobs:
         uses: rlespinasse/github-slug-action@v4.x
 
       - name: Create Deployment
-        id: deployment
-        uses: docker://reasonsoftware/action-github-deployment:v1
+        uses: avakar/create-deployment@v1
+        with:
+          auto_merge: false
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           
       - name: Update Status
-        uses: docker://reasonsoftware/action-github-deployment:v1
+        uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          DEPLOYMENT: ${{steps.deployment.outputs.id}}
-          STATUS: in_progress
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,11 +65,11 @@ jobs:
             cd /home/share/hub/scripts
             sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
       - name: Update Status
-        uses: docker://reasonsoftware/action-github-deployment:v1
+        uses: avakar/set-deployment-status@v1
+        with:
+          state: success
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          DEPLOYMENT: ${{steps.deployment.outputs.id}}
-          STATUS: success
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
