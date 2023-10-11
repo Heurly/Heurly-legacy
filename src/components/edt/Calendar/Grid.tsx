@@ -41,7 +41,7 @@ export default function Grid({date}: Props): React.ReactElement {
         >
           <div>{DAYS[i - 1]}</div>
             <div className="text-neutral-600">{i != 0 &&
-                new Date(week.getTime() + i*DAY_IN_MS).toLocaleString('fr-FR', { month: 'numeric', day: 'numeric'})
+                new Date(week.getTime() + (i-1)*DAY_IN_MS).toLocaleString('fr-FR', { month: 'numeric', day: 'numeric'})
             }</div>
         </div>
       );
