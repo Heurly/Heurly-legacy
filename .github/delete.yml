@@ -1,0 +1,21 @@
+name: ci-delete
+
+on:
+  delete
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4.x
+      - name: SSH and Docker Compose Down remove files
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          envs : ESIEE_HUB_SERVICE
+          host: ${{ secrets.PI_HOST }}
+          username: ${{ secrets.PI_USERNAME }} 
+          password: ${{ secrets.PI_PASSWORD }}
+          script: |
+            cd /home/share/hub/scripts
+            sudo ./remove-container.sh ${{ env.GITHUB_REF_SLUG }}
