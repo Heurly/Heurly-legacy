@@ -14,12 +14,12 @@ jobs:
         id: deployment
         uses: docker://reasonsoftware/action-github-deployment:v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           
       - name: Update Status
         uses: docker://reasonsoftware/action-github-deployment:v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           DEPLOYMENT: ${{steps.deployment.outputs.id}}
           STATUS: in_progress
           
@@ -66,7 +66,7 @@ jobs:
       - name: Update Status
         uses: docker://reasonsoftware/action-github-deployment:v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           DEPLOYMENT: ${{steps.deployment.outputs.id}}
           STATUS: success
       - name: Discord notification
