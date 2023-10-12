@@ -17,7 +17,7 @@ export default function Login(): React.ReactElement {
                         <div className="text-white">
                             <Button onClick={() => {
                                 signIn('google').then(r => {
-                                    if (r?.ok) redirect('/', RedirectType.push);
+                                    if (r?.ok) redirect('/edt', RedirectType.push);
                                 });
                             }}>Se connecter avec Google</Button>
                         </div>
