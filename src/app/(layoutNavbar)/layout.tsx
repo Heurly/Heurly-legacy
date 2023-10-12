@@ -6,6 +6,7 @@ import {getServerSession, Session} from "next-auth";
 import authOptions from "@/utils/authOptions";
 import {redirect, RedirectType} from "next/navigation";
 import React from "react";
+import Logout from "@/components/navbar/Logout";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -7,11 +7,16 @@ import { API_URL } from "@/config/const";
 import React, {useEffect, useState} from "react";
 import Button from "@/components/Button";
 import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
+import authOptions from "@/utils/authOptions";
+import {getServerSession} from "next-auth";
+import {SessionProvider, useSession} from "next-auth/react";
 
 
 export const dynamic = "force-dynamic";
 
 const Edt: React.FunctionComponent = () => {
+  const {data: session} = useSession();
+
   const [modules, setModules] = useState<ModuleChoice[]>([]);
   const [edt, setEdt] = useState<CourseEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,6 +52,21 @@ const Edt: React.FunctionComponent = () => {
         return [];
     }
 
+  async function getProfile(email: string) {
+      const payload = {email: email};
+
+      const data = await fetch(API_URL + "/profile",
+          {
+              method: "POST",
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+      });
+      return await data.json() as ModuleChoice[];
+  }
+
   const changeDate = (daysCount: number) => {
       setDate(new Date(date.getTime() + daysCount * DAY_IN_MS));
   }
@@ -54,6 +74,11 @@ const Edt: React.FunctionComponent = () => {
   useEffect(() => {
     fetchEDTData(date, modules).then((data) => setEdt(data));
   }, [modules, date]);
+
+    useEffect(() => {
+        if (session?.user?.email != undefined)
+            getProfile(session?.user?.email).then(p => setModules(modules.concat(p)));
+    }, [session]);
 
   return (
     <>
