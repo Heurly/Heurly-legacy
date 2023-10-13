@@ -1,4 +1,3 @@
-"use client";
 import id from "@/utils/id";
 import React from "react";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
