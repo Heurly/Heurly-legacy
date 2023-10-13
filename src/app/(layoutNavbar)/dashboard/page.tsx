@@ -51,21 +51,21 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         </div>
         <div className="divide-y divide-gray-500 md:divide-y-2">
           <Actu>
-            <div className="flex justify-between font-bold">
+            <div className="flex justify-between font-bold mt-4">
               <p style={styles}>Afterwork </p>
               <p style={styles_date}>date</p>
             </div>
             <p style={styles_font}>trop bien sous titre</p>
           </Actu>
           <Actu>
-            <div className="flex justify-between font-bold">
+            <div className="flex justify-between font-bold mt-4">
               <p style={styles}>Afterwork </p>
               <p style={styles_date}>date</p>
             </div>
             <p style={styles_font}>trop bien sous titre</p>
           </Actu>
           <Actu>
-            <div className="flex justify-between font-bold">
+            <div className="flex justify-between font-bold mt-4">
               <p style={styles}>Afterwork </p>
               <p style={styles_date}>date</p>
             </div>
@@ -76,10 +76,10 @@ export default async function Dashboard(): Promise<React.ReactElement> {
 
       <div className="col-span-2 flex items-stretch">
         <Card className=" self-stretch flex-auto">
-          <div className=" row-span-2 font-extrabold mb-8 mt-4">
+          <div className="font-extrabold mb-8 mt-4">
             Dernières ressources uploadées :<br />
           </div>
-          <div className="p-8 grid md:grid-cols-4 gap-4 place-content-center">
+          <div className=" grid md:grid-cols-4 justify-self-start">
             {ressources_upload &&
               ressources_upload.map((resource, key) => (
                 <Resource

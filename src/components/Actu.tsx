@@ -5,5 +5,5 @@ export default function Actu({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
-  return <div className=" bg-neutral-950 text-white p-3 ">{children}</div>;
+  return <div className=" bg-neutral-950 text-white my-4 ">{children}</div>;
 }
