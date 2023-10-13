@@ -4,7 +4,7 @@ import CalendarElements from "@/components/edt/CalendarElements";
 import Grid from "@/components/edt/Calendar/Grid";
 import {CourseEvent, ModuleChoice} from "./types";
 import { API_URL } from "@/config/const";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Button from "@/components/Button";
 import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
 import authOptions from "@/utils/AuthOptions";
@@ -56,6 +56,19 @@ const Edt: React.FunctionComponent = () => {
       setDate(new Date(date.getTime() + daysCount * DAY_IN_MS));
     }
 
+    const tryAddModules = useCallback((additional: ModuleChoice[], initial: ModuleChoice[]) => {
+        let changed: boolean = false;
+
+        for (const m of additional) {
+            if (modules.find(e => e.code == m.code) == undefined) {
+                initial = initial.concat([m]);
+                changed = true;
+            }
+        }
+
+        if (changed) setModules(initial);
+    }, [modules])
+
     useEffect(() => {
         if (modules.length > 0)
             fetchEDTData(date, modules).then((data) => setEdt(data));
@@ -63,19 +76,11 @@ const Edt: React.FunctionComponent = () => {
 
     useEffect(() => {
         let newModules: ModuleChoice[] = [];
-        let changed: boolean = false;
         if (session?.user?.profile?.modules != undefined)
         {
-            for (const m of session.user.profile?.modules) {
-                if (modules.find(e => e.code == m.code) == undefined) {
-                    changed = true;
-                    newModules = newModules.concat([m]);
-                }
-            }
-
-            if (changed) setModules(newModules);
+            tryAddModules(session.user.profile?.modules, newModules);
         }
-    }, [session]);
+    }, [session, tryAddModules]);
 
   return (
     <>
