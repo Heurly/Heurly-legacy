@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/heurly:${{ env.GITHUB_REF_SLUG }}
           platforms: linux/arm64/v8
           build-args: |
             SUPABASE_URL=${{ secrets.DB_URL }}
@@ -39,7 +39,6 @@ jobs:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
         with:
-          envs : ESIEE_HUB_SERVICE 
           host: ${{ secrets.PI_HOST }}
           username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
@@ -49,7 +48,7 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DISCORD_EMBEDS: '[{"title": "Deployment - Link of ${{ env.GITHUB_REF_SLUG }}", "description": "[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.", "url": "https://${{ env.GITHUB_REF_SLUG }}.esiee-hub.domesday.fr", "color": 14847590}]'
+          DISCORD_EMBEDS: '[{"title": "Deployment - Link of ${{ env.GITHUB_REF_SLUG }}", "description": "[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.", "url": "https://${{ env.GITHUB_REF_SLUG }}.heurly.fr", "color": 14847590}]'
         uses: Ilshidur/action-discord@master
         with:
           args: ''
