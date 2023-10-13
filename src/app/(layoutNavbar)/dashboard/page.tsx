@@ -1,7 +1,9 @@
 import Actu from "@/components/Actu";
 import Card from "@/components/Card";
-// import { SearchContext } from "@/context/search";
-// import { useContext } from "react";
+import { SearchContext } from "@/context/search";
+import { useContext } from "react";
+import Resource from "@/components/resources/resource";
+import { Search } from "@/context/search";
 
 export default async function Dashboard(): Promise<React.ReactElement> {
   const styles = {
@@ -23,15 +25,15 @@ export default async function Dashboard(): Promise<React.ReactElement> {
     color: "rgb(163 163 163)",
   };
 
-  const resources = [
+  const ressources_upload = [
     {
-      title: "test",
-      description: "test",
+      title: "tes",
+      description: "early ou quoi",
       date: "2021-10-10",
     },
     {
       title: "lol",
-      description: "caca",
+      description: "early ou quoi",
       date: "2021-10-10",
     },
     {
@@ -82,69 +84,87 @@ export default async function Dashboard(): Promise<React.ReactElement> {
           <div className=" row-span-2 col-span-2 font-extrabold">
             Dernières ressources uploadées :<br />
           </div>
-          {/*<div className="p-5 grid md:grid-cols-4 grid-cols-2 gap-4">
-            {resources &&
-              resources
-                .filter(
-                  (resource) =>
-                    resource.title.includes(search) ||
-                    resource.description.includes(search)
-                )
-                .map((resource, key) => (
-                  <Resource
-                    key={key}
-                    title={resource.title}
-                    description={resource.description}
-                  />
-                ))}
-                </div>*/}
-          voilà
+          <div className="p-5 grid md:grid-cols-4 grid-cols-2 gap-4">
+            {ressources_upload &&
+              ressources_upload.map((resource, key) => (
+                <Resource
+                  key={key}
+                  title={resource.title}
+                  description={resource.description}
+                />
+              ))}
+          </div>
         </Card>
       </div>
 
       <div className="z-20 grid justify-items-stretch flex items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
         <Card>
-          Prochain cours :        
+          Prochain cours :
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">8h</span>
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+              8h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">9h</span>
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+              9h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">10h</span>
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+              10h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">11h</span>
+            <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+              11h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">12h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              12h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">13h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              13h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">14h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              14h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">15h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              15h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">16h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              16h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">17h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              17h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">18h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              18h
+            </span>
           </div>
           <div className="border-t relative h-5 mt-10">
-            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">19h</span>
+            <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+              19h
+            </span>
           </div>
           <div className="border-t relative mt-10">
-            <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-neutral-950">20h</span>
+            <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-neutral-950">
+              20h
+            </span>
           </div>
-
         </Card>
       </div>
     </div>
