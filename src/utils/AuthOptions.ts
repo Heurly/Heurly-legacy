@@ -22,11 +22,12 @@ const authOptions: NextAuthOptions = {
             await getDbUser(session);
 
             const profile = await fetchProfile(session?.user?.email);
+
             session.user.profile = {
-                modules: profile.map(u => ({
+                modules: profile?.map(u => ({
                     label: u.full_name.replaceAll(';', ' - '),
                     code: u.code
-                } as ModuleChoice)) as ModuleChoice[]
+                } as ModuleChoice)) as ModuleChoice[] ?? []
             };
 
             return session;

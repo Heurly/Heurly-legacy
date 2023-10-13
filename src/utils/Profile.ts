@@ -30,6 +30,8 @@ export async function fetchProfile(email: string) {
         }
     });
 
+    if (profile == undefined) return undefined;
+
     const res = await prisma.unit.findMany({
             where: {
                 code: {
@@ -39,5 +41,5 @@ export async function fetchProfile(email: string) {
         }
     );
 
-    return res;
+    return res ?? undefined;
 }
