@@ -3,13 +3,12 @@ import EDTForm from "@/components/edt/EDTForm";
 import CalendarElements from "@/components/edt/CalendarElements";
 import Grid from "@/components/edt/Calendar/Grid";
 import {CourseEvent, ModuleChoice} from "./types";
-import { API_URL } from "@/config/const";
 import React, {useCallback, useEffect, useState} from "react";
 import Button from "@/components/Button";
 import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
-import authOptions from "@/utils/AuthOptions";
-import {getServerSession} from "next-auth";
-import {SessionProvider, useSession} from "next-auth/react";
+import {fetchEDTData} from "@/utils/edt";
+import ApiFilter from "@/utils/apiFilter";
+import {useSession} from "next-auth/react";
 
 
 export const dynamic = "force-dynamic";
@@ -22,40 +21,27 @@ const Edt: React.FunctionComponent = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [date, setDate] = useState<Date>(new Date(Date.now()));
 
-    async function fetchEDTData(offset: Date, modules: ModuleChoice[]): Promise<CourseEvent[]> {
-        if (modules == undefined || modules.length <= 0) return [];
-        setLoading(true);
+  const changeDate = (daysCount: number) => {
+      let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
+      newDate.setHours(0, 0, 0, 0);
+      setDate(newDate);
+  }
 
-        const payload = {offset: offset, modules: modules.map(m => m.code)}
-        const data = await fetch(API_URL + "/edt",
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-        try {
-            const resp = await data.json();
+  useEffect(() => {
+      if (modules.length <= 0) return;
 
-            setLoading(false);
-            return resp.VCALENDAR[0].VEVENT as CourseEvent[];
-        } catch(e) {
-            console.log('[ERROR] Failed to retrieve EDT data fetching from: ' + API_URL + "/edt");
-        }
-        finally {
-            setLoading(false);
-        }
-
+      setLoading(true);
+    fetchEDTData({
+        greater:
+            new Date(new Date(date.getTime() - (date.getDay() - 1) * (DAY_IN_MS)).getTime()).getTime(),
+        lower:
+            new Date(new Date((date.getTime() + (6 * DAY_IN_MS)) - date.getDay() * (DAY_IN_MS))).getTime()
+    } as ApiFilter<number>
+    , modules).then((data) => {
         setLoading(false);
-        return [];
-    }
-
-    const changeDate = (daysCount: number) => {
-      setDate(new Date(date.getTime() + daysCount * DAY_IN_MS));
-    }
-
+        setEdt(data)
+    });
+  }, [modules, date]);
     const tryAddModules = useCallback((additional: ModuleChoice[], initial: ModuleChoice[]) => {
         let changed: boolean = false;
 
@@ -68,11 +54,6 @@ const Edt: React.FunctionComponent = () => {
 
         if (changed) setModules(initial);
     }, [modules])
-
-    useEffect(() => {
-        if (modules.length > 0)
-            fetchEDTData(date, modules).then((data) => setEdt(data));
-    }, [modules, date]);
 
     useEffect(() => {
         let newModules: ModuleChoice[] = [];
