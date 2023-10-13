@@ -11,7 +11,7 @@ export async function getDbUser(session: Session) {
     });
 
     if (user == undefined) {
-        prisma.user.create({
+        await prisma.user.create({
         data: {
             name: session.user.name,
             email: session.user.email!,
