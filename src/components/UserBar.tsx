@@ -2,9 +2,9 @@ import SettingsBtn from "./SettingsBtn";
 
 export default function UserBar() {
   return (
-    <div className="border-t border-neutral-600 flex items-center justify-center gap-10 py-5 px-3 w-full">
+    <div className="border-t border-neutral-600 bg-neutral-950 flex items-center gap-x-3 py-1 px-7 w-full text-white ">
+      <SettingsBtn />  
       <p>A.&nbsp;Hait&nbsp;Amid</p>
-      <SettingsBtn />
     </div>
   );
 }
