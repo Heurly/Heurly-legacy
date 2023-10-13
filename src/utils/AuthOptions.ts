@@ -1,8 +1,9 @@
 import {NextAuthOptions, Session} from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import {getProfile} from "@/utils/Profile";
+import {fetchProfile, getProfile} from "@/utils/Profile";
 import {PrismaClient} from "@prisma/client";
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
+import {getDbUser} from "@/utils/User";
 
 const prisma = new PrismaClient();
 
@@ -18,25 +19,15 @@ const authOptions: NextAuthOptions = {
         async session({session}: {session: Session})  {
             if (session?.user?.email == undefined) return session;
 
-            const profile = await prisma.user.findFirst({
-                where: {
-                    email: session?.user?.email
-                }
-            });
+            await getDbUser(session);
 
-            const res = await prisma.unit.findMany({
-                    where: {
-                        code: {
-                            in: profile?.profile
-                        }
-                    }
-                }
-            );
+            const profile = await fetchProfile(session?.user?.email);
+
             session.user.profile = {
-                modules: res.map(u => ({
+                modules: profile?.map(u => ({
                     label: u.full_name.replaceAll(';', ' - '),
                     code: u.code
-                } as ModuleChoice)) as ModuleChoice[]
+                } as ModuleChoice)) as ModuleChoice[] ?? []
             };
 
             return session;

@@ -1,9 +1,12 @@
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
 import {API_URL} from "@/config/const";
+import {PrismaClient} from "@prisma/client";
 
 export interface Profile {
     modules: ModuleChoice[];
 }
+
+const prisma = new PrismaClient();
 
 export async function getProfile(email: string) {
     const payload = {email: email};
@@ -18,4 +21,25 @@ export async function getProfile(email: string) {
             body: JSON.stringify(payload)
         });
     return await data.json() as ModuleChoice[];
+}
+
+export async function fetchProfile(email: string) {
+    const profile = await prisma.user.findFirst({
+        where: {
+            email: email
+        }
+    });
+
+    if (profile == undefined) return undefined;
+
+    const res = await prisma.unit.findMany({
+            where: {
+                code: {
+                    in: profile?.profile
+                }
+            }
+        }
+    );
+
+    return res ?? undefined;
 }
