@@ -7,6 +7,7 @@ import { lines2tree } from 'icalts'
 import {distance} from "fastest-levenshtein";
 import {parseISO} from "date-fns";
 import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
+import ApiFilter from "@/utils/apiFilter";
 
 interface CalendarData {
   VCALENDAR: [
@@ -28,14 +29,32 @@ async function setUserGroups(formData: FormData) {
   });
 }
 
-function filterCourses(courses: CourseEvent[], weekOffset: Date) {
-  weekOffset.setHours(0);
-  weekOffset.setMinutes(0);
+function filterCourses(courses: CourseEvent[], dateFilter: ApiFilter<number>) {
+  if (dateFilter.greater != undefined) {
+    courses = courses.filter(m =>
+        dateFilter.greater != undefined &&
+        parseISO(m.DTSTART).getTime() >= dateFilter.greater
+    ) as CourseEvent[];
+  }
+  if (dateFilter.lower != undefined) {
+    courses = courses.filter(m =>
+        dateFilter.lower != undefined &&
+        parseISO(m.DTSTART).getTime() <
+        dateFilter.lower
+    ) as CourseEvent[];
+  }
+  if (dateFilter.equals != undefined) {
+    courses = courses.filter(m => {
+      const start = parseISO(m.DTSTART);
+      start.setHours(0, 0, 0, 0);
 
-  return courses.filter(m =>
-      parseISO(m.DTSTART).getTime() >= new Date(weekOffset.getTime() - (weekOffset.getDay() - 1) * (DAY_IN_MS)).getTime() &&
-      parseISO(m.DTSTART).getTime() < new Date((weekOffset.getTime() + (6 * DAY_IN_MS)) - weekOffset.getDay() * (DAY_IN_MS)).getTime()
-  ) as CourseEvent[];
+      return dateFilter.equals != undefined &&
+          start.getTime() == dateFilter.equals
+        }
+    ) as CourseEvent[];
+  }
+
+  return courses as CourseEvent[];
 }
 
 async function translateCoursesCodes(courses: CourseEvent[]) {
@@ -70,7 +89,7 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
 }
 
 export async function POST(request: NextRequest) {
-  const payload: {offset: number, modules: number[]} = await request.json();
+  const payload: {dateFilter: ApiFilter<number>, modules: number[]} = await request.json();
   if (payload.modules.length <= 0) return;
 
   const endpoint = PLANIF_ENDPOINT(payload.modules);
@@ -86,7 +105,7 @@ export async function POST(request: NextRequest) {
 
   let res: CalendarData = lines2tree(VCALENDAR.split("\r\n")) as unknown as CalendarData;
 
-  res.VCALENDAR[0].VEVENT = filterCourses(res.VCALENDAR[0].VEVENT, new Date(payload.offset));
+  res.VCALENDAR[0].VEVENT = filterCourses(res.VCALENDAR[0].VEVENT, payload.dateFilter);
   await translateCoursesCodes(res.VCALENDAR[0].VEVENT);
 
   return NextResponse.json(res);

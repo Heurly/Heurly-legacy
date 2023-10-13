@@ -1,10 +1,11 @@
 "use client";
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useEffect} from "react";
 import {ModuleChoice} from "@/app/(layoutNavbar)/edt/types";
 import {API_URL} from "@/config/const";
 import id from "@/utils/id";
 import SearchBar, {Suggestion, SuggestionFilter} from "@/components/common/search-bar";
 import {ModuleFilter} from "@/app/api/modules/route";
+import {useSession} from "next-auth/react";
 
 async function getModules(filter: SuggestionFilter) {
     const payload = {contains: filter.tags.concat(filter.value.split(' '))} as ModuleFilter;
@@ -26,7 +27,7 @@ interface Props {
 }
 
 const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}: Props) => {
-  const addModule = (module: Suggestion | undefined) => {
+    const addModule = (module: Suggestion | undefined) => {
     if (module == undefined || modules.find(m => m.label == module.value)) return;
 
     const newModules = modules.concat([module.value]);
@@ -35,7 +36,7 @@ const EDTForm: React.FunctionComponent<Props> = ({modules, setModules}: Props) =
   const removeModule = (module: string | undefined) => {
     if (module == undefined) return;
 
-    const newModules = modules.filter(m => m.label != module);
+  const newModules = modules.filter(m => m.label != module);
     setModules(newModules);
   }
 

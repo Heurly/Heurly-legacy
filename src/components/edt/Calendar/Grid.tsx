@@ -1,13 +1,18 @@
 import {
-  LINES,
-  COLUMNS,
-  DAYS,
+    LINES,
+    COLUMNS,
+    DAYS, DAY_IN_MS,
 } from "@/app/(layoutNavbar)/edt/const";
 import id from "@/utils/id";
 import React from "react";
 
-export default function Grid(): React.ReactElement {
+interface Props {
+    date: Date;
+}
+
+export default function Grid({date}: Props): React.ReactElement {
   const grid = [];
+  const week = new Date(date.getTime() - (date.getDay() - 1) * DAY_IN_MS);
 
   for (let i = 0; i < LINES - 1; i++) {
     // we put the days in the grid
@@ -34,7 +39,10 @@ export default function Grid(): React.ReactElement {
             gridRow: `${1} / span 1`,
           }}
         >
-          {DAYS[i - 1]}
+          <div>{DAYS[i - 1]}</div>
+            <div className="text-neutral-600">{i != 0 &&
+                new Date(week.getTime() + (i-1)*DAY_IN_MS).toLocaleString('fr-FR', { month: 'numeric', day: 'numeric'})
+            }</div>
         </div>
       );
     }
