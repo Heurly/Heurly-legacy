@@ -14,9 +14,9 @@ export default function ToolsLink() {
   
     return (
        
-        <div className="border-t border-neutral-600 bg-neutral-950 text-white flex flex-col justify-center gap-5 py-5 px-7 w-full  ">
+        <div className="border-t border-neutral-600 bg-neutral-950 text-white flex flex-col justify-end gap-y-3 py-3 px-7 w-full h-30  ">
           {links && links.map((link, index) => (
-            <div className="pl-5" key={index}>
+            <div className="" key={index}>
             <Tools key={index} imageLink={link.imageLink} text={link.text} urlLink={link.urlLink} />
             </div>
           ))}
