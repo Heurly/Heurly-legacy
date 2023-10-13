@@ -8,22 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4.x
-
-      - name: Create Deployment
-        uses: avakar/create-deployment@v1
-        with:
-          auto_merge: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          
-      - name: Update Status
-        uses: avakar/set-deployment-status@v1
-        with:
-          state: in_progress
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+        uses: rlespinasse/github-slug-action@v4.x          
       - name: Checkout
         uses: actions/checkout@v4
       - name: Login to Docker Hub
@@ -40,13 +25,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/esiee-hub:${{ env.GITHUB_REF_SLUG }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/heurly:${{ env.GITHUB_REF_SLUG }}
           platforms: linux/arm64/v8
           build-args: |
             SUPABASE_URL=${{ secrets.DB_URL }}
-            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-            APP_URL=${{ env.GITHUB_REF_SLUG }}.esiee-hub.domesday.fr
           
   deploy:
     needs: build
@@ -57,23 +39,16 @@ jobs:
       - name: SSH and Docker Pull
         uses: appleboy/ssh-action@v1.0.0
         with:
-          envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
           username: ${{ secrets.PI_USERNAME }} 
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/hub/scripts
             sudo ./add-container.sh ${{ env.GITHUB_REF_SLUG }}
-      - name: Update Status
-        uses: avakar/set-deployment-status@v1
-        with:
-          state: success
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DISCORD_EMBEDS: '[{"title": "Deployment - Link of ${{ env.GITHUB_REF_SLUG }}", "description": "[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.", "url": "https://${{ env.GITHUB_REF_SLUG }}.esiee-hub.domesday.fr", "color": 14847590}]'
+          DISCORD_EMBEDS: '[{"title": "Deployment - Link of ${{ env.GITHUB_REF_SLUG }}", "description": "[${{ github.repository }}] Branch ${{ env.GITHUB_REF_SLUG }} has been deployed.", "url": "https://${{ env.GITHUB_REF_SLUG }}.heurly.fr", "color": 14847590}]'
         uses: Ilshidur/action-discord@master
         with:
           args: ''

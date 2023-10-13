@@ -1,30 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async redirects() {
-        return [
+    images: {
+        remotePatterns: [
             {
-                source: '/',
-                has: [
-                    {
-                        type: 'cookie',
-                        key: 'user',
-                    },
-                ],
-                permanent: false,
-                destination: '/edt',
-            },
-            {
-                source: '/',
-                missing: [
-                    {
-                        type: 'cookie',
-                        key: 'user',
-                    },
-                ],
-                permanent: false,
-                destination: '/login',
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com'
             }
         ]
+    },
+    experimental: {
+        serverActions: true,
     },
     output: 'standalone',
 }
