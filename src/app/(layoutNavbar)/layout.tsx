@@ -3,9 +3,10 @@ import {Inter} from "next/font/google";
 import cn from "classnames";
 import NavBar from "@/components/common/Navbar";
 import {getServerSession, Session} from "next-auth";
-import authOptions from "@/utils/authOptions";
+import authOptions from "@/utils/AuthOptions";
 import {redirect, RedirectType} from "next/navigation";
 import React from "react";
+import Logout from "@/components/navbar/Logout";
 
 const inter = Inter({ subsets: ["latin"] });
 

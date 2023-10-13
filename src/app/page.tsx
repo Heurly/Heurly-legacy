@@ -1,6 +1,6 @@
 import React from "react";
 import {getServerSession, Session} from "next-auth";
-import authOptions from "@/utils/authOptions";
+import authOptions from "@/utils/AuthOptions";
 import {redirect, RedirectType} from "next/navigation";
 
 export default async function Page(): Promise<React.ReactElement> {

@@ -14,7 +14,9 @@ export default function Login(): React.ReactElement {
                             Bienvenue sur <span className="text-white">ESIEE&nbsp;HUB</span>
                         </h1>
                         <div className="text-white">
-                            <Button onClick={() => signIn('google')}>Se connecter avec Google</Button>
+                            <Button onClick={() => signIn('google', {callbackUrl: '/edt'})}>
+                                Se connecter avec Google
+                            </Button>
                         </div>
                     </div>
                 </div>
