@@ -7,7 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "prepare": "husky install",
+    "prettier": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format"
+    }
   },
   "dependencies": {
     "@prisma/client": "^5.3.1",
@@ -31,6 +39,8 @@
   },
   "devDependencies": {
     "@types/passport": "^1.0.12",
+    "husky": "^8.0.3",
+    "prettier": "3.0.3",
     "prisma": "^4.14.0"
   }
 }

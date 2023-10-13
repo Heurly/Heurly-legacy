@@ -1,4 +1,4 @@
-import { PrismaClient, Ressource } from "@prisma/client"
+import { PrismaClient, Ressource } from "@prisma/client";
 import fs from "fs";
 const prisma = new PrismaClient();
 import { NextRequest, NextResponse } from "next/server";
@@ -18,11 +18,11 @@ const LIMIT_MAX = 10;
  * @param nb number of ressources to get (default 10)
  * @param name name of the ressource to get (default all)
  * @param unit unit of the ressource to get (default all)
- *  
+ *
  * @returns Response with the ressources
- *  
+ *
  */
-  
+
 // export async function GET(request: Request) {
 //     const { searchParams } = new URL(request.url)
 
@@ -44,22 +44,21 @@ const LIMIT_MAX = 10;
 //             unit: true
 //         }
 //     });
-   
+
 //     return Response.json({ ressources });
 
 // }
 
 interface RequestBody {
-    name: string;
-    unitId: number;
-    pdf: File;
+  name: string;
+  unitId: number;
+  pdf: File;
 }
 
 // export async function POST(request: Request) {
 //     try {
 //         // if no body provided, return an error
 //         if (!request.body) return Response.error();
-
 
 //         // the body should contain the name of the resource, unitId, and the pdf file object
 //         const { name, unitId, pdf }: RequestBody = await request.json();
@@ -94,7 +93,6 @@ interface RequestBody {
 //         // if the resource already exists, return an error
 //         if (existingResource) return new Response('Resource already exists', { status: 201 });
 
-
 //         // put the pdf in the private directory
 //         const pdfPath = `./private/${pdf.name}`;
 
@@ -120,6 +118,4 @@ interface RequestBody {
 //         return Response.json({ error: 'Internal Server Error' },);
 //     }
 // }
-export async function PUT() {
-
-}
+export async function PUT() {}

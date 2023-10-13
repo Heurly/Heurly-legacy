@@ -1,16 +1,17 @@
 import {
-    LINES,
-    COLUMNS,
-    DAYS, DAY_IN_MS,
+  LINES,
+  COLUMNS,
+  DAYS,
+  DAY_IN_MS,
 } from "@/app/(layoutNavbar)/edt/const";
 import id from "@/utils/id";
 import React from "react";
 
 interface Props {
-    date: Date;
+  date: Date;
 }
 
-export default function Grid({date}: Props): React.ReactElement {
+export default function Grid({ date }: Props): React.ReactElement {
   const grid = [];
   const week = new Date(date.getTime() - (date.getDay() - 1) * DAY_IN_MS);
 
@@ -26,7 +27,7 @@ export default function Grid({date}: Props): React.ReactElement {
             gridColumn: `${1} / span 1`,
             gridRow: `${1} / span 1`,
           }}
-        />
+        />,
       );
     }
     if (i <= DAYS.length) {
@@ -40,10 +41,14 @@ export default function Grid({date}: Props): React.ReactElement {
           }}
         >
           <div>{DAYS[i - 1]}</div>
-            <div className="text-neutral-600">{i != 0 &&
-                new Date(week.getTime() + (i-1)*DAY_IN_MS).toLocaleString('fr-FR', { month: 'numeric', day: 'numeric'})
-            }</div>
-        </div>
+          <div className="text-neutral-600">
+            {i != 0 &&
+              new Date(week.getTime() + (i - 1) * DAY_IN_MS).toLocaleString(
+                "fr-FR",
+                { month: "numeric", day: "numeric" },
+              )}
+          </div>
+        </div>,
       );
     }
     // we put the hours in the grid
@@ -57,15 +62,15 @@ export default function Grid({date}: Props): React.ReactElement {
             gridRow: `${i + 1} / span 1`,
           }}
         >
-          <div className="relative -bottom-5 bg-neutral-950 p-2">{i + 7 == 13+7 ? '' : `${i + 7}h`}</div>
-        </div>
+          <div className="relative -bottom-5 bg-neutral-950 p-2">
+            {i + 7 == 13 + 7 ? "" : `${i + 7}h`}
+          </div>
+        </div>,
       );
     }
 
     for (let j = 0; j < COLUMNS - 1; j++) {
-      grid.push(
-        <div key={`${id()}`} className="w-full h-full" />
-      );
+      grid.push(<div key={`${id()}`} className="w-full h-full" />);
     }
   }
 

@@ -1,7 +1,12 @@
 import React from "react";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { parseISO } from "date-fns";
-import {COLUMNS, DAY_IN_MS, HOURS_OFFSET, LINES} from "@/app/(layoutNavbar)/edt/const";
+import {
+  COLUMNS,
+  DAY_IN_MS,
+  HOURS_OFFSET,
+  LINES,
+} from "@/app/(layoutNavbar)/edt/const";
 
 function getTimeValue(date: Date): number {
   const offset: number = 6 + date.getTimezoneOffset() / 60;
@@ -34,11 +39,20 @@ export default function CalendarElements({
               style={{
                 width: `${100 / COLUMNS}%`,
                 height: `${
-                    (((courseEnd.getHours()+courseEnd.getMinutes()/60) - (courseStart.getHours()+courseStart.getMinutes()/60)) *
+                  ((courseEnd.getHours() +
+                    courseEnd.getMinutes() / 60 -
+                    (courseStart.getHours() + courseStart.getMinutes() / 60)) *
                     100) /
-                    LINES + 1
+                    LINES +
+                  1
                 }%`,
-                top: `${((((courseStart.getHours()+courseStart.getMinutes()/60) - HOURS_OFFSET) * 100) / (LINES - 1))}%`,
+                top: `${
+                  ((courseStart.getHours() +
+                    courseStart.getMinutes() / 60 -
+                    HOURS_OFFSET) *
+                    100) /
+                  (LINES - 1)
+                }%`,
                 left: `${(courseStart.getDay() * 100) / COLUMNS}%`,
               }}
             >

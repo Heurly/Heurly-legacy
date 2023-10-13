@@ -1,16 +1,12 @@
-'use client'
+"use client";
 import "@/globals.css";
 import React from "react";
-import {SessionProvider} from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
 export default function EdtLayout({
-   children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }): React.ReactElement {
-    return (
-        <SessionProvider>
-            {children}
-        </SessionProvider>
-    );
+  return <SessionProvider>{children}</SessionProvider>;
 }

@@ -1,7 +1,7 @@
-'use client'
-import React, {useCallback, useEffect, useRef, useState} from "react";
+"use client";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import cn from "classnames";
-import {distance} from 'fastest-levenshtein';
+import { distance } from "fastest-levenshtein";
 import SearchIcon from "@/components/SearchIcon";
 import id from "@/utils/id";
 import Tag from "@/components/Tag";
@@ -17,14 +17,19 @@ interface Props {
 export type SuggestionFilter = {
   tags: string[];
   value: string;
-}
+};
 
 export type Suggestion = {
   label: string;
   value: any;
-}
+};
 
-const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, nbSuggestions = 5}) => {
+const SearchBar: React.FunctionComponent<Props> = ({
+  data,
+  resolveSearch,
+  tags,
+  nbSuggestions = 5,
+}) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
@@ -36,15 +41,17 @@ const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, n
       if (!suggestion.label.includes(tag)) return false;
     }
     return false;
-  }
+  };
 
   const sortSuggestion = (suggestion: Suggestion) => {
-    const w = searchText.split(' ');
+    const w = searchText.split(" ");
     let res = 0;
 
-    w.forEach(e => suggestion.label.split(' - ').forEach(el => res += distance(e, el)));
+    w.forEach((e) =>
+      suggestion.label.split(" - ").forEach((el) => (res += distance(e, el))),
+    );
     return res;
-  }
+  };
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
     resolveSearch(suggestion);
@@ -52,16 +59,19 @@ const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, n
 
   const addTag = (tag: string) => {
     setSelectedTags(selectedTags.concat([tag]));
-    setSearchText('');
-  }
+    setSearchText("");
+  };
   const removeTag = (tag: string) => {
-    setSelectedTags(selectedTags.filter(e => e != tag));
-  }
+    setSelectedTags(selectedTags.filter((e) => e != tag));
+  };
 
-  const filterModules = ((text: string) => debounce(
-      data({tags: selectedTags, value: text}).then(res => setSuggestions(res))
-    , 1500)
-  );
+  const filterModules = (text: string) =>
+    debounce(
+      data({ tags: selectedTags, value: text }).then((res) =>
+        setSuggestions(res),
+      ),
+      1500,
+    );
 
   useEffect(() => {
     if (showSuggestions) {
@@ -85,7 +95,7 @@ const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, n
         <div
           className={cn(
             "bg-neutral-700 rounded-lg text-white flex items-center justify-center pr-3 ",
-            { "rounded-b-none": showSuggestions }
+            { "rounded-b-none": showSuggestions },
           )}
         >
           <input
@@ -100,53 +110,67 @@ const SearchBar: React.FunctionComponent<Props> = ({data, resolveSearch, tags, n
           />
           <SearchIcon />
         </div>
-        {showSuggestions && (<div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
-          <div className="flex p-2 pr-8 bg-neutral-600 text-white">
-            {showSuggestions &&
+        {showSuggestions && (
+          <div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
+            <div className="flex p-2 pr-8 bg-neutral-600 text-white">
+              {showSuggestions &&
                 tags &&
                 tags
-                    .filter((tag) => tag.includes(searchText) && !selectedTags.includes(tag))
-                    .sort((tag) => sortSuggestion({label: tag, value: undefined}))
-                    .slice(0, 20)
-                    .map((tag, index) => (
-                        <Tag
-                            key={id()}
-                            text={tag}
-                            onClickCallback={(e) => addTag(e.currentTarget.innerText.slice(2))}
-                        />
-                    ))
-            }
-          </div>
-          <div className="flex-col">
-            {showSuggestions &&
+                  .filter(
+                    (tag) =>
+                      tag.includes(searchText) && !selectedTags.includes(tag),
+                  )
+                  .sort((tag) =>
+                    sortSuggestion({ label: tag, value: undefined }),
+                  )
+                  .slice(0, 20)
+                  .map((tag, index) => (
+                    <Tag
+                      key={id()}
+                      text={tag}
+                      onClickCallback={(e) =>
+                        addTag(e.currentTarget.innerText.slice(2))
+                      }
+                    />
+                  ))}
+            </div>
+            <div className="flex-col">
+              {showSuggestions &&
                 suggestions &&
                 suggestions
-                    .sort((sugg) => sortSuggestion(sugg))
-                    .slice(0, nbSuggestions)
-                    .map((suggestion, index) => (
-                        <Suggestion
-                            key={id()}
-                            text={suggestion.label}
-                            onClickCallback={() => {
-                              handleSuggestionClick(suggestion);
-                              setShowSuggestions(false);
-                            }}
-                        />
-                    ))}
+                  .sort((sugg) => sortSuggestion(sugg))
+                  .slice(0, nbSuggestions)
+                  .map((suggestion, index) => (
+                    <Suggestion
+                      key={id()}
+                      text={suggestion.label}
+                      onClickCallback={() => {
+                        handleSuggestionClick(suggestion);
+                        setShowSuggestions(false);
+                      }}
+                    />
+                  ))}
+            </div>
           </div>
-        </div>)}
+        )}
       </div>
       <div className="flex py-2 text-white items-center">
         {selectedTags &&
-            selectedTags.map((tag) => (
+          selectedTags.map((tag) => (
             <div key={id()} className="mr-1">
-              <Tag key={id()} text={tag} onClickCallback={(e) => removeTag(e.currentTarget.innerText.slice(2))} />
+              <Tag
+                key={id()}
+                text={tag}
+                onClickCallback={(e) =>
+                  removeTag(e.currentTarget.innerText.slice(2))
+                }
+              />
             </div>
           ))}
       </div>
     </div>
   );
-}
+};
 
 export function Suggestion({
   text,
