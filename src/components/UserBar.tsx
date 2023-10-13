@@ -1,6 +1,6 @@
 import SettingsBtn from "./SettingsBtn";
 import {getServerSession} from "next-auth";
-import authOptions from "@/utils/authOptions";
+import authOptions from "@/utils/AuthOptions";
 import Image from "next/image";
 import React from "react";
 
@@ -15,8 +15,8 @@ export default async function  UserBar() : Promise<React.ReactElement> {
                         className="border-t border-neutral-600 flex justify-items-center items-center justify-center gap-10 py-1 px-3 w-full"
                     >
                         <div className="flex justify-items-center items-center w-10/12">
-                            <img className="rounded-2xl" src={session?.user?.image ?? ''} alt="user icon" width={32} height={32}/>
-                            <p className="p-4">{session?.user?.name?.split(' ')[0] ?? ''}</p>
+                            <Image className="rounded-2xl" src={session?.user?.image ?? ''} alt="user icon" width={32} height={32}/>
+                            <p className="p-4">{session?.user?.name ?? ''}</p>
                         </div>
                         <SettingsBtn/>
                         <a href="/api/auth/signout">

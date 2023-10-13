@@ -7,7 +7,7 @@ import { API_URL } from "@/config/const";
 import React, {useEffect, useState} from "react";
 import Button from "@/components/Button";
 import {DAY_IN_MS} from "@/app/(layoutNavbar)/edt/const";
-import authOptions from "@/utils/authOptions";
+import authOptions from "@/utils/AuthOptions";
 import {getServerSession} from "next-auth";
 import {SessionProvider, useSession} from "next-auth/react";
 
@@ -15,14 +15,14 @@ import {SessionProvider, useSession} from "next-auth/react";
 export const dynamic = "force-dynamic";
 
 const Edt: React.FunctionComponent = () => {
-  const {data: session} = useSession();
+    const {data: session} = useSession();
 
-  const [modules, setModules] = useState<ModuleChoice[]>([]);
-  const [edt, setEdt] = useState<CourseEvent[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(new Date(Date.now()));
+    const [modules, setModules] = useState<ModuleChoice[]>([]);
+    const [edt, setEdt] = useState<CourseEvent[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [date, setDate] = useState<Date>(new Date(Date.now()));
 
-  async function fetchEDTData(offset: Date, modules: ModuleChoice[]): Promise<CourseEvent[]> {
+    async function fetchEDTData(offset: Date, modules: ModuleChoice[]): Promise<CourseEvent[]> {
         if (modules == undefined || modules.length <= 0) return [];
         setLoading(true);
 
@@ -52,32 +52,29 @@ const Edt: React.FunctionComponent = () => {
         return [];
     }
 
-  async function getProfile(email: string) {
-      const payload = {email: email};
-
-      const data = await fetch(API_URL + "/profile",
-          {
-              method: "POST",
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(payload)
-      });
-      return await data.json() as ModuleChoice[];
-  }
-
-  const changeDate = (daysCount: number) => {
+    const changeDate = (daysCount: number) => {
       setDate(new Date(date.getTime() + daysCount * DAY_IN_MS));
-  }
-
-  useEffect(() => {
-    fetchEDTData(date, modules).then((data) => setEdt(data));
-  }, [modules, date]);
+    }
 
     useEffect(() => {
-        if (session?.user?.email != undefined)
-            getProfile(session?.user?.email).then(p => setModules(modules.concat(p)));
+        if (modules.length > 0)
+            fetchEDTData(date, modules).then((data) => setEdt(data));
+    }, [modules, date]);
+
+    useEffect(() => {
+        let newModules: ModuleChoice[] = [];
+        let changed: boolean = false;
+        if (session?.user?.profile?.modules != undefined)
+        {
+            for (const m of session.user.profile?.modules) {
+                if (modules.find(e => e.code == m.code) == undefined) {
+                    changed = true;
+                    newModules = newModules.concat([m]);
+                }
+            }
+
+            if (changed) setModules(newModules);
+        }
     }, [session]);
 
   return (

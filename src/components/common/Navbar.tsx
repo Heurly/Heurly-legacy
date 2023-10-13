@@ -45,8 +45,8 @@ const NavBar: React.FunctionComponent = () => {
                     Forum
                 </Link>
             </div>
-            <ToolsLink/>
-            <UserBar/>
+            <ToolsLink />
+            <UserBar />
         </nav>
     );
 }
