@@ -55,6 +55,18 @@ function filterCourses(courses: CourseEvent[], dateFilter: ApiFilter<number>) {
   return courses as CourseEvent[];
 }
 
+function distanceToCourseCode(target: string, entry: string) {
+  if (entry.length > target.length) {
+    const strippedEntry = entry.slice(0, entry.length-1);
+
+    if (strippedEntry == target) {
+      return 0;
+    }
+  }
+
+  return distance(target, entry);
+}
+
 async function translateCoursesCodes(courses: CourseEvent[]) {
   // Retrieve necessary courses label batch
   let conditions = [];
@@ -79,8 +91,17 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
   for (const course of courses) {
     const [subject, type]: string[] = course.SUMMARY.split(":");
     const label = labels.reduce((minLabel, currentLabel) => {
-      const minDistance = distance(minLabel.code_cours, subject);
-      const currentDistance = distance(currentLabel.code_cours, subject);
+      let minDistance = 0;
+      let currentDistance = 0;
+
+      subject.split('-')
+          .forEach(w1 => {
+            minLabel.code_cours.split('_').slice(2)
+                .forEach(w2 => minDistance += distanceToCourseCode(w1,w2))
+            currentLabel.code_cours.split('_').slice(2)
+                .forEach(w2 => currentDistance += distanceToCourseCode(w1,w2))
+          })
+
       return currentDistance < minDistance ? currentLabel : minLabel;
     }, labels[0]).nom_cours;
 
