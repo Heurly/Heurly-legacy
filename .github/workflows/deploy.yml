@@ -1,7 +1,12 @@
 name: ci-push
 
 on:
-  push: {}
+  push:
+    branches:
+      - alpha
+      - main
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   build:
