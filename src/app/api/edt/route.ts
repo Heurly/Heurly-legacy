@@ -96,8 +96,7 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
 
       subject.split("-").forEach((w1) => {
         minLabel.code_cours
-          .split("_")
-          .slice(2)
+          .split("_").slice(2)
           .forEach((w2) => (minDistance += distanceToCourseCode(w1, w2)));
         currentLabel.code_cours
           .split("_")
