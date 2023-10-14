@@ -8,6 +8,8 @@ import { parseISO } from "date-fns";
 import ApiFilter from "@/utils/apiFilter";
 import prismaClient from "@/utils/Prisma";
 
+const COURSES_EXCEPTIONS = ["BDE"];
+
 interface CalendarData {
   VCALENDAR: [
     {
@@ -90,10 +92,15 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
   // Translate courses codes
   for (const course of courses) {
     const [subject, type]: string[] = course.SUMMARY.split(":");
+
+    if (COURSES_EXCEPTIONS.includes(subject)) {
+      course.SUMMARY = course.SUMMARY.replace(":", " : ");
+      continue;
+    }
+
     const label = labels.reduce((minLabel, currentLabel) => {
       let minDistance = 0;
       let currentDistance = 0;
-
       subject.split("-").forEach((w1) => {
         minLabel.code_cours
           .split("_")
