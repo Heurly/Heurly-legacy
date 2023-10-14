@@ -19,5 +19,4 @@ export default function TimeColumn(): React.ReactElement {
       })}
     </div>
   );
-
 }

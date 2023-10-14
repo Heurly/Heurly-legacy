@@ -6,8 +6,6 @@ import SearchBar from "@/components/common/search-bar";
 import { PrismaClient } from "@prisma/client";
 import AddRessourceForm from "@/components/resources/addRessourceForm";
 
-
-
 export default function Hub(): React.ReactElement {
   const resources = [
     {

@@ -1,7 +1,6 @@
 name: ci-delete
 
-on:
-  delete
+on: delete
 
 jobs:
   cleanup:
@@ -13,7 +12,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.PI_HOST }}
-          username: ${{ secrets.PI_USERNAME }} 
+          username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/hub/scripts
