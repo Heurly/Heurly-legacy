@@ -1,7 +1,6 @@
 import { PrismaClient, Ressource } from "@prisma/client";
 import fs from "fs";
-const prisma = new PrismaClient();
-import { NextRequest, NextResponse } from "next/server";
+
 const LIMIT_MAX = 10;
 
 // the api can be used with the following http methods

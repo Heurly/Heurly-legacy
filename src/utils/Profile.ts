@@ -1,12 +1,10 @@
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import { API_URL } from "@/config/const";
-import { PrismaClient } from "@prisma/client";
+import prismaClient from "@/utils/Prisma";
 
 export interface Profile {
   modules: ModuleChoice[];
 }
-
-const prisma = new PrismaClient();
 
 export async function getProfile(email: string) {
   const payload = { email: email };
@@ -23,7 +21,7 @@ export async function getProfile(email: string) {
 }
 
 export async function fetchProfile(email: string) {
-  const profile = await prisma.user.findFirst({
+  const profile = await prismaClient.user.findFirst({
     where: {
       email: email,
     },
@@ -31,7 +29,7 @@ export async function fetchProfile(email: string) {
 
   if (profile == undefined) return undefined;
 
-  const res = await prisma.unit.findMany({
+  const res = await prismaClient.unit.findMany({
     where: {
       code: {
         in: profile?.profile,

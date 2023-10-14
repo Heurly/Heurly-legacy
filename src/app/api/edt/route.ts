@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { NextRequest } from "next/server";
 import { lines2tree } from "icalts";
 import { distance } from "fastest-levenshtein";
 import { parseISO } from "date-fns";
-import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import ApiFilter from "@/utils/apiFilter";
+import prismaClient from "@/utils/Prisma";
 
 interface CalendarData {
   VCALENDAR: [
@@ -17,10 +16,8 @@ interface CalendarData {
   ];
 }
 
-const prisma = new PrismaClient();
-
 async function setUserGroups(formData: FormData) {
-  const post = await prisma.user.findFirst({
+  const post = await prismaClient.user.findFirst({
     where: {
       id: {
         equals: 1,
@@ -58,6 +55,18 @@ function filterCourses(courses: CourseEvent[], dateFilter: ApiFilter<number>) {
   return courses as CourseEvent[];
 }
 
+function distanceToCourseCode(target: string, entry: string) {
+  if (entry.length > target.length) {
+    const strippedEntry = entry.slice(0, entry.length - 1);
+
+    if (strippedEntry == target) {
+      return 0;
+    }
+  }
+
+  return distance(target, entry);
+}
+
 async function translateCoursesCodes(courses: CourseEvent[]) {
   // Retrieve necessary courses label batch
   let conditions = [];
@@ -74,7 +83,7 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
     });
   }
   const filter = { OR: conditions };
-  let labels = await prisma.course.findMany({
+  let labels = await prismaClient.course.findMany({
     where: filter,
   });
 
@@ -82,8 +91,20 @@ async function translateCoursesCodes(courses: CourseEvent[]) {
   for (const course of courses) {
     const [subject, type]: string[] = course.SUMMARY.split(":");
     const label = labels.reduce((minLabel, currentLabel) => {
-      const minDistance = distance(minLabel.code_cours, subject);
-      const currentDistance = distance(currentLabel.code_cours, subject);
+      let minDistance = 0;
+      let currentDistance = 0;
+
+      subject.split("-").forEach((w1) => {
+        minLabel.code_cours
+          .split("_")
+          .slice(2)
+          .forEach((w2) => (minDistance += distanceToCourseCode(w1, w2)));
+        currentLabel.code_cours
+          .split("_")
+          .slice(2)
+          .forEach((w2) => (currentDistance += distanceToCourseCode(w1, w2)));
+      });
+
       return currentDistance < minDistance ? currentLabel : minLabel;
     }, labels[0]).nom_cours;
 
