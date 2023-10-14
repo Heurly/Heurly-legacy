@@ -1,11 +1,8 @@
 import { NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { fetchProfile, getProfile } from "@/utils/Profile";
-import { PrismaClient } from "@prisma/client";
+import { fetchProfile } from "@/utils/Profile";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import { getDbUser } from "@/utils/User";
-
-const prisma = new PrismaClient();
 
 const authOptions: NextAuthOptions = {
   providers: [

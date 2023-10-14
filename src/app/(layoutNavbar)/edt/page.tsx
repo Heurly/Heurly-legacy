@@ -9,6 +9,7 @@ import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { useSession } from "next-auth/react";
+import Logo from "@/components/logo";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ const Edt: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    if (modules.length <= 0) return;
+    if (modules.length <= 0 || loading) return;
 
     setLoading(true);
     fetchEDTData(
@@ -45,6 +46,7 @@ const Edt: React.FunctionComponent = () => {
       setEdt(data);
     });
   }, [modules, date]);
+
   const tryAddModules = useCallback(
     (additional: ModuleChoice[], initial: ModuleChoice[]) => {
       let changed: boolean = false;
@@ -66,7 +68,7 @@ const Edt: React.FunctionComponent = () => {
     if (session?.user?.profile?.modules != undefined) {
       tryAddModules(session.user.profile?.modules, newModules);
     }
-  }, [session, tryAddModules]);
+  }, [session]);
 
   return (
     <>

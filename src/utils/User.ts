@@ -1,17 +1,15 @@
-import { PrismaClient } from "@prisma/client";
 import { Session } from "next-auth";
-
-const prisma = new PrismaClient();
+import prismaClient from "@/utils/Prisma";
 
 export async function getDbUser(session: Session) {
-  const user = await prisma.user.findFirst({
+  const user = await prismaClient.user.findFirst({
     where: {
       email: session.user.email!,
     },
   });
 
   if (user == undefined) {
-    await prisma.user.create({
+    await prismaClient.user.create({
       data: {
         name: session.user.name,
         email: session.user.email!,

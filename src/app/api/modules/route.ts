@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
-
-const prisma = new PrismaClient();
+import prismaClient from "@/utils/Prisma";
 
 export type ModuleFilter = {
   contains: string[];
@@ -17,7 +15,7 @@ export async function POST(request: NextRequest) {
       },
     })),
   };
-  let res = await prisma.unit.findMany({
+  let res = await prismaClient.unit.findMany({
     where: condition,
   });
 
