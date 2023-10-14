@@ -17,7 +17,7 @@ export default function Grid(): React.ReactElement {
       <div
         key={`${id()}`}
         className="w-full h-20 md:h-14 border-t md:border border-neutral-600"
-      />
+      />,
     );
   }
 
