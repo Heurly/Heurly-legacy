@@ -17,7 +17,7 @@ const NavBar: React.FunctionComponent = () => {
       text: "Dashboard",
       urlLink: "/dashboard",
     },
-    { imageLink: "/images/edt.svg", text: "Emplois du temps", urlLink: "/edt" },
+    { imageLink: "/images/edt.svg", text: "Emploi du temps", urlLink: "/edt" },
     { imageLink: "/images/actu.svg", text: "Actualités", urlLink: "/actu" },
     {
       imageLink: "/images/ressource.svg",
