@@ -1,10 +1,10 @@
 import React from "react";
 import { PrismaClient } from "@prisma/client";
+import prismaClient from "@/utils/Prisma";
 
 export default function AddRessourceForm(): React.ReactElement {
   async function getAllUnits() {
-    const prisma = new PrismaClient();
-    const units = await prisma.unit.findMany();
+    const units = await prismaClient.unit.findMany();
     return units;
   }
   return (

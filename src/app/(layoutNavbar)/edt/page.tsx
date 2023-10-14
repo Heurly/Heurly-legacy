@@ -27,7 +27,7 @@ const Edt: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    if (modules.length <= 0) return;
+    if (modules.length <= 0 || loading) return;
 
     setLoading(true);
     fetchEDTData(
@@ -45,6 +45,7 @@ const Edt: React.FunctionComponent = () => {
       setEdt(data);
     });
   }, [modules, date]);
+
   const tryAddModules = useCallback(
     (additional: ModuleChoice[], initial: ModuleChoice[]) => {
       let changed: boolean = false;
