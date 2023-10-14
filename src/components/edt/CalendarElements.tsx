@@ -31,8 +31,8 @@ export default function CalendarElements({
       <div
         key={id()}
         className={cn(
-          "absolute flex flex-col items-center justify-center border text-sm text-ellipsis rounded-xl cursor-pointer",
-          "bg-neutral-950 text-white border-neutral-600",
+          "absolute flex flex-col items-center justify-center border text-sm text-ellipsis rounded-xl cursor-pointer w-10/12 md:w-full",
+          "bg-neutral-900 text-white border-neutral-600",
         )}
         style={{
           height: `${
@@ -48,7 +48,6 @@ export default function CalendarElements({
               100) /
             (15 - 1)
           }%`,
-          // left: `${(courseStart.getDay() * 100) / 7}%`,
         }}
       >
         <p>{event.SUMMARY}</p>
@@ -59,37 +58,35 @@ export default function CalendarElements({
 
     groupedEvents[dayKey].push(courseElement);
   }
-  // sort per groupedEvents with dayKey
-  groupedEvents.sort((a: CourseEvent, b: CourseEvent) => {
-    const dateA = new Date(a.DTSTART);
-    const dateB = new Date(b.DTSTART);
-    return dateA.getTime() - dateB.getTime();
+  const sortedGroups = Object.entries(groupedEvents).sort(([aKey], [bKey]) => {
+    return new Date(aKey).getTime() - new Date(bKey).getTime();
   });
 
   return (
     <Swiper
-      className="absolute w-full h-full text-center border top-[-100%]"
+      className="absolute w-full h-full text-center  top-[-100%]"
       slidesPerView={1}
       spaceBetween={0}
       breakpoints={{
-        768: {
+        0: {
           slidesPerView: 1,
           spaceBetween: 0,
         },
-        1024: {
+        768: {
           slidesPerView: 3,
           spaceBetween: 0,
         },
-        1920: {
+
+        1024: {
           slidesPerView: 7,
           spaceBetween: 0,
         },
       }}
     >
-      {Object.keys(groupedEvents).map((dayKey, index) => (
-        <SwiperSlide key={index} className="border border-red-800">
+      {sortedGroups.map(([dayKey, events]) => (
+        <SwiperSlide key={id()} className="border">
           <div className="text-white">{dayKey}</div>
-          <div className="flex flex-col border">{groupedEvents[dayKey]}</div>
+          <div className="flex flex-col items-center">{events}</div>
         </SwiperSlide>
       ))}
     </Swiper>
