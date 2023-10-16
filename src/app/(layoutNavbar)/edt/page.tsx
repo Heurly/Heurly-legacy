@@ -19,7 +19,9 @@ const Edt: React.FunctionComponent = () => {
   const [modules, setModules] = useState<ModuleChoice[]>([]);
   const [edt, setEdt] = useState<CourseEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(new Date(Date.now()));
+  const [date, setDate] = useState<Date>(
+    new Date(new Date(Date.now()).setHours(0, 0, 0, 0)),
+  );
 
   const changeDate = (daysCount: number) => {
     let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
