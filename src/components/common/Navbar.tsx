@@ -22,7 +22,7 @@ const NavBar: React.FunctionComponent = () => {
 
     return (
       <>
-      <input className="peer" type="checkbox" id="navbarToggle" />
+      <input className="peer absolute top-2 left-2 cursor-pointer w-8 h-8 z-0 opacity-0" type="checkbox" id="navbarToggle" />
       <label htmlFor="navbarToggle" className="z-10 absolute top-2 left-2 cursor-pointer w-8 h-8 p-1 hover:bg-neutral-600 rounded-lg">
           <svg aria-hidden="true" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
