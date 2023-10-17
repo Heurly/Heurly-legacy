@@ -34,7 +34,7 @@ interface Props {
   setModules: Dispatch<SetStateAction<ModuleChoice[]>>;
 }
 
-const EDTForm: React.FunctionComponent<Props> = ({
+const EdtForm: React.FunctionComponent<Props> = ({
   modules,
   setModules,
 }: Props) => {
@@ -72,4 +72,4 @@ const EDTForm: React.FunctionComponent<Props> = ({
   );
 };
 
-export default EDTForm;
+export default EdtForm;

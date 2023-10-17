@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import React from "react";
+import React, { useCallback } from "react";
+import Image from "next/image";
 
 interface Props {
   date: Date;
@@ -8,15 +8,25 @@ interface Props {
 }
 
 const EdtNav: React.FunctionComponent<Props> = ({ date, setDate }: Props) => {
-  const changeDate = (daysCount: number) => {
-    let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
-    newDate.setHours(0, 0, 0, 0);
-    setDate(newDate);
-  };
+  const changeDate = useCallback(
+    (daysCount: number) => {
+      let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
+      newDate.setHours(0, 0, 0, 0);
+      setDate(newDate);
+    },
+    [date],
+  );
 
   return (
-    <div className="flex text-white p-4">
-      <Button onClick={() => changeDate(-7)}>Semaine Précédente</Button>
+    <div className="flex text-white items-center">
+      <Image
+        className="hover:cursor-pointer"
+        alt="edt-left-nav"
+        src="/images/ChevronLeft.svg"
+        onClick={() => changeDate(-7)}
+        width={32}
+        height={32}
+      />
       <div className="ml-auto">
         {`${new Date(
           date.getTime() - (date.getDay() - 1) * DAY_IN_MS,
@@ -36,9 +46,14 @@ const EdtNav: React.FunctionComponent<Props> = ({ date, setDate }: Props) => {
           day: "numeric",
         })}`}
       </div>
-      <Button onClick={() => changeDate(7)} className="ml-auto">
-        Semaine Prochaine
-      </Button>
+      <Image
+        className="ml-auto hover:cursor-pointer"
+        alt="edt-right-nav"
+        src="/images/ChevronRight.svg"
+        onClick={() => changeDate(7)}
+        width={32}
+        height={32}
+      />
     </div>
   );
 };

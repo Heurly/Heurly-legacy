@@ -6,13 +6,14 @@ import { format, parseISO } from "date-fns";
 import id from "@/utils/id";
 import cn from "classnames";
 import { fr } from "date-fns/locale";
+import EdtCourse from "@/components/edt/EdtCourse";
 
 interface Props {
   edtData: CourseEvent[];
   setEdt: (date: Date) => void;
 }
 
-export default function EdtElement({
+export default function EdtContent({
   edtData,
   setEdt,
 }: Props): React.ReactElement {
@@ -34,7 +35,7 @@ export default function EdtElement({
       event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
 
     const courseElement = (
-      <CourseElement
+      <EdtCourse
         courseStart={courseStart}
         courseEnd={courseEnd}
         prof={prof}
@@ -88,47 +89,3 @@ export default function EdtElement({
     </Swiper>
   );
 }
-interface CourseElementProps {
-  courseStart: Date;
-  courseEnd: Date;
-  event: CourseEvent;
-  prof: RegExpMatchArray | null;
-}
-const CourseElement: React.FC<CourseElementProps> = ({
-  courseEnd,
-  courseStart,
-  event,
-  prof,
-}: CourseElementProps) => {
-  return (
-    <div
-      key={id()}
-      className={cn(
-        "absolute flex flex-col items-center justify-center border  text-ellipsis rounded-xl cursor-pointer w-10/12 md:w-full z-20",
-        "bg-neutral-950 text-white border-neutral-600",
-      )}
-      style={{
-        height: `${
-          ((courseEnd.getHours() +
-            courseEnd.getMinutes() / 60 -
-            (courseStart.getHours() + courseStart.getMinutes() / 60)) *
-            100) /
-            15 +
-          1
-        }%`,
-        top: `${
-          ((courseStart.getHours() + courseStart.getMinutes() / 60 - 6) * 100) /
-          (15 - 1)
-        }%`,
-      }}
-    >
-      <div style={{ fontSize: "80%" }}>{event.SUMMARY}</div>
-      <div className="text-neutral-400" style={{ fontSize: "60%" }}>
-        {prof !== null && prof}
-      </div>
-      <div className="text-neutral-500" style={{ fontSize: "60%" }}>
-        {event.LOCATION}
-      </div>
-    </div>
-  );
-};

@@ -1,8 +1,8 @@
 "use client";
 
-import EdtForm from "@/components/edt/EDTForm";
-import EdtGrid from "@/components/edt/Calendar/Grid";
-import EdtElements from "@/components/edt/EdtElement";
+import EdtForm from "@/components/edt/EdtForm";
+import EdtGrid from "@/components/edt/EdtGrid";
+import EdtElements from "@/components/edt/EdtContent";
 import EdtNav from "@/components/edt/EdtNav";
 import React, { useCallback, useEffect, useState } from "react";
 import { CourseEvent, ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
@@ -10,6 +10,7 @@ import { fetchEDTData } from "@/utils/edt";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import ApiFilter from "@/utils/apiFilter";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { SessionProvider } from "next-auth/react";
 
 interface Props {
   initialData: CourseEvent[];
@@ -32,20 +33,21 @@ const Edt: React.FunctionComponent<Props> = ({
   );
 
   const refreshEdt = useCallback(
-    (date: Date) => {
+    (newDate: Date) => {
       if (currentModules.length <= 0 || loading) return;
 
+      setDate(newDate);
       setLoading(true);
       fetchEDTData(
         {
           greater: new Date(
             new Date(
-              date.getTime() - (date.getDay() - 1) * DAY_IN_MS,
+              newDate.getTime() - (newDate.getDay() - 1) * DAY_IN_MS,
             ).getTime(),
           ).getTime(),
           lower: new Date(
             new Date(
-              date.getTime() + 6 * DAY_IN_MS - date.getDay() * DAY_IN_MS,
+              newDate.getTime() + 6 * DAY_IN_MS - newDate.getDay() * DAY_IN_MS,
             ),
           ).getTime(),
         } as ApiFilter<number>,
@@ -55,7 +57,7 @@ const Edt: React.FunctionComponent<Props> = ({
         setEdt(data);
       });
     },
-    [currentModules, date],
+    [currentModules],
   );
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Edt: React.FunctionComponent<Props> = ({
   }, [width]);
 
   return (
-    <>
+    <SessionProvider>
       <div className="w-full h-1/10">
         <EdtForm
           modules={currentModules}
@@ -78,10 +80,10 @@ const Edt: React.FunctionComponent<Props> = ({
         <EdtGrid nbDays={isPhoneDisplay ? 1 : 6} />
         <EdtElements edtData={edt} setEdt={refreshEdt} />
       </div>
-      <div className="w-full h-1/10">
+      <div className="hidden md:block lg:block w-full h-1/10">
         <EdtNav date={date} setDate={refreshEdt} />
       </div>
-    </>
+    </SessionProvider>
   );
 };
 

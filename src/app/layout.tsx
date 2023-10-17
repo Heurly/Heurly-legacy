@@ -1,6 +1,5 @@
 import "@/globals.css";
 import { Lato } from "next/font/google";
-import Link from "next/link";
 
 const lato = Lato({ weight: "100", subsets: ["latin"] });
 

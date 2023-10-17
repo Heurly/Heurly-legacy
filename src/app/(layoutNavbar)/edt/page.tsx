@@ -1,5 +1,4 @@
 import React from "react";
-import { useSession } from "next-auth/react";
 import { fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import Edt from "@/components/edt/Edt";
