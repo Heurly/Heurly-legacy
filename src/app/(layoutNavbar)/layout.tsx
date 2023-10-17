@@ -20,9 +20,14 @@ export default async function NavbarLayout({
     <>
       {session && (
         <div className={cn(inter.className)}>
-          <NavBar />
-          <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:p-5 bg-neutral-950">
-            {children}
+          <div className="w-screen h-screen flex flex-row">
+            <div className="h-full w-2/12 fixed">
+              <NavBar />
+            </div>
+            <div className="basis-2/12"></div>
+            <div className="h-full basis-10/12 p-6 overflow-hidden bg-neutral-950">
+              {children}
+            </div>
           </div>
         </div>
       )}

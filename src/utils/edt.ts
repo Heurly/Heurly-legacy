@@ -5,6 +5,7 @@ import ApiFilter from "@/utils/apiFilter";
 export async function fetchEDTData(
   dateFilter: ApiFilter<number>,
   modules: ModuleChoice[],
+  fromServer: boolean = false,
 ): Promise<CourseEvent[]> {
   if (modules == undefined || modules.length <= 0) return [];
 
@@ -12,7 +13,11 @@ export async function fetchEDTData(
     dateFilter: dateFilter,
     modules: modules.map((m) => m.code),
   };
-  const data = await fetch(API_URL + "/edt", {
+
+  const endpoint = `${
+    fromServer ? process.env.NEXTAUTH_URL : ""
+  }${API_URL}/edt`;
+  const data = await fetch(endpoint, {
     method: "POST",
     headers: {
       Accept: "application/json",

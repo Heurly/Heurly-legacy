@@ -29,20 +29,6 @@ async function setUserGroups(formData: FormData) {
 }
 
 function filterCourses(courses: CourseEvent[], dateFilter: ApiFilter<number>) {
-  if (dateFilter.greater != undefined) {
-    courses = courses.filter(
-      (m) =>
-        dateFilter.greater != undefined &&
-        parseISO(m.DTSTART).getTime() >= dateFilter.greater,
-    ) as CourseEvent[];
-  }
-  if (dateFilter.lower != undefined) {
-    courses = courses.filter(
-      (m) =>
-        dateFilter.lower != undefined &&
-        parseISO(m.DTSTART).getTime() < dateFilter.lower,
-    ) as CourseEvent[];
-  }
   if (dateFilter.equals != undefined) {
     courses = courses.filter((m) => {
       const start = parseISO(m.DTSTART);
@@ -125,7 +111,7 @@ export async function POST(request: NextRequest) {
     await request.json();
   if (payload.modules.length <= 0) return;
 
-  const endpoint = PLANIF_ENDPOINT(payload.modules);
+  const endpoint = PLANIF_ENDPOINT(payload.dateFilter, payload.modules);
 
   const response = await fetch(endpoint, {
     method: "GET",

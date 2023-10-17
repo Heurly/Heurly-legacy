@@ -2,22 +2,29 @@ import React from "react";
 import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import id from "@/utils/id";
 import cn from "classnames";
+import { fr } from "date-fns/locale";
 
-export default function CalendarElements({
-  edtData,
-}: {
+interface Props {
   edtData: CourseEvent[];
-}): React.ReactElement {
+  setEdt: (date: Date) => void;
+}
+
+export default function EdtElement({
+  edtData,
+  setEdt,
+}: Props): React.ReactElement {
   const groupedEvents: { [key: string]: React.ReactNode[] } = {};
   for (const event of edtData) {
     if (event === undefined) continue;
 
     const courseStart: Date = parseISO(event.DTSTART);
     const courseEnd: Date = parseISO(event.DTEND);
-    const dayKey: string = courseStart.toISOString().split("T")[0];
+    const dayKey: string = new Date(courseStart)
+      .setHours(0, 0, 0, 0)
+      .toString();
 
     if (!groupedEvents[dayKey]) {
       groupedEvents[dayKey] = [];
@@ -38,7 +45,7 @@ export default function CalendarElements({
     groupedEvents[dayKey].push(courseElement);
   }
   const sortedGroups = Object.entries(groupedEvents).sort(([aKey], [bKey]) => {
-    return new Date(aKey).getTime() - new Date(bKey).getTime();
+    return parseInt(aKey) - parseInt(bKey);
   });
 
   return (
@@ -61,12 +68,23 @@ export default function CalendarElements({
         },
       }}
     >
-      {sortedGroups.map(([dayKey, events]) => (
-        <SwiperSlide key={id()}>
-          <div className="text-white">{dayKey}</div>
-          <div className="flex flex-col items-end">{events}</div>
-        </SwiperSlide>
-      ))}
+      {sortedGroups.map(([dayKey, events]) => {
+        const dayString = format(new Date(parseInt(dayKey)), "EEEE", {
+          locale: fr,
+        });
+        const dateString = format(new Date(parseInt(dayKey)), "dd/MM/yy", {
+          locale: fr,
+        });
+        return (
+          <SwiperSlide key={id()}>
+            <div className="text-white">
+              <p>{dayString}</p>
+              <p className="text-xs text-neutral-600">{dateString}</p>
+            </div>
+            <div className="flex flex-col items-end">{events}</div>
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 }
@@ -87,7 +105,7 @@ const CourseElement: React.FC<CourseElementProps> = ({
       key={id()}
       className={cn(
         "absolute flex flex-col items-center justify-center border  text-ellipsis rounded-xl cursor-pointer w-10/12 md:w-full z-20",
-        "bg-neutral-900 text-white border-neutral-600",
+        "bg-neutral-950 text-white border-neutral-600",
       )}
       style={{
         height: `${
@@ -104,13 +122,13 @@ const CourseElement: React.FC<CourseElementProps> = ({
         }%`,
       }}
     >
-      <p style={{ fontSize: "80%" }}>{event.SUMMARY}</p>
-      <p className="text-neutral-400" style={{ fontSize: "60%" }}>
+      <div style={{ fontSize: "80%" }}>{event.SUMMARY}</div>
+      <div className="text-neutral-400" style={{ fontSize: "60%" }}>
         {prof !== null && prof}
-      </p>
-      <p className="text-neutral-500" style={{ fontSize: "60%" }}>
+      </div>
+      <div className="text-neutral-500" style={{ fontSize: "60%" }}>
         {event.LOCATION}
-      </p>
+      </div>
     </div>
   );
 };
