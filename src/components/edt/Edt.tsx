@@ -2,7 +2,7 @@
 
 import EdtForm from "@/components/edt/EdtForm";
 import EdtGrid from "@/components/edt/EdtGrid";
-import EdtElements from "@/components/edt/EdtContent";
+import EdtContent from "@/components/edt/EdtContent";
 import EdtNav from "@/components/edt/EdtNav";
 import React, { useCallback, useEffect, useState } from "react";
 import { CourseEvent, ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
@@ -21,10 +21,7 @@ const Edt: React.FunctionComponent<Props> = ({
   initialData,
   modules,
 }: Props) => {
-  const { width } = useWindowDimensions();
-
   const [loading, setLoading] = useState<boolean>(false);
-  const [isPhoneDisplay, setIsPhoneDisplay] = useState<boolean>(false);
 
   const [edt, setEdt] = useState<CourseEvent[]>(initialData);
   const [currentModules, setCurrentModules] = useState<ModuleChoice[]>(modules);
@@ -60,11 +57,6 @@ const Edt: React.FunctionComponent<Props> = ({
     [currentModules],
   );
 
-  useEffect(() => {
-    const nbPxPhone = 768;
-    setIsPhoneDisplay(width < nbPxPhone);
-  }, [width]);
-
   return (
     <SessionProvider>
       <div className="w-full h-1/10">
@@ -77,10 +69,10 @@ const Edt: React.FunctionComponent<Props> = ({
         {loading && (
           <div className="absolute w-full h-full bg-cyan-800 z-10 place-content-center opacity-25" />
         )}
-        <EdtGrid nbDays={isPhoneDisplay ? 1 : 6} />
-        <EdtElements edtData={edt} setEdt={refreshEdt} />
+        <EdtGrid />
+        <EdtContent edtData={edt} date={date} setEdt={refreshEdt} />
       </div>
-      <div className="hidden md:block lg:block w-full h-1/10">
+      <div className="hidden lg:block w-full h-1/10">
         <EdtNav date={date} setDate={refreshEdt} />
       </div>
     </SessionProvider>
