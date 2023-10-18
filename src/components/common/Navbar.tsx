@@ -36,7 +36,7 @@ const NavBar: React.FunctionComponent = () => {
           </svg>
       </label>
       
-      <nav className="flex flex-col items-center space-y-10 py-10 fixed top-0 w-64 h-full transition-transform -translate-x-full sm:translate-x-0 dark:bg-neutral-950 border-r border-neutral-600 text-white  peer-checked:hidden ">
+      <nav className="flex flex-col items-center space-y-10 py-10 fixed top-0 w-64 h-full transition-transform  sm:translate-x-0 dark:bg-neutral-950 border-r border-neutral-600 text-white peer-checked:-translate-x-full ">
       <div className="flex flex-col space-y-5 text-xl">
           <div className="flex flex-row items-stretch ">
               <div><Logo></Logo></div>
