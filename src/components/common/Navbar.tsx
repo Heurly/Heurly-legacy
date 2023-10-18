@@ -67,7 +67,9 @@ const NavBar: React.FunctionComponent = () => {
       </div>
 
         <ToolsLink/>
+        <div>
         <UserBar/>
+        </div>
       </nav>
       </>
     );
