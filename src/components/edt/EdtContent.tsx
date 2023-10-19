@@ -9,12 +9,14 @@ import EdtCourse from "@/components/edt/EdtCourse";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 
 interface Props {
+  nbToDisplay: number;
   edtData: CourseEvent[];
   date: Date;
   setEdt: (date: Date) => void;
 }
 
 export default function EdtContent({
+  nbToDisplay,
   edtData,
   date,
   setEdt,
@@ -23,6 +25,18 @@ export default function EdtContent({
   const [start, setStart] = useState<boolean>(false);
   const [end, setEnd] = useState<boolean>(false);
   const groupedEvents: { [key: string]: React.ReactNode[] } = {};
+
+  const weekStart = new Date(date.getTime() - (date.getDay() - 1) * DAY_IN_MS);
+  const firstKey = weekStart.setHours(0, 0, 0, 0);
+
+  for (
+    let key = firstKey;
+    key < firstKey + DAY_IN_MS * nbToDisplay;
+    key += DAY_IN_MS
+  ) {
+    groupedEvents[key] = [];
+  }
+
   for (const event of edtData) {
     if (event === undefined) continue;
 
@@ -93,7 +107,7 @@ export default function EdtContent({
             locale: fr,
           });
           return (
-            <SwiperSlide className="border-l border-neutral-600" key={id()}>
+            <SwiperSlide className="border-l border-neutral-800" key={id()}>
               <div className="text-white border-neutral-600">
                 <p>{dayString}</p>
                 <p className="text-xs text-neutral-600">{dateString}</p>

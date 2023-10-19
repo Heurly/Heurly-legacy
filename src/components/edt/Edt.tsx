@@ -70,7 +70,12 @@ const Edt: React.FunctionComponent<Props> = ({
           <div className="absolute w-full h-full bg-cyan-800 z-10 place-content-center opacity-25" />
         )}
         <EdtGrid />
-        <EdtContent edtData={edt} date={date} setEdt={refreshEdt} />
+        <EdtContent
+          nbToDisplay={6}
+          edtData={edt}
+          date={date}
+          setEdt={refreshEdt}
+        />
       </div>
       <div className="hidden lg:block w-full h-1/10">
         <EdtNav date={date} setDate={refreshEdt} />
