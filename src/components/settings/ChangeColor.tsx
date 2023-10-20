@@ -35,7 +35,7 @@ const themes = {
   black: "black",
   blue: "blue",
   red: "red",
-  banane: "yellow",
+  yellow: "yellow",
 };
 
 type Color = {
@@ -49,7 +49,7 @@ const ChangeColor: React.FunctionComponent = () => {
   return (
     <div>
       <p className="text-white font-semibold">Changer de couleur de thème</p>
-      <div className="flex space-x-7 mt-8 mb-8">
+      <div className="flex space-x-3 md:space-x-7 mt-8 mb-8">
         {Object.keys(themes).map((theme) => (
           <Color
             key={id()}
@@ -60,10 +60,9 @@ const ChangeColor: React.FunctionComponent = () => {
         ))}
       </div>
       <div
+        className="h-10 w-10 md:h-20 md:w-20"
         style={{
           backgroundColor: whoIsSelected,
-          height: "70px",
-          width: "100px",
         }}
       ></div>
       <hr className="border-gray-600" />

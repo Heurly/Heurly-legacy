@@ -1,8 +1,13 @@
 "use client";
-import { useState } from "react";
 import { FormEvent } from "react";
 import cn from "classnames";
-const Support: React.FunctionComponent = () => {
+import { Session } from "next-auth";
+
+type Props = {
+  userSession: Session | null;
+};
+
+export default function Support({ userSession }: Props) {
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
     // cancel the reloading of the page
     e.preventDefault();
@@ -10,15 +15,20 @@ const Support: React.FunctionComponent = () => {
     // convert data to FormData
     const formData = new FormData(e.currentTarget);
 
-    // send data to the api / discord bot
-    console.log(formData.get("about"));
-
+    fetch("/api/support", {
+      method: "POST",
+      body: JSON.stringify({
+        message: formData.get("about"),
+        client: userSession?.user?.name,
+      }),
+    });
     // reset the form
+    formData.set("info", "Message envoyé");
     e.currentTarget.reset();
   };
 
   return (
-    <div className="mt-6">
+    <div className=" mt-3 md:mt-6">
       <text className="text-white font-semibold">Faire une remarque</text>
       <div className="mt-4 mb-8">
         <form
@@ -41,15 +51,16 @@ const Support: React.FunctionComponent = () => {
           >
             Envoyer
           </button>
+          <label>
+            <text className="font-semibold" id="info"></text>
+          </label>
         </form>
       </div>
       <div className="flex justify-end"></div>
 
-      <div className="mt-8 mb-8">
+      <div className="mt-2 mb-2 md:mt-8 md:mb-8">
         <hr className="border-gray-600" />
       </div>
     </div>
   );
-};
-
-export default Support;
+}
