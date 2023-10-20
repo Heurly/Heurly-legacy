@@ -11,7 +11,7 @@ const Settings: React.FunctionComponent = async () => {
 
   return (
     <>
-      <div className="w-full h-full place-content-center">
+      <div className="w-full h-full mt-16 pl-44 pr-44 place-content-center">
         <EditUser />
         <ChangeColor />
         <Support />

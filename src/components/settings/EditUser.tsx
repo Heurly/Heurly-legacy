@@ -9,7 +9,7 @@ const EditUser: React.FunctionComponent = async () => {
   const name = session?.user.name;
   return (
     <>
-      <div className="h-1/2">
+      <div className="h-40">
         <Image
           className="rounded-2xl"
           src={session?.user?.image ?? ""}
@@ -19,6 +19,9 @@ const EditUser: React.FunctionComponent = async () => {
         />
         <h1 className="text-white">{name}</h1>
       </div>
+      {/* <div className="-pt-2 -pb-2">
+        <hr className=" border-gray-600 "/>
+      </div> */}
     </>
   );
 };
