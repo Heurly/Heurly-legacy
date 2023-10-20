@@ -7,17 +7,14 @@ import { Session, getServerSession } from "next-auth";
 
 const Settings: React.FunctionComponent = async () => {
   const session: Session | null = await getServerSession(authOptions);
-  const name = session?.user.name;
 
   return (
-    <>
-      <div className="w-full h-full mt-16 pl-44 pr-44 place-content-center">
-        <EditUser />
-        <ChangeColor />
-        <Support />
-        <DeleteAccount />
-      </div>
-    </>
+    <div className="w-full h-full mt-16 pl-44 pr-44 place-content-center">
+      <EditUser userSession={session} />
+      <ChangeColor />
+      <Support />
+      <DeleteAccount />
+    </div>
   );
 };
 

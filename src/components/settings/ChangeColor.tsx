@@ -1,55 +1,71 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import cn from "classnames";
+import id from "@/utils/id";
+
+type PropsColor = {
+  color: string;
+  changeColor: (color: string) => void;
+  actualColor: string;
+  key: string;
+};
+
+function Color({ color, changeColor, actualColor, key }: PropsColor) {
+  const [isSelected, setIsSelected] = useState(false);
+
+  return (
+    <div
+      key={key}
+      className={cn(
+        "h-10 w-10 md:h-20 md:w-20 aspect-square rounded-full cursor-pointer",
+
+        { "border-2 border-green-500": actualColor == color },
+      )}
+      style={{ backgroundColor: color }}
+      onClick={() => {
+        setIsSelected(!isSelected);
+        changeColor(color);
+      }}
+    ></div>
+  );
+}
+
+const themes = {
+  white: "white",
+  black: "black",
+  blue: "blue",
+  red: "red",
+  banane: "yellow",
+};
+
+type Color = {
+  name: string;
+  color: string;
+};
 
 const ChangeColor: React.FunctionComponent = () => {
-  // Utilisez l'état pour suivre la couleur actuelle
-  const [backgroundColor, setBackgroundColor] = useState("white");
-
-  // Fonction pour changer la couleur en fonction du bouton cliqué
-  const changeBackgroundColor = (color: string) => {
-    setBackgroundColor(color);
-  };
+  const [whoIsSelected, setWhoIsSelected] = useState(themes.white);
 
   return (
     <div>
       <p className="text-white font-semibold">Changer de couleur de thème</p>
       <div className="flex space-x-7 mt-8 mb-8">
-        <button
-          className={`rounded-full bg-white w-14 h-14 ${
-            backgroundColor === "white"
-              ? "border-2 border-green-500"
-              : "border-2 border-grey"
-          }`}
-          onClick={() => changeBackgroundColor("white")}
-        ></button>
-        <button
-          className={`rounded-full bg-black w-14 h-14 ${
-            backgroundColor === "black"
-              ? "border-2 border-green-500"
-              : "border-2 border-grey"
-          }`}
-          onClick={() => changeBackgroundColor("black")}
-        ></button>
-        <button
-          className={`rounded-full bg-red-600 w-14 h-14 ${
-            backgroundColor === "red"
-              ? "border-2 border-green-500"
-              : "border-2 border-grey"
-          }`}
-          onClick={() => changeBackgroundColor("red")}
-        ></button>
-        <button
-          className={`rounded-full bg-yellow-400 w-14 h-14 ${
-            backgroundColor === "yellow"
-              ? "border-2 border-green-500"
-              : "border-2 border-grey"
-          }`}
-          onClick={() => changeBackgroundColor("yellow")}
-        ></button>
+        {Object.keys(themes).map((theme) => (
+          <Color
+            key={id()}
+            changeColor={setWhoIsSelected}
+            color={theme}
+            actualColor={whoIsSelected}
+          />
+        ))}
       </div>
-      <div style={{ backgroundColor, height: "70px", width: "100px" }}>
-        {/* Contenu avec la couleur de fond dynamique */}
-      </div>
+      <div
+        style={{
+          backgroundColor: whoIsSelected,
+          height: "70px",
+          width: "100px",
+        }}
+      ></div>
       <hr className="border-gray-600" />
     </div>
   );
