@@ -8,7 +8,7 @@ export default function Logo(props: { className?: string }) {
         src="./images/logo/logo_white.svg"
         width={150}
         height={90}
-        alt="ESIEE hub logo"
+        alt="Heurly logo"
       />
     </Link>
   );
