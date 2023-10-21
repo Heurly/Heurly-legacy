@@ -8,7 +8,6 @@ import SearchBar, {
   SuggestionFilter,
 } from "@/components/common/search-bar";
 import { ModuleFilter } from "@/app/api/modules/route";
-import { useSession } from "next-auth/react";
 
 async function getModules(filter: SuggestionFilter) {
   const payload = {

@@ -1,71 +1,68 @@
-import React, { useState } from "react";
-import { CourseEvent } from "@/app/(layoutNavbar)/edt/types";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { endOfWeek, format, parseISO, startOfWeek } from "date-fns";
 import id from "@/utils/id";
-import { fr } from "date-fns/locale";
-import EdtCourse from "@/components/edt/EdtCourse";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import { EdtData } from "@/utils/edt";
+import { CourseDay, EdtData, edtToCourseDays, fetchEDTData } from "@/utils/edt";
+import ApiFilter from "@/utils/apiFilter";
+import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
+import { format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
+import Button from "@/components/Button";
+import EdtCourse from "@/components/edt/EdtCourse";
+import { Swiper as SwiperInterface } from "swiper";
 
 interface Props {
-  index: number;
-  edtData: EdtData;
-  date: Date;
-  setEdt: (date: Date) => void;
+  initialData: EdtData;
+  modules: ModuleChoice[];
 }
 
 export default function EdtContent({
-  index,
-  edtData,
-  date,
-  setEdt,
+  initialData,
+  modules,
 }: Props): React.ReactElement {
-  const groupedEvents: { [key: string]: React.ReactNode[] } = {};
-  const start = edtData.first.setHours(0, 0, 0, 0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [courses, setCourses] = useState<CourseDay[]>(
+    edtToCourseDays(initialData),
+  );
+  const [firstDay, setFirstDay] = useState<number>(initialData.first);
+  const [lastDay, setLastDay] = useState<number>(initialData.last);
 
-  for (let day = start; day < edtData.last.getTime(); day += DAY_IN_MS) {
-    if (new Date(day).getDay() == 0) {
-      continue;
-    }
-    groupedEvents[day.toString()] = [];
-  }
+  useEffect(() => {
+    if (modules.length <= 0) return;
 
-  for (const event of edtData.data) {
-    if (event === undefined) continue;
-
-    const courseStart: Date = parseISO(event.DTSTART);
-    const courseEnd: Date = parseISO(event.DTEND);
-    const dayKey: string = new Date(courseStart)
-      .setHours(0, 0, 0, 0)
-      .toString();
-
-    const prof: RegExpMatchArray | null =
-      event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
-
-    const courseElement = (
-      <EdtCourse
-        courseStart={courseStart}
-        courseEnd={courseEnd}
-        prof={prof}
-        event={event}
-      />
-    );
-
-    groupedEvents[dayKey].push(courseElement);
-  }
-  const sortedGroups = Object.entries(groupedEvents).sort(([aKey], [bKey]) => {
-    return parseInt(aKey) - parseInt(bKey);
-  });
+    setLoading(true);
+    fetchEDTData(
+      {
+        greater: firstDay,
+        lower: lastDay,
+      } as ApiFilter<number>,
+      modules,
+    ).then((data) => {
+      const newData: CourseDay[] = [];
+      edtToCourseDays({
+        data: data,
+        first: firstDay,
+        last: lastDay,
+      }).forEach((c) => {
+        if (courses.find((e) => e.day === c.day) == undefined) newData.push(c);
+      });
+      setCourses(courses.concat(newData));
+      setLoading(false);
+    });
+  }, [modules, firstDay, lastDay]);
 
   return (
-    <div className="absolute w-full h-full text-center">
+    <div key={id()} className="absolute w-full h-full text-center">
+      {loading && (
+        <div className="absolute w-full h-full bg-cyan-800 z-10 place-content-center opacity-25" />
+      )}
       <Swiper
         className="h-full w-full left-4 md:left-24"
-        initialSlide={index}
+        initialSlide={((lastDay - firstDay) % DAY_IN_MS) - 6}
         slidesPerView={1}
         spaceBetween={0}
+        onReachEnd={() => setLastDay(lastDay + DAY_IN_MS * 7)}
         breakpoints={{
           768: {
             slidesPerView: 3,
@@ -76,32 +73,29 @@ export default function EdtContent({
             spaceBetween: 0,
           },
         }}
-        onTouchEnd={(swiper) => {
-          if (swiper.isEnd) {
-            setEdt(new Date(startOfWeek(date).getTime() + DAY_IN_MS * 7));
-          }
-          if (swiper.isBeginning) {
-            setEdt(new Date(endOfWeek(date.getTime() - DAY_IN_MS * 7)));
-          }
-        }}
+        keyboard
       >
-        {sortedGroups.map(([dayKey, events]) => {
-          const dayString = format(new Date(parseInt(dayKey)), "EEEE", {
-            locale: fr,
-          });
-          const dateString = format(new Date(parseInt(dayKey)), "dd/MM/yy", {
-            locale: fr,
-          });
-          return (
-            <SwiperSlide className="border-l border-neutral-800" key={id()}>
-              <div className="text-white border-neutral-600">
-                <p>{dayString}</p>
-                <p className="text-xs text-neutral-600">{dateString}</p>
-              </div>
-              <div className="flex flex-col items-end">{events}</div>
-            </SwiperSlide>
-          );
-        })}
+        {courses
+          .sort((a, b) => a.day - b.day)
+          .map((courseDay, index) => {
+            const dayString = format(new Date(courseDay.day), "EEEE", {
+              locale: fr,
+            });
+            const dateString = format(new Date(courseDay.day), "dd/MM/yy", {
+              locale: fr,
+            });
+            return (
+              <SwiperSlide key={id()} className="border-l border-neutral-800">
+                <div className="text-white border-neutral-600">
+                  <p>{dayString}</p>
+                  <p className="text-xs text-neutral-600">{dateString}</p>
+                </div>
+                <div className="flex flex-col items-end">
+                  {courseDay.courses}
+                </div>
+              </SwiperSlide>
+            );
+          })}
       </Swiper>
     </div>
   );

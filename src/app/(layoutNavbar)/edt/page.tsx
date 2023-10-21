@@ -36,7 +36,12 @@ const EdtPage: React.FunctionComponent = async () => {
     <div className="w-full h-full">
       <Edt
         initialData={
-          { data: initialData, first: dateGreater, last: dateLower } as EdtData
+          {
+            data: initialData,
+            first: dateGreater.getTime(),
+            last: dateLower.getTime(),
+            current: initialDate.getDay() - 1,
+          } as EdtData
         }
         modules={modules}
       ></Edt>

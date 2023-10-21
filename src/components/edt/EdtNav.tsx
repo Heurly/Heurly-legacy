@@ -4,7 +4,7 @@ import Image from "next/image";
 
 interface Props {
   date: Date;
-  setDate: (date: Date) => void;
+  setDate: (date: Date, index?: number) => void;
 }
 
 const EdtNav: React.FunctionComponent<Props> = ({ date, setDate }: Props) => {
