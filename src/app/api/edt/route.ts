@@ -133,9 +133,9 @@ export async function POST(request: NextRequest) {
     );
     await translateCoursesCodes(res.VCALENDAR[0].VEVENT);
 
-    return NextResponse.json(res);
+    return Response.json(res);
   } catch (error) {
     console.log("Error in api/edt:\n" + error);
-    return NextResponse.error();
+    return Response.error();
   }
 }
