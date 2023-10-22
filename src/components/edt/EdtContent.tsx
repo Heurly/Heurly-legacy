@@ -1,32 +1,49 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import id from "@/utils/id";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { CourseDay, EdtData, edtToCourseDays, fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
-import { format, parseISO } from "date-fns";
+import { differenceInDays, format, isSameDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import Button from "@/components/Button";
-import EdtCourse from "@/components/edt/EdtCourse";
-import { Swiper as SwiperInterface } from "swiper";
+import edt from "@/components/edt/Edt";
 
 interface Props {
   initialData: EdtData;
   modules: ModuleChoice[];
 }
 
+type EdtState = {
+  begin: number;
+  end: number;
+  index: number;
+};
+
 export default function EdtContent({
   initialData,
   modules,
 }: Props): React.ReactElement {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [edtState, setEdtState] = useState<EdtState>({
+    begin: initialData.first,
+    end: initialData.last,
+    index: new Date(Date.now()).getDay(),
+  } as EdtState);
+
   const [courses, setCourses] = useState<CourseDay[]>(
-    edtToCourseDays(initialData),
+    edtToCourseDays(initialData) as CourseDay[],
   );
-  const [firstDay, setFirstDay] = useState<number>(initialData.first);
-  const [lastDay, setLastDay] = useState<number>(initialData.last);
+
+  useEffect(() => {
+    const previousState = localStorage.getItem("edtState");
+
+    if (previousState != null)
+      setEdtState(JSON.parse(previousState) as EdtState);
+  }, []);
 
   useEffect(() => {
     if (modules.length <= 0) return;
@@ -34,23 +51,28 @@ export default function EdtContent({
     setLoading(true);
     fetchEDTData(
       {
-        greater: firstDay,
-        lower: lastDay,
+        greater: edtState.begin,
+        lower: edtState.end,
       } as ApiFilter<number>,
       modules,
     ).then((data) => {
-      const newData: CourseDay[] = [];
-      edtToCourseDays({
+      const newData: CourseDay[] = edtToCourseDays({
         data: data,
-        first: firstDay,
-        last: lastDay,
-      }).forEach((c) => {
-        if (courses.find((e) => e.day === c.day) == undefined) newData.push(c);
+        first: edtState.begin,
+        last: edtState.end,
       });
-      setCourses(courses.concat(newData));
+
+      courses.forEach((c) => {
+        if (newData.find((e) => isSameDay(e.day, c.day)) == undefined)
+          newData.push(c);
+      });
+
+      setCourses(newData);
       setLoading(false);
+
+      localStorage.setItem("edtState", JSON.stringify(edtState));
     });
-  }, [modules, firstDay, lastDay]);
+  }, [modules, edtState]);
 
   return (
     <div key={id()} className="absolute w-full h-full text-center">
@@ -59,10 +81,33 @@ export default function EdtContent({
       )}
       <Swiper
         className="h-full w-full left-4 md:left-24"
-        initialSlide={((lastDay - firstDay) % DAY_IN_MS) - 6}
+        initialSlide={edtState.index}
         slidesPerView={1}
         spaceBetween={0}
-        onReachEnd={() => setLastDay(lastDay + DAY_IN_MS * 7)}
+        onSlideChange={(swiper) => {
+          if (loading) return;
+          console.log(
+            swiper.activeIndex + swiper.slidesPerViewDynamic(),
+            swiper.slides.length,
+          );
+          if (
+            swiper.activeIndex + swiper.slidesPerViewDynamic() ==
+            swiper.slides.length
+          ) {
+            setEdtState({
+              begin: edtState.begin,
+              end: edtState.end + DAY_IN_MS * 7,
+              index: swiper.slides.length - swiper.slidesPerViewDynamic(),
+            });
+          }
+          if (swiper.activeIndex == 0) {
+            setEdtState({
+              begin: edtState.begin - DAY_IN_MS * 7,
+              end: edtState.end,
+              index: swiper.slidesPerViewDynamic(),
+            });
+          }
+        }}
         breakpoints={{
           768: {
             slidesPerView: 3,
@@ -73,7 +118,6 @@ export default function EdtContent({
             spaceBetween: 0,
           },
         }}
-        keyboard
       >
         {courses
           .sort((a, b) => a.day - b.day)

@@ -3,9 +3,9 @@
 import EdtForm from "@/components/edt/EdtForm";
 import EdtGrid from "@/components/edt/EdtGrid";
 import EdtContent from "@/components/edt/EdtContent";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
-import { EdtData } from "@/utils/edt";
+import { CourseDay, EdtData } from "@/utils/edt";
 import { SessionProvider } from "next-auth/react";
 
 interface Props {
@@ -22,10 +22,7 @@ const Edt: React.FunctionComponent<Props> = ({
   return (
     <SessionProvider>
       <div className="w-full h-1/10">
-        <EdtForm
-          modules={currentModules}
-          setModules={setCurrentModules}
-        ></EdtForm>
+        <EdtForm modules={currentModules} setModules={setCurrentModules} />
       </div>
       <div className="relative w-full h-[75vh] text-center">
         <EdtGrid />

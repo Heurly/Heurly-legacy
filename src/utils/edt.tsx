@@ -2,7 +2,7 @@ import { CourseEvent, ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import { API_URL } from "@/config/const";
 import ApiFilter from "@/utils/apiFilter";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import { parseISO } from "date-fns";
+import { isSameDay, parseISO } from "date-fns";
 import EdtCourse from "@/components/edt/EdtCourse";
 import React from "react";
 
@@ -67,11 +67,11 @@ export function isSameCourse(c1: CourseEvent, c2: CourseEvent) {
 }
 
 export function edtToCourseDays(edtData: EdtData) {
-  const courses: CourseDay[] = [];
+  const data: CourseDay[] = [];
   const start: number = new Date(edtData.first).setHours(0, 0, 0, 0);
 
   for (let day = start; day <= edtData.last; day += DAY_IN_MS) {
-    courses.push({ day: day, courses: [] });
+    data.push({ day: day, courses: [] });
   }
 
   for (const event of edtData.data) {
@@ -93,7 +93,7 @@ export function edtToCourseDays(edtData: EdtData) {
       />
     );
 
-    courses.find((c) => c.day == dayKey)?.courses.push(courseElement);
+    data.find((c) => isSameDay(c.day, dayKey))?.courses.push(courseElement);
   }
-  return courses;
+  return data;
 }

@@ -5,6 +5,7 @@ import Edt from "@/components/edt/Edt";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { getServerSession, Session } from "next-auth";
 import authOptions from "@/utils/AuthOptions";
+import { endOfWeek, startOfWeek } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
@@ -12,15 +13,9 @@ const EdtPage: React.FunctionComponent = async () => {
   const session: Session | null = await getServerSession(authOptions);
   const modules = session?.user?.profile?.modules ?? [];
   const initialDate = new Date(new Date(Date.now()).setHours(0, 0, 0, 0));
-  const dateGreater = new Date(
-    new Date(
-      initialDate.getTime() - (initialDate.getDay() - 1) * DAY_IN_MS,
-    ).getTime(),
-  );
+  const dateGreater = new Date(startOfWeek(initialDate).setHours(0, 0, 0, 0));
   const dateLower = new Date(
-    new Date(
-      initialDate.getTime() + 6 * DAY_IN_MS - initialDate.getDay() * DAY_IN_MS,
-    ),
+    endOfWeek(initialDate).setHours(0, 0, 0, 0) + DAY_IN_MS * 14,
   );
 
   const initialData = await fetchEDTData(

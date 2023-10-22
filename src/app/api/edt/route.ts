@@ -136,5 +136,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(res);
   } catch (error) {
     console.log("Error in api/edt:\n" + error);
+    return NextResponse;
   }
 }
