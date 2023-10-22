@@ -86,16 +86,15 @@ export default function EdtContent({
         spaceBetween={0}
         onSlideChange={(swiper) => {
           if (loading) return;
-          console.log(
-            swiper.activeIndex + swiper.slidesPerViewDynamic(),
-            swiper.slides.length,
-          );
           if (
             swiper.activeIndex + swiper.slidesPerViewDynamic() ==
             swiper.slides.length
           ) {
             setEdtState({
-              begin: edtState.begin,
+              begin:
+                swiper.slides.length >= 62
+                  ? edtState.begin + DAY_IN_MS * 7
+                  : edtState.begin,
               end: edtState.end + DAY_IN_MS * 7,
               index: swiper.slides.length - swiper.slidesPerViewDynamic(),
             });
@@ -103,7 +102,10 @@ export default function EdtContent({
           if (swiper.activeIndex == 0) {
             setEdtState({
               begin: edtState.begin - DAY_IN_MS * 7,
-              end: edtState.end,
+              end:
+                swiper.slides.length >= 62
+                  ? edtState.end - DAY_IN_MS * 7
+                  : edtState.end,
               index: swiper.slidesPerViewDynamic(),
             });
           }
