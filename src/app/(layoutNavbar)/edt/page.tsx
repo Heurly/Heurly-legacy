@@ -1,5 +1,5 @@
 import React from "react";
-import { EdtData, fetchEDTData } from "@/utils/edt";
+import { EdtData, fetchEDTData, getLocalDay } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import Edt from "@/components/edt/Edt";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
@@ -35,7 +35,7 @@ const EdtPage: React.FunctionComponent = async () => {
             data: initialData,
             first: dateGreater.getTime(),
             last: dateLower.getTime(),
-            current: initialDate.getDay() - 1,
+            current: getLocalDay(initialDate),
           } as EdtData
         }
         modules={modules}

@@ -5,6 +5,7 @@ import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { isSameDay, parseISO } from "date-fns";
 import EdtCourse from "@/components/edt/EdtCourse";
 import React from "react";
+import { number } from "prop-types";
 
 export type EdtData = {
   data: CourseEvent[];
@@ -96,4 +97,12 @@ export function edtToCourseDays(edtData: EdtData) {
     data.find((c) => isSameDay(c.day, dayKey))?.courses.push(courseElement);
   }
   return data;
+}
+
+export function getLocalDay(date: Date) {
+  return (date.getDay() + 6) % 7;
+}
+
+export function getLocalDayNumber(date: number) {
+  return getLocalDay(new Date(date));
 }

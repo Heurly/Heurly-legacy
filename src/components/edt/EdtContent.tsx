@@ -3,7 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import id from "@/utils/id";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import { CourseDay, EdtData, edtToCourseDays, fetchEDTData } from "@/utils/edt";
+import {
+  CourseDay,
+  EdtData,
+  edtToCourseDays,
+  fetchEDTData,
+  getLocalDay,
+  getLocalDayNumber,
+} from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import {
@@ -41,7 +48,7 @@ export default function EdtContent({
   const [edtState, setEdtState] = useState<EdtState>({
     begin: initialData.first,
     end: initialData.last,
-    index: new Date(Date.now()).getDay(),
+    index: getLocalDayNumber(Date.now()),
   } as EdtState);
 
   const [courses, setCourses] = useState<CourseDay[]>(
@@ -110,7 +117,10 @@ export default function EdtContent({
                   ? edtState.begin + DAY_IN_MS * 7
                   : edtState.begin,
               end: edtState.end + DAY_IN_MS * 7,
-              index: swiper.activeIndex,
+              index:
+                swiper.slides.length >= SLIDES_MAX
+                  ? swiper.activeIndex - swiper.slidesPerViewDynamic()
+                  : swiper.activeIndex,
             });
           } else if (swiper.activeIndex == 0) {
             setEdtState({
@@ -184,7 +194,7 @@ export default function EdtContent({
             setEdtState({
               begin: startOfWeek(newDate).getTime(),
               end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
-              index: new Date(newDate).getDay(),
+              index: getLocalDayNumber(newDate),
             });
           }}
           type="date"
@@ -196,7 +206,7 @@ export default function EdtContent({
             setEdtState({
               begin: startOfWeek(newDate).getTime(),
               end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
-              index: new Date(newDate).getDay(),
+              index: getLocalDayNumber(newDate),
             });
           }}
         >
