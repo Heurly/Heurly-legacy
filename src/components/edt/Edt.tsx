@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import { CourseDay, EdtData } from "@/utils/edt";
 import { SessionProvider } from "next-auth/react";
+import EdtNav from "@/components/edt/EdtNav";
 
 interface Props {
   initialData: EdtData;

@@ -1,59 +1,38 @@
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { EdtState } from "@/components/edt/EdtContent";
+import { endOfWeek, format, startOfWeek } from "date-fns";
+import Button from "@/components/Button";
 
 interface Props {
-  date: Date;
-  setDate: (date: Date, index?: number) => void;
+  edtState: EdtState;
+  setEdtState: (state: EdtState) => void;
 }
 
-const EdtNav: React.FunctionComponent<Props> = ({ date, setDate }: Props) => {
-  const changeDate = useCallback(
-    (daysCount: number) => {
-      let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
-      newDate.setHours(0, 0, 0, 0);
-      setDate(newDate);
-    },
-    [date],
-  );
+const EdtNav: React.FunctionComponent<Props> = ({
+  edtState,
+  setEdtState,
+}: Props) => {
+  const [date, setDate] = useState<number>(Date.now());
+
+  useEffect(() => {
+    setEdtState({
+      begin: startOfWeek(date).getTime(),
+      end: endOfWeek(date + DAY_IN_MS * 14).getTime(),
+      index: new Date(date).getDay(),
+    });
+  }, [date]);
 
   return (
-    <div className="flex text-white items-center">
-      <Image
-        className="hover:cursor-pointer"
-        alt="edt-left-nav"
-        src="/images/ChevronLeft.svg"
-        onClick={() => changeDate(-7)}
-        width={32}
-        height={32}
+    <div className="flex justify-center text-white items-center">
+      <input
+        className="bg-neutral-600 border border-neutral-500 text-white"
+        onChange={(e) => setDate(Date.parse(e.currentTarget.value))}
+        type="date"
+        name="edtDate"
       />
-      <div className="ml-auto">
-        {`${new Date(
-          date.getTime() - (date.getDay() - 1) * DAY_IN_MS,
-        ).toLocaleString("fr-FR", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}`}
-        {` - `}
-        {`${new Date(
-          date.getTime() + 6 * DAY_IN_MS - date.getDay() * DAY_IN_MS,
-        ).toLocaleString("fr-FR", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}`}
-      </div>
-      <Image
-        className="ml-auto hover:cursor-pointer"
-        alt="edt-right-nav"
-        src="/images/ChevronRight.svg"
-        onClick={() => changeDate(7)}
-        width={32}
-        height={32}
-      />
+      <Button onClick={() => setDate(Date.now())}>Recentrer</Button>
     </div>
   );
 };

@@ -6,17 +6,27 @@ import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { CourseDay, EdtData, edtToCourseDays, fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
-import { differenceInDays, format, isSameDay } from "date-fns";
+import {
+  differenceInDays,
+  endOfWeek,
+  format,
+  isSameDay,
+  startOfWeek,
+} from "date-fns";
 import { fr } from "date-fns/locale";
 import Button from "@/components/Button";
 import edt from "@/components/edt/Edt";
+import Image from "next/image";
+import EdtNav from "@/components/edt/EdtNav";
+
+const SLIDES_MAX = 62;
 
 interface Props {
   initialData: EdtData;
   modules: ModuleChoice[];
 }
 
-type EdtState = {
+export type EdtState = {
   begin: number;
   end: number;
   index: number;
@@ -63,7 +73,11 @@ export default function EdtContent({
       });
 
       courses.forEach((c) => {
-        if (newData.find((e) => isSameDay(e.day, c.day)) == undefined)
+        if (
+          newData.find((e) => isSameDay(e.day, c.day)) == undefined &&
+          c.day >= edtState.begin &&
+          c.day <= edtState.end
+        )
           newData.push(c);
       });
 
@@ -72,7 +86,7 @@ export default function EdtContent({
 
       localStorage.setItem("edtState", JSON.stringify(edtState));
     });
-  }, [modules, edtState]);
+  }, [modules, edtState.begin, edtState.end]);
 
   return (
     <div key={id()} className="absolute w-full h-full text-center">
@@ -92,21 +106,20 @@ export default function EdtContent({
           ) {
             setEdtState({
               begin:
-                swiper.slides.length >= 62
+                swiper.slides.length >= SLIDES_MAX
                   ? edtState.begin + DAY_IN_MS * 7
                   : edtState.begin,
               end: edtState.end + DAY_IN_MS * 7,
-              index: swiper.slides.length - swiper.slidesPerViewDynamic(),
+              index: swiper.activeIndex,
             });
-          }
-          if (swiper.activeIndex == 0) {
+          } else if (swiper.activeIndex == 0) {
             setEdtState({
               begin: edtState.begin - DAY_IN_MS * 7,
               end:
-                swiper.slides.length >= 62
+                swiper.slides.length >= SLIDES_MAX
                   ? edtState.end - DAY_IN_MS * 7
                   : edtState.end,
-              index: swiper.slidesPerViewDynamic(),
+              index: 7,
             });
           }
         }}
@@ -121,6 +134,16 @@ export default function EdtContent({
           },
         }}
       >
+        <SwiperSlide key={id()} className="bg-neutral-600 opacity-30">
+          <div className="flex flex-col align-middle justify-center items-center h-full">
+            <Image
+              src="/images/ChevronLeft.svg"
+              alt="edt-left"
+              width={64}
+              height={64}
+            />
+          </div>
+        </SwiperSlide>
         {courses
           .sort((a, b) => a.day - b.day)
           .map((courseDay, index) => {
@@ -142,7 +165,44 @@ export default function EdtContent({
               </SwiperSlide>
             );
           })}
+        <SwiperSlide key={id()} className="bg-neutral-600 opacity-30">
+          <div className="flex flex-col align-middle justify-center items-center h-full">
+            <Image
+              src="/images/ChevronRight.svg"
+              alt="edt-right"
+              width={64}
+              height={64}
+            />
+          </div>
+        </SwiperSlide>
       </Swiper>
+      <div className="flex justify-center text-white items-center">
+        <input
+          className="bg-neutral-600 border border-neutral-500 text-white"
+          onChange={(e) => {
+            const newDate = Date.parse(e.currentTarget.value);
+            setEdtState({
+              begin: startOfWeek(newDate).getTime(),
+              end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
+              index: new Date(newDate).getDay(),
+            });
+          }}
+          type="date"
+          name="edtDate"
+        />
+        <Button
+          onClick={() => {
+            const newDate = Date.now();
+            setEdtState({
+              begin: startOfWeek(newDate).getTime(),
+              end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
+              index: new Date(newDate).getDay(),
+            });
+          }}
+        >
+          Recentrer
+        </Button>
+      </div>
     </div>
   );
 }
