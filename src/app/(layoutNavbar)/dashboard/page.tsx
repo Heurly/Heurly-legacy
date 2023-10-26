@@ -4,7 +4,8 @@ import { SearchContext } from "@/context/search";
 import { ReactElement, useContext } from "react";
 import Resource from "@/components/resources/resource";
 import { Search } from "@/context/search";
-
+import type { News as NewsItem } from "@prisma/client";
+import { API_URL } from "@/config/const";
 export default async function Dashboard(): Promise<React.ReactElement> {
   const ressources_upload = [
     {
@@ -23,24 +24,9 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       date: "2021-10-10",
     },
   ];
-
-  const news = [
-    {
-      title: "test",
-      description: "lorem ipsum",
-      date: "2021-10-10",
-    },
-    {
-      title: "test",
-      description: "lorem ipsum",
-      date: "2021-10-10",
-    },
-    {
-      title: "test",
-      description: "lorem ipsum",
-      date: "2021-10-10",
-    },
-  ];
+  // need to change but work like this
+  const resNews = await fetch(`http://localhost:3000/api/news`);
+  const news: NewsItem[] = await resNews.json();
 
   const startHours = 8;
   const endHours = 19;
@@ -63,8 +49,8 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         <div className="font-extrabold mb-6">
           <p>Actualité du moment :</p>
         </div>
-        <div className="divide-y divide-gray-500 md:divide-y-2">
-          {news &&
+        <div className="divide-y divide-gray-500 md:divide-y">
+          {news.length > 0 ? (
             news.map(({ title, date, description }) => {
               return (
                 <News
@@ -73,10 +59,13 @@ export default async function Dashboard(): Promise<React.ReactElement> {
                   description={description}
                 />
               );
-            })}
+            })
+          ) : (
+            <p>Aucune actualité pour le moment</p>
+          )}
         </div>
       </Card>
-      {/* FOR VERSION 0.3 */}
+      {/* -------------------------- FOR VERSION 0.3 -------------------------------- */}
       {/* <Card className=" self-stretch flex-auto col-span-2 flex items-stretch">
         <div className="font-extrabold mb-8 mt-4">
           Dernières ressources uploadées :<br />
@@ -92,6 +81,7 @@ export default async function Dashboard(): Promise<React.ReactElement> {
             ))}
         </div>
       </Card> */}
+      {/* -------------------------- FOR VERSION 0.3 -------------------------------- */}
 
       <Card className="overflow-auto z-20 grid justify-items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
         Prochain cours :{gridEdt}

@@ -23,15 +23,12 @@ export default async function NavbarLayout({
 
   return (
     <>
-      {session && (
-        <div className={cn(inter.className)}>
-          <NavBar />
-          <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:p-5 bg-neutral-950">
-            {children}
-          </div>
+      <div className={cn(inter.className)}>
+        <NavBar />
+        <div className="md:w-4/5 md:ml-[20%] pt-[20%] md:p-5 bg-neutral-950">
+          {children}
         </div>
-      )}
-      {!session && redirect("/login", RedirectType.replace)}
+      </div>
     </>
   );
 }
