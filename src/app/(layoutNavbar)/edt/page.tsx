@@ -10,6 +10,7 @@ import { fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { useSession } from "next-auth/react";
 import Logo from "@/components/logo";
+import cn from "classnames";
 
 export const dynamic = "force-dynamic";
 
@@ -82,7 +83,7 @@ const Edt: React.FunctionComponent = () => {
         <Grid date={date} />
         <CalendarElements edtData={edt} />
       </div>
-      <div className="flex text-white p-4">
+      <div className={cn("flex text-white p-4","")}>
         <Button onClick={() => changeDate(-7)}>Semaine Précédente</Button>
         <div className="ml-auto">
           {`${new Date(

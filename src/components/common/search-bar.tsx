@@ -94,7 +94,7 @@ const SearchBar: React.FunctionComponent<Props> = ({
       <div className="relative z-10">
         <div
           className={cn(
-            "bg-neutral-700 rounded-lg text-white flex items-center justify-center pr-3 ",
+            "bg-neutral-700 rounded-lg text-neutral-950 flex items-center justify-center pr-3 ","dark:text-white",
             { "rounded-b-none": showSuggestions },
           )}
         >
@@ -111,8 +111,8 @@ const SearchBar: React.FunctionComponent<Props> = ({
           <SearchIcon />
         </div>
         {showSuggestions && (
-          <div className="absolute top-full w-full rounded-b-lg overflow-hidden text-white">
-            <div className="flex p-2 pr-8 bg-neutral-600 text-white">
+          <div className={cn("absolute top-full w-full rounded-b-lg overflow-hidden text-neutral-950","dark:text-white")}>
+            <div className={cn("flex p-2 pr-8 bg-neutral-600 text-neutral","text-white")}>
               {showSuggestions &&
                 tags &&
                 tags
@@ -154,7 +154,7 @@ const SearchBar: React.FunctionComponent<Props> = ({
           </div>
         )}
       </div>
-      <div className="flex py-2 text-white items-center">
+      <div className={cn("flex py-2 text-neutral-950 items-center","dark:text-white")}>
         {selectedTags &&
           selectedTags.map((tag) => (
             <div key={id()} className="mr-1">

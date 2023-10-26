@@ -13,7 +13,8 @@ export default function Button(props: Props) {
     <button
       onClick={props.onClick}
       className={cn(
-        "p-3 rounded-lg border-neutral-600 border bg-neutral-900 hover:bg-neutral-950 transition",
+        "p-3 rounded-lg border-neutral-600 border bg-gray-200 hover:bg-gray-300 transition",
+        "dark:border-neutral-600 border bg-neutral-900 hover:bg-neutral-950",
         props.className,
       )}
     >

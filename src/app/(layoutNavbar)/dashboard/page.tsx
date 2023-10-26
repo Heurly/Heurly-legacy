@@ -95,67 +95,67 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       <Card className="overflow-auto z-20 grid justify-items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
         Prochain cours :
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
             8h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
             9h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
             10h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-neutral-950">
+          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
             11h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             12h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             13h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             14h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             15h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             16h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             17h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             18h
           </span>
         </div>
         <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-neutral-950">
+          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
             19h
           </span>
         </div>
         <div className="border-t relative mt-10">
-          <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-neutral-950">
+          <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
             20h
           </span>
         </div>

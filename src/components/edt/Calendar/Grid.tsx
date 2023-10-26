@@ -6,6 +6,7 @@ import {
 } from "@/app/(layoutNavbar)/edt/const";
 import id from "@/utils/id";
 import React from "react";
+import cn from "classnames";
 
 interface Props {
   date: Date;
@@ -22,7 +23,8 @@ export default function Grid({ date }: Props): React.ReactElement {
       grid.push(
         <div
           key={`${id()}`}
-          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950"
+          className={cn("w-full flex flex-col items-center justify-center bg-gray-200 text-neutral-950"
+            , "dark:text-white dark:bg-neutral-950")}
           style={{
             gridColumn: `${1} / span 1`,
             gridRow: `${1} / span 1`,
@@ -34,7 +36,8 @@ export default function Grid({ date }: Props): React.ReactElement {
       grid.push(
         <div
           key={`${id()}`}
-          className="w-full flex flex-col items-center justify-center text-white bg-neutral-950 font-bold"
+          className={cn("w-full flex flex-col items-center justify-center font-bold bg-gray-200 text-neutral-950",
+            "dark:text-white dark:bg-neutral-950")}
           style={{
             gridColumn: `${i + 1} / span 1`,
             gridRow: `${1} / span 1`,
@@ -56,13 +59,13 @@ export default function Grid({ date }: Props): React.ReactElement {
       grid.push(
         <div
           key={`${id()}`}
-          className="w-full flex flex-col items-center justify-end text-white bg-neutral-950 font-bold"
+          className={cn("w-full flex flex-col items-center justify-end bg-gray-200 text-neutral-950 font-bold", "dark:text-white dark:bg-neutral-950")}
           style={{
             gridColumn: `${1} / span 1`,
             gridRow: `${i + 1} / span 1`,
           }}
         >
-          <div className="relative -bottom-5 bg-neutral-950 p-2">
+          <div className={cn("relative -bottom-5 bg-gray-200 p-2", "dark:bg-neutral-950")}>
             {i + 7 == 13 + 7 ? "" : `${i + 7}h`}
           </div>
         </div>,

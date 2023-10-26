@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 
 export default function TimeColumn(): React.ReactElement {
   var timestamps: string[] = [];
@@ -8,7 +9,8 @@ export default function TimeColumn(): React.ReactElement {
   }
 
   return (
-    <div className="grid grid-rows-15 text-white place-items-center bg-neutral-950 rounded-tl-xl rounded-bl-xl">
+    <div className={cn("grid grid-rows-15 text-neutral-950 place-items-center bg-gray-200 rounded-tl-xl rounded-bl-xl",
+      "dark:bg-neutral-950 dark:text-white")}>
       <div key={"Heure"}>Heure</div>
       {timestamps.map((timestamp: string, key: any) => {
         return (

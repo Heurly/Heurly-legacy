@@ -17,7 +17,7 @@ export default function Tools({
     <Link href={urlLink}>
       <div className="flex gap-x-3 p-1 rounded-lg hover:bg-neutral-600 transition duration-200 cursor-pointer">
         <div className="">
-          <SvgIcon name={iconName} classNameStyle=""/>
+          <SvgIcon name={iconName} classNameStyle="text-neutral-950"/>
         </div>
         <div className="">
           <p>{text}</p>

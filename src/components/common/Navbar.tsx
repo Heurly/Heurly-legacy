@@ -6,6 +6,7 @@ import ToolsLink from "../navbar/toolsLink";
 import Image from "next/image";
 import React from "react";
 import SvgIcon from "./svgIcon";
+import cn from "classnames";
 
 const NavBar: React.FunctionComponent = () => {
   const headersList = headers();
@@ -29,7 +30,8 @@ const NavBar: React.FunctionComponent = () => {
           </svg>
       </label>
       
-      <nav className="flex flex-col items-center bg-neutral-950 z-30 space-y-5 py-10 fixed top-0 w-64 h-full transition-transform  sm:translate-x-0 dark:bg-neutral-950 border-r border-neutral-600 text-white peer-checked:-translate-x-full ">
+      <nav className={cn("flex flex-col items-center bg-gray-200 z-30 space-y-5 py-10 fixed top-0 w-64 h-full transition-transform  sm:translate-x-0 border-r border-neutral-600 text-neutral-950 peer-checked:-translate-x-full ",
+      "dark:bg-neutral-950 dark:text-white")}>
       <div className="flex flex-col space-y-5 text-xl">
           <div className="flex flex-row items-stretch ">
               <div><Logo></Logo></div>
@@ -42,7 +44,7 @@ const NavBar: React.FunctionComponent = () => {
               <div className={header_url.includes(link.urlLink) ? "" : ""}>
               <div className="flex gap-x-3 p-1 rounded-lg hover:bg-neutral-600 transition duration-200 cursor-pointer">
                 <div className="flex items-center">
-                  <SvgIcon name={link.imageName} classNameStyle=""/>
+                  <SvgIcon name={link.imageName} classNameStyle="text-neutral-900"/>
                 </div>
                 <div className="">
                   <p>{link.text}</p>
