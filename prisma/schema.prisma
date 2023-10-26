@@ -9,11 +9,10 @@ datasource db {
 }
 
 model User {
-  id         BigInt      @id @default(autoincrement())
-  name       String?
-  email      String      @unique
-  profile    Int[]
-  ressources Ressource[]
+  id      BigInt  @id @default(autoincrement())
+  name    String?
+  email   String
+  profile Int[]   @db.SmallInt
 }
 
 model Course {
@@ -24,20 +23,16 @@ model Course {
 }
 
 model Unit {
-  id         Int         @id @default(autoincrement())
-  full_name  String
-  name       String
-  code       Int
-  ressources Ressource[]
+  id        BigInt  @id @default(autoincrement())
+  full_name String  @default("")
+  name      String? @default("")
+  code      Int     @db.SmallInt
 }
 
-model Ressource {
-  id           Int     @id @default(autoincrement())
-  name         String
-  unitId       Int
-  unit         Unit    @relation(fields: [unitId], references: [id])
-  userId       BigInt?
-  user         User?   @relation(fields: [userId], references: [id])
-  urlThumbnail String?
-  urlPdf       String?
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Support {
+  id         BigInt   @id @default(autoincrement())
+  name       String?
+  message    String?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
 }
