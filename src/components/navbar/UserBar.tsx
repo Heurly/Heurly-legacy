@@ -10,7 +10,6 @@ export default async function UserBar(): Promise<React.ReactElement> {
   return (
     <>
       {session != undefined && (
-        <div className="w-full ">
           <div className="border-t border-neutral-600 flex justify-items-center items-center justify-center gap-10 py-1 px-3 w-full">
             <div className="flex justify-items-center items-center w-10/12">
               <Image
@@ -32,7 +31,6 @@ export default async function UserBar(): Promise<React.ReactElement> {
               />
             </a>
           </div>
-        </div>
       )}
     </>
   );
