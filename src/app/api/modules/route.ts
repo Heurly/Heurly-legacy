@@ -26,3 +26,14 @@ export async function POST(request: NextRequest) {
     })),
   );
 }
+
+export async function GET(request: NextRequest) {
+  let res = await prismaClient.unit.findMany();
+
+  return NextResponse.json(
+    res.map((m) => ({
+      label: m.full_name.replaceAll(";", " - "),
+      code: m.code,
+    })),
+  );
+}
