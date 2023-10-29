@@ -1,12 +1,20 @@
 import News from "@/components/News";
 import Card from "@/components/Card";
-import { SearchContext } from "@/context/search";
-import { ReactElement, useContext } from "react";
-import Resource from "@/components/resources/resource";
-import { Search } from "@/context/search";
+import { ReactElement } from "react";
 import type { News as NewsItem } from "@prisma/client";
+import { fetchEDTData } from "@/utils/edt";
+import ApiFilter from "@/utils/apiFilter";
+import { Session, getServerSession } from "next-auth";
+import authOptions from "@/utils/AuthOptions";
+import { subDays, addDays, parseISO } from "date-fns";
 import { API_URL } from "@/config/const";
+import id from "@/utils/id";
+import { CourseEvent } from "../edt/types";
+
 export default async function Dashboard(): Promise<React.ReactElement> {
+  const session: Session | null = await getServerSession(authOptions);
+  const modules = session?.user?.profile?.modules ?? [];
+
   const ressources_upload = [
     {
       title: "test",
@@ -24,8 +32,8 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       date: "2021-10-10",
     },
   ];
-  // need to change but work like this
-  const resNews = await fetch(`http://localhost:3000/api/news`);
+
+  const resNews = await fetch(`${API_URL}/news`);
   const news: NewsItem[] = await resNews.json();
 
   const startHours = 8;
@@ -42,9 +50,18 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       </div>,
     );
   }
+  // get the cours of the current date
+  const currentDate: Date = new Date();
+  const currentDatePlusOneDay = addDays(currentDate.setHours(0, 0, 0, 0), 1);
+
+  const paramsEDT: ApiFilter<number> = {
+    equals: currentDatePlusOneDay.getTime(),
+  };
+
+  const edtData: CourseEvent[] = await fetchEDTData(paramsEDT, modules);
 
   return (
-    <div className="flex flex-col md:grid grid-rows-2 grid-flow-col gap-4 md:h-[700px] ">
+    <div className="flex flex-col md:grid grid-rows-2 grid-flow-col gap-4 md:h-[90svh]">
       <Card className="z-20 col-span-2">
         <div className="font-extrabold mb-6">
           <p>Actualité du moment :</p>
@@ -54,6 +71,7 @@ export default async function Dashboard(): Promise<React.ReactElement> {
             news.map(({ title, date, description }) => {
               return (
                 <News
+                  key={id()}
                   eventTitle={title}
                   date={date}
                   description={description}
@@ -83,8 +101,32 @@ export default async function Dashboard(): Promise<React.ReactElement> {
       </Card> */}
       {/* -------------------------- FOR VERSION 0.3 -------------------------------- */}
 
-      <Card className="overflow-auto z-20 grid justify-items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
-        Prochain cours :{gridEdt}
+      <Card className="grid row-span-2 col-span-1">
+        <p className="font-extrabold">Prochain cours :</p>
+        <div className="relative border justify-items-stretch grid">
+          {gridEdt}
+          {edtData &&
+            edtData.map((event: CourseEvent, key: any) => {
+              const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
+              const courseStart: Date = parseISO(event.DTSTART);
+              const courseEnd: Date = parseISO(event.DTEND);
+              return (
+                <div
+                  key={key}
+                  className="absolute flex flex-col items-center justify-center bg-neutral-950 text-white border text-sm text-ellipsis rounded-xl border-neutral-600 cursor-pointer w-full"
+                  style={{
+                    top: `${(courseStart.getHours() - startHours) * 10}%`,
+                  }}
+                >
+                  <p>{event.SUMMARY}</p>
+                  <p className="text-neutral-400">
+                    {prof != undefined && prof}
+                  </p>
+                  <p className="text-neutral-500">{event.LOCATION}</p>
+                </div>
+              );
+            })}
+        </div>
       </Card>
     </div>
   );

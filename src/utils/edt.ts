@@ -12,6 +12,7 @@ export async function fetchEDTData(
     dateFilter: dateFilter,
     modules: modules.map((m) => m.code),
   };
+
   const data = await fetch(API_URL + "/edt", {
     method: "POST",
     headers: {
