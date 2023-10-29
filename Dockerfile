@@ -27,4 +27,4 @@ USER nextjs
 ENV PORT 3003
 ENV HOSTNAME "0.0.0.0"
 ENV NEXT_TELEMETRY_DISABLED 1
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
