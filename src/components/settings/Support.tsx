@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 import cn from "classnames";
 import { Session } from "next-auth";
 
@@ -8,22 +8,27 @@ type Props = {
 };
 
 export default function Support({ userSession }: Props) {
+  const [infoText, setInfoText] = React.useState("");
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
     // cancel the reloading of the page
     e.preventDefault();
-
     // convert data to FormData
     const formData = new FormData(e.currentTarget);
-
     fetch("/api/support", {
       method: "POST",
       body: JSON.stringify({
         message: formData.get("about"),
         client: userSession?.user?.name,
       }),
+    }).then((responseData) => {
+      if (responseData.status === 200) {
+        setInfoText("Message envoyé"); // Update the state
+      } else if (responseData.status === 400) {
+        setInfoText("Erreur lors de l'envoi du message"); // Update the state
+      }
+      console.log(responseData.status);
     });
     // reset the form
-    formData.set("info", "Message envoyé");
     e.currentTarget.reset();
   };
 
@@ -51,8 +56,8 @@ export default function Support({ userSession }: Props) {
           >
             Envoyer
           </button>
-          <label>
-            <text className="font-semibold" id="info"></text>
+          <label className="text-white font-semibold text-xs" id="info">
+            {infoText} {/* Display the state variable as label content */}
           </label>
         </form>
       </div>
