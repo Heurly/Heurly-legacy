@@ -1,8 +1,8 @@
 type ApiFilter<T> = {
-  equals?: T | undefined;
-  greater?: T | undefined;
-  lower?: T | undefined;
-  in?: T[] | undefined;
+  equals?: T;
+  greater?: T;
+  lower?: T;
+  in?: T[];
 };
 
 export default ApiFilter;
