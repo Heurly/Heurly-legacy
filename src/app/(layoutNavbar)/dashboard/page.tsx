@@ -80,7 +80,7 @@ export default async function Dashboard(): Promise<React.ReactElement> {
               const courseStart: Date = parseISO(event.DTSTART);
               const courseEnd: Date = parseISO(event.DTEND);
               return (
-                <div className="w-5/6 absolute right-0 h-full">
+                <div className="w-5/6 absolute right-0 h-full" key={id()}>
                   <EdtCourse
                     courseEnd={courseEnd}
                     courseStart={courseStart}
