@@ -13,9 +13,12 @@ const EdtPage: React.FunctionComponent = async () => {
   const session: Session | null = await getServerSession(authOptions);
   const modules = session?.user?.profile?.modules ?? [];
   const initialDate = new Date(new Date(Date.now()).setHours(0, 0, 0, 0));
-  const dateGreater = new Date(startOfWeek(initialDate).setHours(0, 0, 0, 0));
+  const dateGreater = new Date(
+    startOfWeek(initialDate, { weekStartsOn: 1 }).setHours(0, 0, 0, 0),
+  );
   const dateLower = new Date(
-    endOfWeek(initialDate).setHours(0, 0, 0, 0) + DAY_IN_MS * 14,
+    endOfWeek(initialDate, { weekStartsOn: 1 }).setHours(0, 0, 0, 0) +
+      DAY_IN_MS * 14,
   );
 
   const initialData = await fetchEDTData(

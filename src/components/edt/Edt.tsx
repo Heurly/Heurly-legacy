@@ -3,11 +3,10 @@
 import EdtForm from "@/components/edt/EdtForm";
 import EdtGrid from "@/components/edt/EdtGrid";
 import EdtContent from "@/components/edt/EdtContent";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
-import { CourseDay, EdtData } from "@/utils/edt";
+import { EdtData } from "@/utils/edt";
 import { SessionProvider } from "next-auth/react";
-import EdtNav from "@/components/edt/EdtNav";
 
 interface Props {
   initialData: EdtData;

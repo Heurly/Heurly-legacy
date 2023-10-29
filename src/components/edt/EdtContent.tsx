@@ -8,23 +8,14 @@ import {
   EdtData,
   edtToCourseDays,
   fetchEDTData,
-  getLocalDay,
   getLocalDayNumber,
 } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
-import {
-  differenceInDays,
-  endOfWeek,
-  format,
-  isSameDay,
-  startOfWeek,
-} from "date-fns";
+import { endOfWeek, format, isSameDay, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
 import Button from "@/components/Button";
-import edt from "@/components/edt/Edt";
 import Image from "next/image";
-import EdtNav from "@/components/edt/EdtNav";
 
 const SLIDES_MAX = 62;
 
@@ -156,7 +147,7 @@ export default function EdtContent({
         </SwiperSlide>
         {courses
           .sort((a, b) => a.day - b.day)
-          .map((courseDay, index) => {
+          .map((courseDay) => {
             const dayString = format(new Date(courseDay.day), "EEEE", {
               locale: fr,
             });
@@ -192,9 +183,11 @@ export default function EdtContent({
           onChange={(e) => {
             const newDate = Date.parse(e.currentTarget.value);
             setEdtState({
-              begin: startOfWeek(newDate).getTime(),
-              end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
-              index: getLocalDayNumber(newDate),
+              begin: startOfWeek(newDate, { weekStartsOn: 1 }).getTime(),
+              end: endOfWeek(newDate + DAY_IN_MS * 14, {
+                weekStartsOn: 1,
+              }).getTime(),
+              index: getLocalDayNumber(newDate) + 1, // +1 for the arrow slide
             });
           }}
           type="date"
@@ -204,9 +197,11 @@ export default function EdtContent({
           onClick={() => {
             const newDate = Date.now();
             setEdtState({
-              begin: startOfWeek(newDate).getTime(),
-              end: endOfWeek(newDate + DAY_IN_MS * 14).getTime(),
-              index: getLocalDayNumber(newDate),
+              begin: startOfWeek(newDate, { weekStartsOn: 1 }).getTime(),
+              end: endOfWeek(newDate + DAY_IN_MS * 14, {
+                weekStartsOn: 1,
+              }).getTime(),
+              index: getLocalDayNumber(newDate) + 1, // +1 for the arrow slide
             });
           }}
         >

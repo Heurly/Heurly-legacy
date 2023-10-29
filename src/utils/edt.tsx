@@ -2,10 +2,11 @@ import { CourseEvent, ModuleChoice } from "@/app/(layoutNavbar)/edt/types";
 import { API_URL } from "@/config/const";
 import ApiFilter from "@/utils/apiFilter";
 import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import { isSameDay, parseISO } from "date-fns";
+import { addDays, isSameDay, parseISO } from "date-fns";
 import EdtCourse from "@/components/edt/EdtCourse";
 import React from "react";
 import { number } from "prop-types";
+import id from "@/utils/id";
 
 export type EdtData = {
   data: CourseEvent[];
@@ -71,7 +72,11 @@ export function edtToCourseDays(edtData: EdtData) {
   const data: CourseDay[] = [];
   const start: number = new Date(edtData.first).setHours(0, 0, 0, 0);
 
-  for (let day = start; day <= edtData.last; day += DAY_IN_MS) {
+  for (
+    let day = start;
+    day <= edtData.last;
+    day = addDays(day, 1).setHours(0, 0, 0, 0)
+  ) {
     data.push({ day: day, courses: [] });
   }
 
@@ -87,6 +92,7 @@ export function edtToCourseDays(edtData: EdtData) {
 
     const courseElement = (
       <EdtCourse
+        key={id()}
         courseStart={courseStart}
         courseEnd={courseEnd}
         prof={prof}
