@@ -16,6 +16,7 @@ import { endOfWeek, format, isSameDay, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
 import Button from "@/components/Button";
 import Image from "next/image";
+import EdtNav from "@/components/edt/EdtNav";
 
 const SLIDES_MAX = 62;
 
@@ -177,37 +178,7 @@ export default function EdtContent({
           </div>
         </SwiperSlide>
       </Swiper>
-      <div className="flex justify-center text-white items-center">
-        <input
-          className="bg-neutral-600 border border-neutral-500 text-white"
-          onChange={(e) => {
-            const newDate = Date.parse(e.currentTarget.value);
-            setEdtState({
-              begin: startOfWeek(newDate, { weekStartsOn: 1 }).getTime(),
-              end: endOfWeek(newDate + DAY_IN_MS * 14, {
-                weekStartsOn: 1,
-              }).getTime(),
-              index: getLocalDayNumber(newDate) + 1, // +1 for the arrow slide
-            });
-          }}
-          type="date"
-          name="edtDate"
-        />
-        <Button
-          onClick={() => {
-            const newDate = Date.now();
-            setEdtState({
-              begin: startOfWeek(newDate, { weekStartsOn: 1 }).getTime(),
-              end: endOfWeek(newDate + DAY_IN_MS * 14, {
-                weekStartsOn: 1,
-              }).getTime(),
-              index: getLocalDayNumber(newDate) + 1, // +1 for the arrow slide
-            });
-          }}
-        >
-          Recentrer
-        </Button>
-      </div>
+      <EdtNav setEdtState={setEdtState} />
     </div>
   );
 }
