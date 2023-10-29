@@ -31,9 +31,7 @@ export async function fetchEDTData(
     modules: modules.map((m) => m.code),
   };
 
-  const endpoint = `${
-    fromServer ? process.env.NEXTAUTH_URL : ""
-  }${API_URL}/edt`;
+  const endpoint = `${API_URL}/edt`;
   const data = await fetch(endpoint, {
     method: "POST",
     headers: {

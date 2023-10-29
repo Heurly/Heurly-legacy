@@ -1,4 +1,4 @@
-import { PrismaClient, Ressource } from "@prisma/client";
+// import { PrismaClient, Ressource } from "@prisma/client";
 import fs from "fs";
 
 const LIMIT_MAX = 10;
