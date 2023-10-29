@@ -48,7 +48,7 @@ export default async function Dashboard(): Promise<React.ReactElement> {
         "md:grid md:grid-rows-2 md:grid-flow-col",
       )}
     >
-      <Card className="z-20 col-span-2">
+      <Card className="col-span-2">
         <div className="font-extrabold mb-6">
           <p>Actualité du moment :</p>
         </div>
