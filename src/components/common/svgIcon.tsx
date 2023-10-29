@@ -64,7 +64,7 @@ const SvgIcon: React.FC<SvgIconProps> = ({ name, classNameStyle}) => {
         );
     case 'webaurion':
         return(
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg className={svgClassName} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_230_906)">
             <path d="M12 21V12.75M15.75 21V12.75M8.25 21V12.75M3 9L12 3L21 9M19.5 21V10.332C17.0189 9.94356 14.5113 9.74897 12 9.75C9.449 9.75 6.944 9.95 4.5 10.332V21M3 21H21M12 6.75H12.008V6.758H12V6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </g>
@@ -75,6 +75,12 @@ const SvgIcon: React.FC<SvgIconProps> = ({ name, classNameStyle}) => {
             </defs>
             </svg>
         );
+    case 'logOut':
+      return(
+        <svg className={svgClassName} width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"></path>
+        </svg>
+      );
   }
 };
 

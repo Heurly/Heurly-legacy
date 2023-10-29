@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import authOptions from "@/utils/AuthOptions";
 import Image from "next/image";
 import React from "react";
+import SvgIcon from "../common/svgIcon";
+import cn from "classnames";
 
 export default async function UserBar(): Promise<React.ReactElement> {
   const session = await getServerSession(authOptions);
@@ -22,13 +24,8 @@ export default async function UserBar(): Promise<React.ReactElement> {
               <p className="p-4">{session?.user?.name ?? ""}</p>
             </div>
             <SettingsBtn />
-            <a href="/api/auth/signout">
-              <Image
-                src="/images/logout.svg"
-                alt="logout"
-                width={32}
-                height={32}
-              />
+            <a href="/api/auth/signout" className={cn("text-neutral-950", "dark:text-white")}>
+              <SvgIcon name="logOut" classNameStyle=""/>
             </a>
           </div>
       )}

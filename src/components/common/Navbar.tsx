@@ -30,7 +30,7 @@ const NavBar: React.FunctionComponent = () => {
           </svg>
       </label>
       
-      <nav className={cn("flex flex-col items-center bg-gray-200 z-30 space-y-5 py-10 fixed top-0 w-64 h-full transition-transform  sm:translate-x-0 border-r border-neutral-600 text-neutral-950 peer-checked:-translate-x-full ",
+      <nav className={cn("flex flex-col items-center bg-gray-200 z-30 space-y-5 py-10 fixed top-0 w-64 h-[100svh] transition-transform  sm:translate-x-0 border-r border-neutral-600 text-neutral-950 peer-checked:-translate-x-full ",
       "dark:bg-neutral-950 dark:text-white")}>
       <div className="flex flex-col space-y-5 text-xl">
           <div className="flex flex-row items-stretch ">
@@ -54,10 +54,11 @@ const NavBar: React.FunctionComponent = () => {
           </Link>
         ))}
       </div>
+      
         <ToolsLink/>
+      <div>
         <UserBar/>
-      
-      
+      </div>
       </nav>
       </>
     );
