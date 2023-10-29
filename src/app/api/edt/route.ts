@@ -29,20 +29,6 @@ async function setUserGroups(formData: FormData) {
 }
 
 function filterCourses(courses: CourseEvent[], dateFilter: ApiFilter<number>) {
-  if (dateFilter.greater != undefined) {
-    courses = courses.filter(
-      (m) =>
-        dateFilter.greater != undefined &&
-        parseISO(m.DTSTART).getTime() >= dateFilter.greater,
-    ) as CourseEvent[];
-  }
-  if (dateFilter.lower != undefined) {
-    courses = courses.filter(
-      (m) =>
-        dateFilter.lower != undefined &&
-        parseISO(m.DTSTART).getTime() < dateFilter.lower,
-    ) as CourseEvent[];
-  }
   if (dateFilter.equals != undefined) {
     courses = courses.filter((m) => {
       const start = parseISO(m.DTSTART);
@@ -125,26 +111,31 @@ export async function POST(request: NextRequest) {
     await request.json();
   if (payload.modules.length <= 0) return;
 
-  const endpoint = PLANIF_ENDPOINT(payload.modules);
+  try {
+    const endpoint = PLANIF_ENDPOINT(payload.dateFilter, payload.modules);
 
-  const response = await fetch(endpoint, {
-    method: "GET",
-  });
-  if (!response.ok) {
-    throw new Error(response.statusText);
+    const response = await fetch(endpoint, {
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const VCALENDAR = await response.text();
+
+    let res: CalendarData = lines2tree(
+      VCALENDAR.split("\r\n"),
+    ) as unknown as CalendarData;
+
+    res.VCALENDAR[0].VEVENT = filterCourses(
+      res.VCALENDAR[0].VEVENT,
+      payload.dateFilter,
+    );
+    await translateCoursesCodes(res.VCALENDAR[0].VEVENT);
+
+    return Response.json(res);
+  } catch (error) {
+    console.log("Error in api/edt:\n" + error);
+    return Response.error();
   }
-
-  const VCALENDAR = await response.text();
-
-  let res: CalendarData = lines2tree(
-    VCALENDAR.split("\r\n"),
-  ) as unknown as CalendarData;
-
-  res.VCALENDAR[0].VEVENT = filterCourses(
-    res.VCALENDAR[0].VEVENT,
-    payload.dateFilter,
-  );
-  await translateCoursesCodes(res.VCALENDAR[0].VEVENT);
-
-  return NextResponse.json(res);
 }
