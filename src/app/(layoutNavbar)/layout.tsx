@@ -9,11 +9,6 @@ import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Home",
-  description: "Homepage for the website.",
-};
-
 export default async function NavbarLayout({
   children,
 }: {
@@ -23,12 +18,20 @@ export default async function NavbarLayout({
 
   return (
     <>
-      <div className={cn(inter.className)}>
-        <NavBar />
-        <div className="md:w-[85%] md:ml-[15%] pt-[20%] md:p-[5svh] bg-neutral-950 h-[100svh]">
-          {children}
+      {session && (
+        <div className={cn(inter.className)}>
+          <div className="w-screen h-screen flex flex-row">
+            <div className="hidden lg:block h-full w-2/12 fixed">
+              <NavBar />
+            </div>
+            <div className="hidden md:block basis-2/12"></div>
+            <div className="h-full basis-10/12 p-6 overflow-hidden bg-neutral-950 flex-1">
+              {children}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+      {!session && redirect("/login", RedirectType.replace)}
     </>
   );
 }
