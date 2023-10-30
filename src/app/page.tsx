@@ -7,7 +7,7 @@ export default async function Page(): Promise<React.ReactElement> {
   const session: Session | null = await getServerSession(authOptions);
 
   return (
-    <div className="md:flex w-full h-screen">
+    <div className="md:flex w-full h-[100svh]">
       {session && redirect("/edt", RedirectType.replace)}
       {!session && redirect("/login", RedirectType.replace)}
     </div>
