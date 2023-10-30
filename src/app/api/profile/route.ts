@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import prisma from "@/utils/Prisma";
+import prismaClient from "@/utils/Prisma";
 
 export interface UpdateProfilePayload {
   email: string;
@@ -9,7 +9,7 @@ export interface UpdateProfilePayload {
 export async function POST(request: NextRequest) {
   const payload = (await request.json()) as UpdateProfilePayload;
 
-  const update = await prisma.user.update({
+  const update = await prismaClient.user.update({
     where: {
       email: payload.email,
     },
