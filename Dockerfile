@@ -23,7 +23,6 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY /app/node_modules/.prisma/client/schema.prisma ./prisma/schema.prisma
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
