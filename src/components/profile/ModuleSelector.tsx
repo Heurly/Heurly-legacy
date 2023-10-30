@@ -65,7 +65,7 @@ const ModuleSelector: React.FunctionComponent<Props> = ({ session }) => {
   };
 
   useEffect(() => {
-    fetch(API_URL + "/modules", { method: "GET" }).then(async (res) => {
+    fetch("/api/modules", { method: "GET" }).then(async (res) => {
       const data = (await res.json()) as ModuleChoice[];
       setModules(data);
       setSelected(data[0].label.split(" - ")[0]);
