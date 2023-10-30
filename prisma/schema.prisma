@@ -44,3 +44,4 @@ model News {
   date        DateTime
   created_at  DateTime @default(now()) @db.Timestamptz(6)
 }
+
