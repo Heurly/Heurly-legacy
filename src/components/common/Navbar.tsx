@@ -28,7 +28,7 @@ const NavBar: React.FunctionComponent = () => {
   ];
 
   return (
-    <nav className="flex flex-col items-center space-y-10 py-10 fixed top-0 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 dark: bg-neutral-950 border-r border-neutral-600 text-white">
+    <nav className="flex flex-col items-center space-y-10 py-10 fixed top-0 w-64 h-[100svh] transition-transform -translate-x-full sm:translate-x-0 dark: bg-neutral-950 border-r border-neutral-600 text-white">
       <div className="flex flex-col space-y-5 text-xl">
         <div>
           <Logo></Logo>

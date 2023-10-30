@@ -1,114 +1,49 @@
-"use client";
-import EDTForm from "@/components/edt/EDTForm";
-import CalendarElements from "@/components/edt/CalendarElements";
-import Grid from "@/components/edt/Calendar/Grid";
-import { CourseEvent, ModuleChoice } from "./types";
-import React, { useCallback, useEffect, useState } from "react";
-import Button from "@/components/Button";
-import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
-import { fetchEDTData } from "@/utils/edt";
+import React from "react";
+import { EdtData, fetchEDTData, getLocalDay } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
-import { useSession } from "next-auth/react";
-import Logo from "@/components/logo";
+import Edt from "@/components/edt/Edt";
+import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
+import { getServerSession, Session } from "next-auth";
+import authOptions from "@/utils/AuthOptions";
+import { endOfWeek, startOfWeek } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
-const Edt: React.FunctionComponent = () => {
-  const { data: session } = useSession();
-
-  const [modules, setModules] = useState<ModuleChoice[]>([]);
-  const [edt, setEdt] = useState<CourseEvent[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(
-    new Date(new Date(Date.now()).setHours(0, 0, 0, 0)),
+const EdtPage: React.FunctionComponent = async () => {
+  const session: Session | null = await getServerSession(authOptions);
+  const modules = session?.user?.profile?.modules ?? [];
+  const initialDate = new Date(new Date(Date.now()).setHours(0, 0, 0, 0));
+  const dateGreater = new Date(
+    startOfWeek(initialDate, { weekStartsOn: 1 }).setHours(0, 0, 0, 0),
+  );
+  const dateLower = new Date(
+    endOfWeek(initialDate, { weekStartsOn: 1 }).setHours(0, 0, 0, 0) +
+      DAY_IN_MS * 14,
   );
 
-  const changeDate = (daysCount: number) => {
-    let newDate: Date = new Date(date.getTime() + daysCount * DAY_IN_MS);
-    newDate.setHours(0, 0, 0, 0);
-    setDate(newDate);
-  };
-
-  useEffect(() => {
-    if (modules.length <= 0 || loading) return;
-
-    setLoading(true);
-    fetchEDTData(
-      {
-        greater: new Date(
-          new Date(date.getTime() - (date.getDay() - 1) * DAY_IN_MS).getTime(),
-        ).getTime(),
-        lower: new Date(
-          new Date(date.getTime() + 6 * DAY_IN_MS - date.getDay() * DAY_IN_MS),
-        ).getTime(),
-      } as ApiFilter<number>,
-      modules,
-    ).then((data) => {
-      setLoading(false);
-      setEdt(data);
-    });
-  }, [modules, date]);
-
-  const tryAddModules = useCallback(
-    (additional: ModuleChoice[], initial: ModuleChoice[]) => {
-      let changed: boolean = false;
-
-      for (const m of additional) {
-        if (modules.find((e) => e.code == m.code) == undefined) {
-          initial = initial.concat([m]);
-          changed = true;
-        }
-      }
-
-      if (changed) setModules(initial);
-    },
-    [modules],
+  const initialData = await fetchEDTData(
+    {
+      greater: dateGreater.getTime(),
+      lower: dateLower.getTime(),
+    } as ApiFilter<number>,
+    modules,
   );
-
-  useEffect(() => {
-    let newModules: ModuleChoice[] = [];
-    if (session?.user?.profile?.modules != undefined) {
-      tryAddModules(session.user.profile?.modules, newModules);
-    }
-  }, [session]);
 
   return (
-    <>
-      <EDTForm modules={modules} setModules={setModules}></EDTForm>
-      <div className="relative w-full h-full text-center">
-        {loading && (
-          <div className="absolute w-full h-full bg-cyan-800 z-10 place-content-center opacity-25" />
-        )}
-        <Grid date={date} />
-        <CalendarElements edtData={edt} />
-      </div>
-      <div className="flex text-white p-4">
-        <Button onClick={() => changeDate(-7)}>Semaine Précédente</Button>
-        <div className="ml-auto">
-          {`${new Date(
-            date.getTime() - (date.getDay() - 1) * DAY_IN_MS,
-          ).toLocaleString("fr-FR", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}`}
-          {` - `}
-          {`${new Date(
-            date.getTime() + 6 * DAY_IN_MS - date.getDay() * DAY_IN_MS,
-          ).toLocaleString("fr-FR", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}`}
-        </div>
-        <Button onClick={() => changeDate(7)} className="ml-auto">
-          Semaine Prochaine
-        </Button>
-      </div>
-    </>
+    <div className="w-full h-full">
+      <Edt
+        initialData={
+          {
+            data: initialData,
+            first: dateGreater.getTime(),
+            last: dateLower.getTime(),
+            current: getLocalDay(initialDate),
+          } as EdtData
+        }
+        modules={modules}
+      ></Edt>
+    </div>
   );
 };
 
-export default Edt;
+export default EdtPage;
