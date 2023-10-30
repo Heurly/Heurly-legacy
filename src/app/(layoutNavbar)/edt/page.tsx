@@ -27,7 +27,6 @@ const EdtPage: React.FunctionComponent = async () => {
       lower: dateLower.getTime(),
     } as ApiFilter<number>,
     modules,
-    true,
   );
 
   return (
