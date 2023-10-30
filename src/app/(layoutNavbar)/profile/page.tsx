@@ -42,7 +42,7 @@ const Profile: React.FunctionComponent = async () => {
           </div>
         </div>
       ) : (
-        <div>Vous n'êtes pas connecté.</div>
+        <div>{"Vous n'êtes pas connecté."}</div>
       )}
     </>
   );
