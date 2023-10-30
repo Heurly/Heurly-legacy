@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     where: condition,
   });
 
-  return NextResponse.json(
+  return Response.json(
     res.map((m) => ({
       label: m.full_name.replaceAll(";", " - "),
       code: m.code,
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   let res = await prismaClient.unit.findMany();
 
-  return NextResponse.json(
+  return Response.json(
     res.map((m) => ({
       label: m.full_name.replaceAll(";", " - "),
       code: m.code,
