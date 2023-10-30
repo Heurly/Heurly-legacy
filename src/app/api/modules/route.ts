@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import prismaClient from "@/utils/Prisma";
 
@@ -19,7 +18,18 @@ export async function POST(request: NextRequest) {
     where: condition,
   });
 
-  return NextResponse.json(
+  return Response.json(
+    res.map((m) => ({
+      label: m.full_name.replaceAll(";", " - "),
+      code: m.code,
+    })),
+  );
+}
+
+export async function GET(request: NextRequest) {
+  let res = await prismaClient.unit.findMany();
+
+  return Response.json(
     res.map((m) => ({
       label: m.full_name.replaceAll(";", " - "),
       code: m.code,
