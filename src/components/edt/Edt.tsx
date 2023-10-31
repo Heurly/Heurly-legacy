@@ -21,11 +21,7 @@ const Edt: React.FunctionComponent<Props> = ({
 
   return (
     <SessionProvider>
-      <div className="w-full h-1/10">
-        <EdtForm modules={currentModules} setModules={setCurrentModules} />
-      </div>
-      <div className="relative w-full h-[75vh] text-center">
-        <EdtGrid />
+      <div className="relative w-full h-[100svh] text-center">
         <EdtContent initialData={initialData} modules={modules} />
       </div>
     </SessionProvider>

@@ -19,8 +19,9 @@ const EdtCourse: React.FC<Props> = ({
     <div
       key={id()}
       className={cn(
-        "absolute flex flex-col items-center justify-center border  text-ellipsis rounded-xl cursor-pointer w-10/12 md:w-full z-20",
-        "bg-neutral-950 text-white border-neutral-600 -translate-x-4 md:-translate-x-0",
+        "bg-gray-200 text-neutral-950 border-neutral-600 dark:bg-neutral-950 dark:text-white",
+        "absolute flex flex-col items-center justify-center border text-ellipsis rounded-xl cursor-pointer w-10/12 md:w-full",
+        "-translate-x-4 md:-translate-x-0 z-40",
       )}
       style={{
         height: `${

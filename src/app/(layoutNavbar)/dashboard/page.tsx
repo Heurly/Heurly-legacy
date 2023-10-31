@@ -5,7 +5,7 @@ import { fetchEDTData } from "@/utils/edt";
 import ApiFilter from "@/utils/apiFilter";
 import { Session, getServerSession } from "next-auth";
 import authOptions from "@/utils/AuthOptions";
-import { addDays, parseISO } from "date-fns";
+import { parseISO } from "date-fns";
 import id from "@/utils/id";
 import { CourseEvent } from "../edt/types";
 import cn from "classnames";

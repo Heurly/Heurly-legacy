@@ -17,7 +17,12 @@ export default function Login(): React.ReactElement {
                 ESIEE&nbsp;HUB
               </span>
             </h1>
-            <div className={cn("text-neutral-950", "dark:text-white")}>
+            <div
+              className={cn(
+                "bg-gray-200 text-neutral-950",
+                "dark:bg-neutral-950 dark:text-white",
+              )}
+            >
               <Button onClick={() => signIn("google", { callbackUrl: "/edt" })}>
                 Se connecter avec Google
               </Button>

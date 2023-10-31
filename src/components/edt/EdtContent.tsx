@@ -157,7 +157,7 @@ export default function EdtContent({
             });
             return (
               <SwiperSlide key={id()} className="border-l border-neutral-800">
-                <div className="text-white border-neutral-600">
+                <div className="bg-gray-200 text-neutral-950 dark:bg-neutral-950 dark:text-white border-neutral-600">
                   <p>{dayString}</p>
                   <p className="text-xs text-neutral-600">{dateString}</p>
                 </div>

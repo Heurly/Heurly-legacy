@@ -19,7 +19,7 @@ export default function EditUser({ userSession }: Props) {
         width={70}
         height={70}
       />
-      <text className="text-white text-xl md:text-3xl flex flex-col justify-center ml-4 md:ml-10">
+      <text className="bg-gray-200 text-neutral-950 dark:bg-neutral-950 dark:text-white text-xl md:text-3xl flex flex-col justify-center ml-4 md:ml-10">
         {name}
       </text>
     </div>

@@ -6,6 +6,7 @@ import { DAY_IN_MS } from "@/app/(layoutNavbar)/edt/const";
 import { getServerSession, Session } from "next-auth";
 import authOptions from "@/utils/AuthOptions";
 import { endOfWeek, startOfWeek } from "date-fns";
+import EdtGrid from "@/components/edt/EdtGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -30,19 +31,24 @@ const EdtPage: React.FunctionComponent = async () => {
   );
 
   return (
-    <div className="w-full h-full">
-      <Edt
-        initialData={
-          {
-            data: initialData,
-            first: dateGreater.getTime(),
-            last: dateLower.getTime(),
-            current: getLocalDay(initialDate),
-          } as EdtData
-        }
-        modules={modules}
-      ></Edt>
-    </div>
+    <>
+      <div className="absolute h-full w-full overflow-hidden">
+        <EdtGrid />
+      </div>
+      <div className="w-full h-full overflow-hidden">
+        <Edt
+          initialData={
+            {
+              data: initialData,
+              first: dateGreater.getTime(),
+              last: dateLower.getTime(),
+              current: getLocalDay(initialDate),
+            } as EdtData
+          }
+          modules={modules}
+        ></Edt>
+      </div>
+    </>
   );
 };
 
