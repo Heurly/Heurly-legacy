@@ -25,7 +25,7 @@ export default async function NavbarLayout({
               <NavBar />
             </div>
             <div className="hidden md:block basis-2/12"></div>
-            <div className="h-full basis-10/12 p-6 overflow-hidden bg-neutral-950 flex-1">
+            <div className="basis-10/12 p-6 overflow-hidden h-[100svh] bg-gray-200 dark:bg-neutral-950 flex-1">
               {children}
             </div>
           </div>

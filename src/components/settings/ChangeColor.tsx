@@ -48,7 +48,9 @@ const ChangeColor: React.FunctionComponent = () => {
 
   return (
     <div>
-      <p className="text-white font-semibold">Changer de couleur de thème</p>
+      <p className="bg-gray-200 text-neutral-950 dark:bg-neutral-950 dark:text-white font-semibold">
+        Changer de couleur de thème
+      </p>
       <div className="flex space-x-3 md:space-x-7 mt-8 mb-8">
         {Object.keys(themes).map((theme) => (
           <Color

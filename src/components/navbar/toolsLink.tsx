@@ -1,39 +1,45 @@
 import React from "react";
 
 import Tools from "./tool";
+import cn from "classnames";
 
 export default function ToolsLink() {
   const links = [
     {
-      imageLink: "/images/webaurion.svg",
+      imageName: "webaurion",
       text: "Webaurion",
       urlLink: "https://webaurion.esiee.fr/faces/Login.xhtml",
     },
     {
-      imageLink: "/images/instraEsiee.svg",
+      imageName: "instraEsiee",
       text: "Intranet ESIEE",
       urlLink: "https://intra.esiee.fr/",
     },
     {
-      imageLink: "/images/bdeInstra.svg",
-      text: "BDE Instra",
+      imageName: "bdeInsta",
+      text: "BDE Insta",
       urlLink: "https://www.instagram.com/bde_esiee_paris/reels/",
     },
     {
-      imageLink: "/images/blackboard.svg",
+      imageName: "blackboard",
       text: "Blackboard",
       urlLink: "https://esiee.blackboard.com/webapps/login/",
     },
   ];
 
   return (
-    <div className="border-t border-neutral-600 bg-neutral-950 text-white flex flex-col justify-end gap-y-3 py-3 px-7 w-full h-30  ">
+    <div
+      className={cn(
+        "border-t border-neutral-600 bg-gray-200 text-neutral-950 flex flex-col place-content-end gap-y-3 py-3 px-7 w-full h-30",
+        "dark:bg-neutral-950 dark:text-white",
+      )}
+    >
       {links &&
         links.map((link, index) => (
           <div className="" key={index}>
             <Tools
               key={index}
-              imageLink={link.imageLink}
+              iconName={link.imageName}
               text={link.text}
               urlLink={link.urlLink}
             />

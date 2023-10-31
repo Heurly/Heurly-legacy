@@ -34,7 +34,9 @@ export default function Support({ userSession }: Props) {
 
   return (
     <div className=" mt-3 md:mt-6">
-      <text className="text-white font-semibold">Faire une remarque</text>
+      <text className="bg-gray-200 text-neutral-950 dark:bg-neutral-950 dark:text-white font-semibold">
+        Faire une remarque
+      </text>
       <div className="mt-4 mb-8">
         <form
           onSubmit={handleSendMessage}
@@ -46,7 +48,7 @@ export default function Support({ userSession }: Props) {
             rows={3}
             className={cn(
               // default theme
-              "bg-black text-white ring-gray-300 placeholder:text-gray-400 focus:ring-orange-200",
+              "bg-gray-200 text-neutral-950 dark:bg-neutral-950 dark:text-white ring-gray-300 placeholder:text-gray-400 focus:ring-orange-200",
               "block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 h-1/6",
             )}
           />

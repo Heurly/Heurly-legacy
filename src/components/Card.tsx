@@ -9,7 +9,8 @@ export default function Card({
   return (
     <div
       className={cn(
-        "relative border border-neutral-600 bg-neutral-950 text-white rounded-[15px] p-7 h-full",
+        "relative border border-neutral-600 bg-gray-200 text-neural-950 rounded-[15px] p-7",
+        "dark:bg-neutral-950 dark:text-white",
         className,
       )}
     >
