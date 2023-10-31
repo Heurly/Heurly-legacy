@@ -7,7 +7,6 @@ import {
   HOURS_OFFSET,
   LINES,
 } from "@/app/(layoutNavbar)/edt/const";
-import cn from "classnames";
 
 function getTimeValue(date: Date): number {
   const offset: number = 6 + date.getTimezoneOffset() / 60;
@@ -36,8 +35,7 @@ export default function CalendarElements({
           return (
             <div
               key={key}
-              className={cn("absolute flex flex-col items-center justify-center bg-gray-200 text-neutral-950 border text-sm text-ellipsis rounded-xl border-neutral-600 cursor-pointer",
-              "dark:bg-neutral-950 dark:text-white")}
+              className="absolute flex flex-col items-center justify-center bg-neutral-950 text-white border text-sm text-ellipsis rounded-xl border-neutral-600 cursor-pointer"
               style={{
                 width: `${100 / COLUMNS}%`,
                 height: `${

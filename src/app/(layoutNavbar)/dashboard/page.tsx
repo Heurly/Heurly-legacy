@@ -1,165 +1,114 @@
-import Actu from "@/components/Actu";
+import News from "@/components/News";
 import Card from "@/components/Card";
-import { SearchContext } from "@/context/search";
-import { useContext } from "react";
-import Resource from "@/components/resources/resource";
-import { Search } from "@/context/search";
+import type { News as NewsItem } from "@prisma/client";
+import { fetchEDTData } from "@/utils/edt";
+import ApiFilter from "@/utils/apiFilter";
+import { Session, getServerSession } from "next-auth";
+import authOptions from "@/utils/AuthOptions";
+import { addDays, parseISO } from "date-fns";
+import id from "@/utils/id";
+import { CourseEvent } from "../edt/types";
+import cn from "classnames";
+import EdtCourse from "@/components/edt/EdtCourse";
+import EdtGrid from "@/components/edt/EdtGrid";
+import { getAllNews } from "@/app/actions/news";
 
 export default async function Dashboard(): Promise<React.ReactElement> {
-  const styles = {
-    marginTop: "0px",
-    //marginBottom: '20px',
-    //lineHeight: 4,
-  };
-
-  const styles_date = {
-    color: "rgb(75 85 99)",
-    //lineHeight: 4,
-  };
-
-  const styles_nextcours = {
-    marginLeft: "20px",
-  };
-
-  const styles_font = {
-    color: "rgb(163 163 163)",
-  };
+  const session: Session | null = await getServerSession(authOptions);
+  const modules = session?.user?.profile?.modules ?? [];
 
   const ressources_upload = [
     {
       title: "test",
-      description: "early ou quoi",
-      date: "2021-10-10",
-    },
-    {
-      title: "lol",
-      description: "early ou quoi",
-      date: "2021-10-10",
-    },
-    {
-      title: "bla",
-      description: "ohhhh",
+      description: "lorem ipsum",
       date: "2021-10-10",
     },
   ];
+  let news: NewsItem[] = [];
+
+  try {
+    news = await getAllNews();
+  } catch (e) {
+    console.log(e);
+  }
+
+  // get the cours of the current date
+  const currentDate: number = new Date().setHours(0, 0, 0, 0);
+
+  const paramsEDT: ApiFilter<number> = {
+    equals: currentDate,
+  };
+
+  const edtData: CourseEvent[] = await fetchEDTData(paramsEDT, modules);
 
   return (
-    <div className="grid grid-rows-2 grid-flow-col gap-4 h-[700px] ">
-      <Card className="z-20 col-span-2">
-        <div className="font-extrabold mb-6 ">
-          <p style={styles}>Actualité du moment :</p>
+    <div
+      className={cn(
+        "flex flex-col gap-4 h-full",
+        "md:grid md:grid-rows-2 md:grid-flow-col",
+      )}
+    >
+      <Card className="col-span-2">
+        <div className="font-extrabold mb-6">
+          <p>Actualité du moment :</p>
         </div>
-        <div className="divide-y divide-gray-500 md:divide-y-2">
-          <Actu>
-            <div className="flex justify-between font-bold mt-4">
-              <p style={styles}>Afterwork </p>
-              <p style={styles_date}>date</p>
-            </div>
-            <p style={styles_font}>trop bien sous titre</p>
-          </Actu>
-          <Actu>
-            <div className="flex justify-between font-bold mt-4">
-              <p style={styles}>Afterwork </p>
-              <p style={styles_date}>date</p>
-            </div>
-            <p style={styles_font}>trop bien sous titre</p>
-          </Actu>
-          <Actu>
-            <div className="flex justify-between font-bold mt-4">
-              <p style={styles}>Afterwork </p>
-              <p style={styles_date}>date</p>
-            </div>
-            <p style={styles_font}>trop bien sous titre</p>
-          </Actu>
-        </div>
-      </Card>
-
-      <div className="col-span-2 flex items-stretch">
-        <Card className=" self-stretch flex-auto">
-          <div className="font-extrabold mb-8 mt-4">
-            Dernières ressources uploadées :<br />
-          </div>
-          <div className=" grid md:grid-cols-4 justify-self-start">
-            {ressources_upload &&
-              ressources_upload.map((resource, key) => (
-                <Resource
-                  key={key}
-                  title={resource.title}
-                  description={resource.description}
+        <div className="divide-y divide-gray-500 md:divide-y">
+          {news && news.length > 0 ? (
+            news.map(({ title, date, description }) => {
+              return (
+                <News
+                  key={id()}
+                  eventTitle={title}
+                  date={date}
+                  description={description}
                 />
-              ))}
-          </div>
-        </Card>
-      </div>
-
-      <Card className="overflow-auto z-20 grid justify-items-stretch row-span-2 col-span-1 font-extrabold self-stretch justify-self-strech ">
-        Prochain cours :
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
-            8h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
-            9h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
-            10h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-25px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
-            11h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            12h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            13h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            14h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            15h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            16h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            17h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            18h
-          </span>
-        </div>
-        <div className="border-t relative h-5 mt-10">
-          <span className="absolute top-[-30px] left-[10px] py-5 px-3 bg-gray-200 dark:bg-neutral-950">
-            19h
-          </span>
-        </div>
-        <div className="border-t relative mt-10">
-          <span className="absolute top-[-20px] left-[10px] py-2 px-3 bg-gray-200 dark:bg-neutral-950">
-            20h
-          </span>
+              );
+            })
+          ) : (
+            <p>Aucune actualité pour le moment</p>
+          )}
         </div>
       </Card>
+
+      <Card className="row-span-2 col-span-1">
+        <p className="font-extrabold">Prochain cours :</p>
+        <div className="relative justify-items-stretch grid h-full">
+          <EdtGrid />
+          {edtData &&
+            edtData.map((event: CourseEvent) => {
+              const prof = event.DESCRIPTION.match(/[A-Z]* [A-Z]\./);
+              const courseStart: Date = parseISO(event.DTSTART);
+              const courseEnd: Date = parseISO(event.DTEND);
+              return (
+                <div className="w-5/6 absolute right-0 h-full" key={id()}>
+                  <EdtCourse
+                    courseEnd={courseEnd}
+                    courseStart={courseStart}
+                    event={event}
+                    prof={prof}
+                  />
+                </div>
+              );
+            })}
+        </div>
+      </Card>
+      {/* -------------------------- FOR VERSION 0.3 -------------------------------- */}
+      {/* <Card className=" self-stretch flex-auto col-span-2 flex items-stretch">
+        <div className="font-extrabold mb-8 mt-4">
+          Dernières ressources uploadées :<br />
+        </div>
+        <div className=" grid md:grid-cols-4 justify-self-start">
+          {ressources_upload &&
+            ressources_upload.map((resource, key) => (
+              <Resource
+                key={key}
+                title={resource.title}
+                description={resource.description}
+              />
+            ))}
+        </div>
+      </Card> */}
+      {/* -------------------------- FOR VERSION 0.3 -------------------------------- */}
     </div>
   );
 }

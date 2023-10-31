@@ -17,7 +17,11 @@ export default function AddRessourceForm(): React.ReactElement {
       </select>
       <input type="text" placeholder="titre du document" />
       <input type="file" />
-      <input type="submit" value="valider" className={cn("text-neutral-950 border","dark:text-white")}/>
+      <input
+        type="submit"
+        value="valider"
+        className={cn("text-neutral-950 border", "dark:text-white")}
+      />
     </form>
   );
 }

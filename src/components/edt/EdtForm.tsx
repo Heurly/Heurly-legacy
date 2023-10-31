@@ -8,7 +8,6 @@ import SearchBar, {
   SuggestionFilter,
 } from "@/components/common/search-bar";
 import { ModuleFilter } from "@/app/api/modules/route";
-import { useSession } from "next-auth/react";
 
 async function getModules(filter: SuggestionFilter) {
   const payload = {
@@ -34,7 +33,7 @@ interface Props {
   setModules: Dispatch<SetStateAction<ModuleChoice[]>>;
 }
 
-const EDTForm: React.FunctionComponent<Props> = ({
+const EdtForm: React.FunctionComponent<Props> = ({
   modules,
   setModules,
 }: Props) => {
@@ -55,16 +54,16 @@ const EDTForm: React.FunctionComponent<Props> = ({
   return (
     <>
       <SearchBar data={getModules} tags={[]} resolveSearch={addModule} />
-      <div className="flex-col mb-4">
+      <div className="flex flex-row h-1/12 mb-4">
         {modules &&
           modules.length >= 0 &&
           modules.map((m) => (
             <div
               key={id()}
-              className="w-fit p-0.5 text-cyan-200 text-xs bg-cyan-950 backdrop-sepia rounded hover:cursor-pointer hover:text-red-400"
+              className="w-fit ml-2 text-cyan-200 text-xs bg-cyan-950 rounded hover:cursor-pointer hover:text-red-400"
               onClick={(e) => removeModule(e.currentTarget.innerText)}
             >
-              {m.label}
+              {m.label.split(" - ").slice(-3).join(" ")}
             </div>
           ))}
       </div>
@@ -72,4 +71,4 @@ const EDTForm: React.FunctionComponent<Props> = ({
   );
 };
 
-export default EDTForm;
+export default EdtForm;
