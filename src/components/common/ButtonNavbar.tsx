@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function ButtonNavBar({
   onClick,
@@ -11,7 +12,7 @@ export default function ButtonNavBar({
 }) {
   return (
     <button onClick={onClick} className="cursor-pointer">
-      <img src={imageSrc} alt={altText} />
+      <Image src={imageSrc} alt={altText} />
     </button>
   );
 }
