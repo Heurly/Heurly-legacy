@@ -1,8 +1,6 @@
 name: ci-delete
 
-on:
-  pull_request:
-    types: [closed]
+on: delete
 
 jobs:
   cleanup:
@@ -13,9 +11,8 @@ jobs:
       - name: SSH and Docker Compose Down remove files
         uses: appleboy/ssh-action@v1.0.0
         with:
-          envs : ESIEE_HUB_SERVICE
           host: ${{ secrets.PI_HOST }}
-          username: ${{ secrets.PI_USERNAME }} 
+          username: ${{ secrets.PI_USERNAME }}
           password: ${{ secrets.PI_PASSWORD }}
           script: |
             cd /home/share/hub/scripts

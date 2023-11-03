@@ -1,16 +1,22 @@
-export const PLANIF_ENDPOINT =
-  "https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=3471,3172,1798&projectId=10&calType=ical&nbWeeks=1";
-export const PLANIF_ENDPOINT_2024 =
-  "https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=3333&projectId=11&calType=ical&nbWeeks=1";
+import ApiFilter from "@/utils/apiFilter";
+import { format } from "date-fns";
 
-export interface EDTData {}
-
-/* 
-export function URLBuilder(url: string, params: { [key: string]: string }) {
-    let newUrl = url;
-    for (const [key, value] of Object.entries(params)) {
-        newUrl = newUrl.replace(`:${key}`, value);
-    }
-    return newUrl;
-}
-*/
+export const PLANIF_ENDPOINT = (
+  dateFilter: ApiFilter<number>,
+  modules: number[],
+) => {
+  if (dateFilter.equals != undefined) {
+    return `https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=${modules.join(
+      ",",
+    )}&projectId=11&calType=ical&nbWeeks=52`;
+  } else if (dateFilter.greater != undefined && dateFilter.lower != undefined) {
+    return `https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=${modules.join(
+      ",",
+    )}&projectId=11&calType=ical&firstDate=${format(
+      dateFilter.greater,
+      "yyyy-MM-dd",
+    )}&lastDate=${format(dateFilter.lower, "yyyy-MM-dd")}`;
+  } else {
+    return "https://planif.esiee.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?projectId=11&calType=ical&nbWeeks=52";
+  }
+};
