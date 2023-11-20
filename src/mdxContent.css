@@ -1,0 +1,17 @@
+.mdx-content {
+  width: 75%;
+  margin: auto;
+}
+.mdx-content h1 {
+  color: var(--primary);
+  font-size: x-large;
+  font-weight: bold;
+}
+.mdx-content h2 {
+  color: var(--primary);
+  font-size: large;
+  font-weight: bold;
+}
+.mdx-content p {
+  margin-bottom: 1rem;
+}

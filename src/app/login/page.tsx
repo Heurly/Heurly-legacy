@@ -1,45 +1,48 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import { SessionProvider, signIn } from "next-auth/react";
-import Button from "@/components/Button";
+import Logo from "@/components/icon/Logo";
+import { Button } from "@/components/ui/button";
+import GoogleIcon from "@/components/icon/GoogleIcon";
 import cn from "classnames";
 
-export default function Login(): React.ReactElement {
+export default function LoginPage() {
   return (
-    <SessionProvider>
-      <div className="md:flex w-full h-[100svh]">
-        <div className="md:w-1/2 h-1/2 md:h-full flex justify-center items-center">
-          <div className="flex flex-col gap-y-4">
-            <h1 className="text-4xl text-neutral-400 font-black text-center md:text-left">
-              Bienvenue sur{" "}
-              <span className={cn("text-neutral-950", "dark:text-white")}>
-                ESIEE&nbsp;HUB
-              </span>
-            </h1>
-            <div
-              className={cn(
-                "bg-gray-200 text-neutral-950",
-                "dark:bg-neutral-950 dark:text-white",
-              )}
-            >
-              <Button onClick={() => signIn("google", { callbackUrl: "/edt" })}>
-                Se connecter avec Google
-              </Button>
-            </div>
-          </div>
+    <main
+      className={cn(
+        "w-full h-[100svh] flex flex-col  justify-between items-center",
+        "md:flex-row",
+      )}
+    >
+      <div className="w-full flex flex-col items-center justify-center h-full gap-y-5">
+        <div className="flex items-center flex-col">
+          <Logo className={cn("w-1/2", " md:11/12")} />
+          <p className="text-sky-300 font-black text-3xl">
+            Heurly <span className="italic text-black">.fr</span>
+          </p>
         </div>
-        <div
+        <p className={cn("font-bold text-center leading-5 ", "md:hidden")}>
+          Pour les étudiants
+          <br /> Par les étudiants
+        </p>
+      </div>
+      <div
+        className={cn(
+          "w-full bg-white rounded-t-xl flex  gap-10 items-center justify-center py-10",
+          "md:h-full md:rounded-none md:flex-col",
+        )}
+      >
+        <p
           className={cn(
-            "md:w-1/2 h-1/2 md:h-full bg-white border-l-2 border-gray-600 flex justify-center items-center",
-            "dark:bg-black",
+            "font-extrabold text-center text-3xl hidden",
+            " md:block",
           )}
         >
-          <div className="flex flex-col items-center justify-center gap-y-5">
-            <Image src="/images/share.svg" alt="" width={400} height={400} />
-          </div>
-        </div>
+          Pour les <span className="italic">étudiants</span>
+          <br /> Par les <span className="italic">étudiants</span>
+        </p>
+        <Button className="bg-black">
+          <GoogleIcon className="w-7" />
+          Se connecter
+        </Button>
       </div>
-    </SessionProvider>
+    </main>
   );
 }

@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const withMDX = require("@next/mdx")();
+
+let webpackModule;
+let nextConfig = {
   images: {
     remotePatterns: [
       {
@@ -8,10 +12,12 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverActions: true,
-  },
   output: "standalone",
+  webpack(config, { webpack }) {
+    webpackModule = webpack;
+    return config;
+  },
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 };
 
-module.exports = nextConfig;
+module.exports = withMDX(nextConfig);
