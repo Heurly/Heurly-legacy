@@ -1,4 +1,4 @@
-describe("Test du composant WaitlistPage", () => {
+describe("Test de la page waitlist", () => {
   beforeEach(() => {
     cy.visit("/");
   });
@@ -32,5 +32,27 @@ describe("Test du composant WaitlistPage", () => {
     cy.get('[data-cy="switch"]').click();
     cy.contains("S'abonner").click();
     cy.contains("Vous êtes bien sur la waitlist").should("exist");
+  });
+
+  it("Affiche un message d'erreur si l'utilisateur appuie sur le switch sans remplir l'input", () => {
+    cy.get('[data-cy="switch"]').click();
+    cy.contains("S'abonner").click();
+    cy.contains("Veuillez entrer une adresse e-mail valide").should("exist");
+  });
+
+  it("Affiche un message d'erreur si l'utilisateur entre une adresse e-mail incorrecte", () => {
+    cy.get('input[type="email"]').type("email_invalide");
+    cy.get('[data-cy="switch"]').click();
+    cy.contains("S'abonner").click();
+    cy.contains("Veuillez entrer une adresse e-mail valide").should("exist");
+  });
+
+  it("Affiche un message d'erreur si l'utilisateur n'accepte pas les CGU", () => {
+    cy.get('input[type="email"]').type("test@test.fr");
+    cy.get('[data-cy="switch"]').click();
+    cy.contains("S'abonner").click();
+    cy.contains("Vous devez accepter les CGU pour vous abonner").should(
+      "exist",
+    );
   });
 });

@@ -6,9 +6,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 
+enum Terror {
+  "email" = "Veuillez entrer une adresse e-mail valide",
+  "accept" = "Vous devez accepter les CGU pour vous abonner",
+}
+
 export default function WaitlistPage() {
   const [onAccept, setOnAccept] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<Terror | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +28,8 @@ export default function WaitlistPage() {
       // show success messagea
       setSuccess(true);
     }
+    if (!form.get("email")) setError(Terror.email);
+    if (!onAccept) setError(Terror.accept);
   };
 
   return (
@@ -63,6 +71,7 @@ export default function WaitlistPage() {
             Vous êtes bien sur la waitlist
           </p>
         )}
+        {error && <p className="text-red-500 font-bold">{error}</p>}
       </form>
     </main>
   );
