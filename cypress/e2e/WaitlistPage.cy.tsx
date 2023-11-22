@@ -34,4 +34,14 @@ describe("Test de la page waitlist", () => {
     cy.contains("Vous êtes bien sur la waitlist").should("exist");
     cy.url().should("include", "?success=true");
   });
+
+  it("Désactive le bouton 'S'abonner' si l'utilisateur n'accepte pas les CGU", () => {
+    cy.get('input[type="email"]').type("test@test.fr");
+    cy.contains("S'abonner").should("be.disabled");
+  });
+
+  it("Désactive le bouton 'S'abonner' si l'utilisateur ne rentre pas l'email mais à accepter les CGU", () => {
+    cy.get('[data-cy="switch"]').click();
+    cy.contains("S'abonner").should("be.disabled");
+  });
 });

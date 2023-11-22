@@ -9,7 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function WaitlistPage() {
   const [onAccept, setOnAccept] = useState<boolean>(false);
-
+  const [email, setEmail] = useState<string>("");
   //get search params
   const searchParams = useSearchParams();
   // get success param from url
@@ -43,7 +43,14 @@ export default function WaitlistPage() {
         </p>
         <label htmlFor="email">
           <p className="font-bold">Email</p>
-          <Input type="email" name="email" required />
+          <Input
+            type="email"
+            name="email"
+            required
+            onChange={(e) => {
+              setEmail(e.currentTarget.value);
+            }}
+          />
           <p className=" text-sm">
             Entrer votre email pour être sur la waitlist
           </p>
@@ -62,7 +69,11 @@ export default function WaitlistPage() {
             </Link>
           </p>
         </div>
-        <Button variant="outline" type="submit">
+        <Button
+          variant="outline"
+          type="submit"
+          disabled={!onAccept || email.length == 0}
+        >
           S'abonner
         </Button>
         {success && (
