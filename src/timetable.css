@@ -1,0 +1,6 @@
+.fc-next-button {
+  background-color: red !important;
+}
+.fc-prev-button {
+  background-color: var(--primary);
+}

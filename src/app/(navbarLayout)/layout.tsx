@@ -10,7 +10,7 @@ export default function NavBarLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="md:flex gap-x-6 md:flex-row md:justify-between md:p-5 h-[100svh]">
+    <div className="md:flex gap-x-6 md:flex-row md:justify-between md:p-5 h-[100svh] w-[100svw]">
       <TopBar />
       <NavBar />
       <div>{children}</div>

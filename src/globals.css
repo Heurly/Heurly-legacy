@@ -92,5 +92,5 @@
     @apply bg-background text-foreground;
   }
 }
-
+@import "./timetable.css";
 @import "./mdxContent.css";
