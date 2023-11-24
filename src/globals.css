@@ -103,4 +103,8 @@
   background-color: var(--secondary) !important;
 }
 
+.fc-theme-standard .fc-scrollgrid {
+  border: none !important;
+}
+
 @import "./mdxContent.css";

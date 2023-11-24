@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import FullCalendar from "@fullcalendar/react";
+import CalendarApi from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import frLocale from "@fullcalendar/core/locales/fr";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -15,40 +16,58 @@ import { useRef, useState } from "react";
 import { DatePicker } from "@/components/ui/datepicker";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  startOfDay,
+  endOfDay,
+} from "date-fns";
+
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const today = new Date();
 
-// Fonction pour créer une date avec l'heure spécifiée pour aujourd'hui
-const createEventDate = (hours: number, minutes: number) => {
+const createEventDate = (dayOffset: number, hours: number, minutes: number) => {
   return new Date(
     today.getFullYear(),
     today.getMonth(),
-    today.getDate(),
+    today.getDate() + dayOffset,
     hours,
     minutes,
   );
 };
 
-// Créer des événements
 const events = [
-  {
-    title: "Machine Learning",
-    room: "4234",
-    start: createEventDate(8, 0), // 8h00
-    end: createEventDate(10, 30), // 9h00
-  },
-  {
-    title: "Réseau",
-    room: "4234",
-    start: createEventDate(10, 30), // 10h30
-    end: createEventDate(11, 30), // 11h30
-  },
+  // Lundi
   {
     title: "Algèbre linéaire avancé",
     room: "4234",
-    start: createEventDate(12, 30), // 12h30
-    end: createEventDate(13, 30), // 13h30
+    start: createEventDate(-4, 8, 0),
+    end: createEventDate(-4, 10, 30),
   },
+  {
+    title: "Programmation Fonctionnelle",
+    room: "4234",
+    start: createEventDate(-4, 11, 0),
+    end: createEventDate(-4, 18, 30),
+  },
+  // Mardi
+  {
+    title: "Machine Learning",
+    room: "4234",
+    start: createEventDate(-3, 8, 0),
+    end: createEventDate(-3, 10, 0),
+  },
+  {
+    title: "Systèmes Distribués",
+    room: "4234",
+    start: createEventDate(-3, 10, 30),
+    end: createEventDate(-3, 16, 0),
+  },
+  // Ajoutez d'autres jours et cours ici
 ];
 
 function renderEventContent(eventInfo: any) {
@@ -66,16 +85,33 @@ function renderEventContent(eventInfo: any) {
 }
 
 export default function Timetable() {
-  const calendarRef = useRef(null);
-
+  const calendarRef = useRef<FullCalendar>(null);
+  const [periodDisplay, setPeriodDisplay] = useState("");
   const handleDateChange = (date: Date) => {
     const newDate = date.toISOString().slice(0, 10);
-    const calendarApi = calendarRef?.current?.getApi();
-    calendarApi.gotoDate(newDate);
+    if (calendarRef.current) calendarRef.current.getApi().gotoDate(newDate);
   };
 
+  const updatePeriodDisplay = (view) => {
+    let display = "";
+    if (view.type.includes("Week")) {
+      const start = startOfWeek(view.currentStart, { weekStartsOn: 1 });
+      display = `Semaine du ${format(start, "dd/MM/yyyy", { locale: fr })}`;
+    } else if (view.type.includes("Day")) {
+      display = `Jour du ${format(view.currentStart, "dd/MM/yyyy", {
+        locale: fr,
+      })}`;
+    } else if (view.type.includes("Month")) {
+      display = `Mois de ${format(view.currentStart, "MMMM yyyy", {
+        locale: fr,
+      })}`;
+    }
+    setPeriodDisplay(display);
+  };
   const goToNextPeriod = () => {
-    const calendarApi = calendarRef?.current?.getApi();
+    if (!calendarRef.current) return;
+
+    const calendarApi = calendarRef.current.getApi();
     const view = calendarApi.view;
 
     switch (view.type) {
@@ -97,7 +133,9 @@ export default function Timetable() {
   };
 
   const goToPreviousPeriod = () => {
-    const calendarApi = calendarRef?.current?.getApi();
+    if (!calendarRef.current) return;
+
+    const calendarApi = calendarRef.current.getApi();
     const view = calendarApi.view;
 
     switch (view.type) {
@@ -118,6 +156,10 @@ export default function Timetable() {
     }
   };
 
+  const onDatesSet = (info: any) => {
+    updatePeriodDisplay(info.view);
+  };
+
   return (
     <main className="w-full h-full">
       <Card className="h-full  p-10">
@@ -132,7 +174,9 @@ export default function Timetable() {
                 Aujourd'hui
               </Button>
             </div>
-            <div className="flex gap-x-3">
+
+            <div className="flex gap-x-3 items-center">
+              {periodDisplay}
               <Button
                 className="bg-sky-50 rounded-full aspect-square p-3"
                 onClick={goToPreviousPeriod}
@@ -158,12 +202,13 @@ export default function Timetable() {
             events={events}
             eventContent={renderEventContent}
             locale={frLocale}
-            weekends={false}
+            weekends={true}
             allDaySlot={false}
             slotMinTime="08:00:00"
             slotMaxTime="20:00:00"
             height="auto"
             aspectRatio={2}
+            datesSet={onDatesSet}
           />
         </CardContent>
       </Card>
