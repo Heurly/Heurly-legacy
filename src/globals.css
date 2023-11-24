@@ -107,4 +107,8 @@
   border: none !important;
 }
 
+.fc .fc-timegrid-slot-label {
+  height: 2.5rem !important;
+}
+
 @import "./mdxContent.css";

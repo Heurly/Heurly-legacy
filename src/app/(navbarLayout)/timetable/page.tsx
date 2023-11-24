@@ -12,7 +12,7 @@ import CalendarApi from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import frLocale from "@fullcalendar/core/locales/fr";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DatePicker } from "@/components/ui/datepicker";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
@@ -71,7 +71,6 @@ const events = [
 ];
 
 function renderEventContent(eventInfo: any) {
-  console.log(eventInfo.event);
   return (
     <div
       onClick={() => alert(eventInfo.event.title + " " + eventInfo.timeText)}
@@ -87,12 +86,14 @@ function renderEventContent(eventInfo: any) {
 export default function Timetable() {
   const calendarRef = useRef<FullCalendar>(null);
   const [periodDisplay, setPeriodDisplay] = useState("");
+  const [initialView, setInitialView] = useState("timeGridWeek");
+
   const handleDateChange = (date: Date) => {
     const newDate = date.toISOString().slice(0, 10);
     if (calendarRef.current) calendarRef.current.getApi().gotoDate(newDate);
   };
 
-  const updatePeriodDisplay = (view) => {
+  const updatePeriodDisplay = (view: any) => {
     let display = "";
     if (view.type.includes("Week")) {
       const start = startOfWeek(view.currentStart, { weekStartsOn: 1 });
@@ -159,10 +160,31 @@ export default function Timetable() {
   const onDatesSet = (info: any) => {
     updatePeriodDisplay(info.view);
   };
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isMobile = window.innerWidth < 768;
+      setInitialView(isMobile ? "timeGridDay" : "timeGridWeek");
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Force la mise à jour de la vue de FullCalendar
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.changeView(initialView);
+    }
+  }, [initialView]);
 
   return (
     <main className="w-full h-full">
-      <Card className="h-full  p-10">
+      <Card className="h-full p-10">
         <CardHeader>
           <div className="flex md:flex-row flex-col justify-between">
             <div className="flex gap-x-3">
@@ -193,11 +215,11 @@ export default function Timetable() {
           </div>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="h-[97%]">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin]}
-            initialView="timeGridWeek"
+            initialView={initialView}
             headerToolbar={false}
             events={events}
             eventContent={renderEventContent}
@@ -206,8 +228,9 @@ export default function Timetable() {
             allDaySlot={false}
             slotMinTime="08:00:00"
             slotMaxTime="20:00:00"
-            height="auto"
-            aspectRatio={2}
+            height={"90%"}
+            contentHeight="100%"
+            aspectRatio={1.5}
             datesSet={onDatesSet}
           />
         </CardContent>
