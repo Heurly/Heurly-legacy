@@ -22,6 +22,7 @@
 
 @layer base {
   :root {
+    --fc-page-bg-color: none;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
 
@@ -31,10 +32,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
 
-    --primary: 193, 100%, 86%;
+    --primary: rgba(186, 230, 253, 1); /* sky-200 */
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 96.1%;
+    --secondary: rgba(224, 242, 254, 1); /* sky-100 */
     --secondary-foreground: 0 0% 9%;
 
     --muted: 0 0% 96.1%;
@@ -63,7 +64,7 @@
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 193, 100%, 86%;
+    --primary: rgba(186, 230, 253, 1);
     --primary-foreground: 0 0% 9%;
 
     --secondary: 0 0% 14.9%;
@@ -92,5 +93,14 @@
     @apply bg-background text-foreground;
   }
 }
-@import "./timetable.css";
+
+.fc-v-event {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.fc .fc-timegrid-col.fc-day-today {
+  background-color: var(--secondary) !important;
+}
+
 @import "./mdxContent.css";

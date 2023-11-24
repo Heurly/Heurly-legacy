@@ -51,16 +51,11 @@ export default function NavBar() {
       icon: <EventIcon />,
       href: "/event",
     },
-    {
-      name: "Profil",
-      icon: <UserIcon />,
-      href: "/profile",
-    },
   ];
   return (
-    <nav className="flex flex-col justify-between items-center md:h-full md:w-[unset] w-11/12 sticky top-[85%] left-1/2 md:left-[unset] -translate-x-7 md:translate-x-0 md:relative md:top-[unset] px-5 py-10 bg-sky-200 rounded-full">
+    <nav className="flex flex-col justify-between items-center md:h-full md:w-[unset] w-11/12 fixed top-[90%] left-1/2 md:left-[unset] -translate-x-1/2 z-50 md:translate-x-0 md:relative md:top-[unset] px-3 md:py-10 py-5 bg-sky-200 rounded-3xl">
       <Link href="/" data-cy="logo" className="hidden md:block">
-        <Logo className="w-20" />
+        <Logo className=" w-16" />
       </Link>
       <div className="flex md:flex-col gap-10 justify-between w-full md:w-[unset] px-5">
         {navbarElement.map(({ href, name, icon }, index) => (

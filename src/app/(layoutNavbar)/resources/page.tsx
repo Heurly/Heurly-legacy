@@ -1,9 +1,5 @@
 import Resource from "@/components/resources/resource";
-import { SearchContext } from "@/context/search";
 import "@/globals.css";
-import { useContext } from "react";
-import SearchBar from "@/components/common/search-bar";
-import { PrismaClient } from "@prisma/client";
 import AddRessourceForm from "@/components/resources/addRessourceForm";
 
 export default function Hub(): React.ReactElement {
