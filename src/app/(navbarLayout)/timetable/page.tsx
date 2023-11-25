@@ -160,9 +160,12 @@ export default function Timetable() {
   const onDatesSet = (info: any) => {
     updatePeriodDisplay(info.view);
   };
+
+  const nbPxPhone = 768;
+
   useEffect(() => {
     const checkScreenSize = () => {
-      const isMobile = window.innerWidth < 768;
+      const isMobile = window.innerWidth < nbPxPhone;
       setInitialView(isMobile ? "timeGridDay" : "timeGridWeek");
     };
 

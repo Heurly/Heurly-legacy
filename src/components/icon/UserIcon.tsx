@@ -1,10 +1,12 @@
-function UserIcon() {
+import { IconProps } from "@/app/(layoutNavbar)/edt/types";
+
+function UserIcon({ isFill }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="33"
       height="33"
-      fill="none"
+      fill={isFill ? "#334155" : "none"}
       viewBox="0 0 33 33"
       data-cy="userIcon"
     >

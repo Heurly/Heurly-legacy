@@ -2,6 +2,7 @@ import Logo from "@/components/icon/Logo";
 import { Button } from "@/components/ui/button";
 import GoogleIcon from "@/components/icon/GoogleIcon";
 import cn from "classnames";
+import Underline from "@/components/underline";
 
 export default function LoginPage() {
   return (
@@ -29,15 +30,32 @@ export default function LoginPage() {
           "md:h-full md:rounded-none md:flex-col",
         )}
       >
-        <p
-          className={cn(
-            "font-extrabold text-center text-3xl hidden",
-            " md:block",
-          )}
-        >
-          Pour les <span className="italic">étudiants</span>
-          <br /> Par les <span className="italic">étudiants</span>
-        </p>
+        <div>
+          <p
+            className={cn(
+              "font-extrabold text-center text-3xl hidden mb-3",
+              " md:block",
+            )}
+          >
+            Pour les{" "}
+            <span className="italic relative">
+              étudiants
+              <Underline className="w-32 absolute -bottom-4 left-0" />
+            </span>
+          </p>
+          <p
+            className={cn(
+              "font-extrabold text-center text-3xl hidden",
+              "md:block",
+            )}
+          >
+            Par les{" "}
+            <span className="italic relative">
+              étudiants
+              <Underline className="w-32 absolute -bottom-4 left-0" />
+            </span>
+          </p>
+        </div>
         <Button className="bg-black">
           <GoogleIcon className="w-7" />
           Se connecter

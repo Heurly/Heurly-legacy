@@ -1,10 +1,12 @@
-function RevisionIcon() {
+import { IconProps } from "@/app/(layoutNavbar)/edt/types";
+
+function RevisionIcon({ isFill }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="34"
       height="34"
-      fill="none"
+      fill={isFill ? "#334155" : "none"}
       viewBox="0 0 34 34"
       data-cy="revisionIcon"
     >

@@ -16,3 +16,7 @@ export type ModuleChoice = {
   label: string;
   code: number;
 };
+
+export type IconProps = {
+  isFill?: boolean;
+};
