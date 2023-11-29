@@ -16,6 +16,8 @@ import { DatesSetArg, EventContentArg } from "@fullcalendar/core";
 import { goToNextPeriod, goToPreviousPeriod } from "./fullCalendarHelper";
 import { TView } from "@/types/timetable";
 import EventContent from "@/components/timetable/EventContent";
+import { PLANIF_ENDPOINT } from "@/app/api/ApiHelper";
+import ICAL from "ical.js";
 
 const today = new Date();
 
@@ -29,34 +31,6 @@ const createEventDate = (dayOffset: number, hours: number, minutes: number) => {
   );
 };
 
-const events = [
-  {
-    title: "Algèbre linéaire avancé",
-    room: "4234",
-    start: createEventDate(-4, 8, 0),
-    end: createEventDate(-4, 10, 30),
-  },
-  {
-    title: "Programmation Fonctionnelle",
-    room: "4234",
-    start: createEventDate(-4, 11, 0),
-    end: createEventDate(-4, 18, 30),
-  },
-
-  {
-    title: "Machine Learning",
-    room: "4234",
-    start: createEventDate(-3, 8, 0),
-    end: createEventDate(-3, 10, 0),
-  },
-  {
-    title: "Systèmes Distribués",
-    room: "4234",
-    start: createEventDate(-3, 10, 30),
-    end: createEventDate(-3, 16, 0),
-  },
-];
-
 export default function Timetable() {
   const calendarRef = useRef<FullCalendar>(null);
   const [periodDisplay, setPeriodDisplay] = useState<string>("");
@@ -64,6 +38,7 @@ export default function Timetable() {
   const nbPxPhone = 768;
   const startTime: string = "08:00:00";
   const endTime: string = "20:00:00";
+  const [events, setEvents] = useState([]);
 
   const handleDateChange = (date: Date) => {
     const newDate = date.toISOString().slice(0, 10);
@@ -103,6 +78,45 @@ export default function Timetable() {
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
+
+    // ical fetching --------------
+    // Fetch iCal data (e.g., from a URL or a file)
+
+    console.log(
+      PLANIF_ENDPOINT(
+        {
+          lower: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).getTime(),
+          greater: new Date(Date.now()).getTime(),
+        },
+        [3033],
+      ),
+    );
+
+    // fetch(PLANIF_ENDPOINT({
+    //   lower: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).getTime(),
+    //   greater: new Date(Date.now()).getTime(),
+    // }, [3033]))
+    //   .then((response) => response.text())
+    //   .then((data) => {
+    //     const jcalData = ICAL.parse(data);
+    //     const comp = new ICAL.Component(jcalData);
+    //     const vevents = comp.getAllProperties('vevent');
+    //     const parsedEvents: any = [];
+
+    //     vevents.forEach((vevent: any) => {
+    //       const event = {
+    //         title: vevent.getFirstValue('summary'),
+    //         start: vevent.getFirstValue('dtstart').toJSDate(),
+    //         end: vevent.getFirstValue('dtend').toJSDate(),
+    //       };
+    //       parsedEvents.push(event);
+    //     });
+    //     console.log(parsedEvents)
+    //     setEvents(parsedEvents);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching iCal data:', error);
+    //   });
 
     return () => {
       window.removeEventListener("resize", checkScreenSize);
@@ -159,7 +173,18 @@ export default function Timetable() {
             plugins={[dayGridPlugin, timeGridPlugin]}
             initialView={currentView}
             headerToolbar={false}
-            events={events}
+            events={{
+              url: PLANIF_ENDPOINT(
+                {
+                  greater: new Date(Date.now()).getTime(),
+                  lower: new Date(
+                    Date.now() + 1000 * 60 * 60 * 24 * 7,
+                  ).getTime(),
+                },
+                [3033],
+              ),
+              format: "ics",
+            }}
             eventContent={EventContent}
             locale={frLocale}
             weekends={true}
