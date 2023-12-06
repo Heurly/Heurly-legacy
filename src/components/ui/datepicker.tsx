@@ -14,7 +14,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker({ onChange }: { onChange: (date: Date) => void }) {
+type PropsDatePicker = {
+  onChange: (date: Date) => void;
+  className: string;
+};
+
+export function DatePicker({ onChange, className = "" }: PropsDatePicker) {
   const [date, setDate] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -29,6 +34,7 @@ export function DatePicker({ onChange }: { onChange: (date: Date) => void }) {
           className={cn(
             "w-[280px] justify-start text-left font-normal bg-sky-50 border-0",
             !date && "text-muted-foreground",
+            className,
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

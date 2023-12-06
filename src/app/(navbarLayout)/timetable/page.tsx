@@ -136,7 +136,10 @@ export default function Timetable() {
         <CardHeader>
           <div className="flex md:flex-row flex-col justify-between items-center">
             <div className="flex flex-col-reverse md:flex-row mb-3 items-center justify-center gap-5">
-              <DatePicker onChange={handleDateChange} />
+              <DatePicker
+                onChange={handleDateChange}
+                className="hidden md:flex"
+              />
               <Button
                 className="bg-sky-50 text-black hidden md:block"
                 onClick={() => handleDateChange(new Date())}
@@ -153,9 +156,10 @@ export default function Timetable() {
               >
                 <ArrowLeft className="h-4 w-4 text-black" />
               </Button>
-              <p data-cy="periodDisplay" className=" md:order-1">
+              <p data-cy="periodDisplay" className="md:order-1 hidden md:block">
                 {periodDisplay}
               </p>
+              <DatePicker onChange={handleDateChange} className="md:hidden" />
               <Button
                 className="bg-sky-50 rounded-full aspect-square p-3 md:order-3"
                 onClick={() => goToNextPeriod(calendarRef)}

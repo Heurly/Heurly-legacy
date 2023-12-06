@@ -87,6 +87,19 @@
   }
 }
 
+.topBar {
+  animation: shrink;
+  animation-timeline: scroll();
+  animation-range: 0;
+  padding: 1rem 1.25rem;
+}
+
+@keyframes shrink {
+  to {
+    padding: 0.5rem 1.25rem;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
