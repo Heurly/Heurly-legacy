@@ -30,7 +30,7 @@
     "fastest-levenshtein": "^1.0.16",
     "icalts": "^0.0.2",
     "next": "^13.5.3",
-    "next-auth": "^4.23.2",
+    "next-auth": "^4.24.5",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
